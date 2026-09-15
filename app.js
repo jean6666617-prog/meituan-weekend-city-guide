@@ -1,14 +1,14 @@
 const animals = [
-  { id:"cat", name:"橘猫", trait:"慢热观察型", line:"先看看，不着急加入热闹。", rec:"为你留了一些可以慢慢看的地方", img:"assets/animals/cat.png" },
-  { id:"shiba", name:"柴犬", trait:"好奇行动型", line:"城市新鲜事，闻到就出发。", rec:"发现了几件值得立刻出门的新鲜事", img:"assets/animals/shiba.png" },
-  { id:"kangaroo", name:"袋鼠", trait:"活力带队型", line:"附近新鲜事，我带你找到！", rec:"本地雷达刚捕捉到这些好去处", img:"assets/animals/kangaroo.png" },
-  { id:"capybara", name:"水豚", trait:"安静治愈型", line:"不赶时间，舒服最重要。", rec:"今天适合把节奏调慢一点", img:"assets/animals/capybara.png" },
-  { id:"rabbit", name:"白兔", trait:"轻社交型", line:"一点点认识，就很刚好。", rec:"这些活动适合自然地认识同频朋友", img:"assets/animals/rabbit.png" },
-  { id:"fox", name:"狐狸", trait:"小众探索型", line:"转进小巷，故事才刚开始。", rec:"绕开人潮，去看看城市的隐藏面", img:"assets/animals/fox.png" },
-  { id:"penguin", name:"企鹅", trait:"秩序搭子型", line:"路线清楚，准时出发。", rec:"时间地点都替你安排明白了", img:"assets/animals/penguin.png" },
-  { id:"panda", name:"熊猫", trait:"随缘吃逛型", line:"先吃一口，再决定下一站。", rec:"好吃与好逛可以一次拥有", img:"assets/animals/panda.png" },
-  { id:"otter", name:"海獭", trait:"松弛陪伴型", line:"两三个人，舒服待着就好。", rec:"适合小范围轻松同行的活动在这里", img:"assets/animals/otter.png" },
-  { id:"alpaca", name:"羊驼", trait:"氛围体验型", line:"灯光、音乐、照片，都要有。", rec:"为你挑了几场氛围感满分的体验", img:"assets/animals/alpaca.png" }
+  {id:"cat",name:"橘猫",personality:"慢热观察型",description:"先看看，不着急加入热闹。",rec:"为你留了一些可以慢慢看的地方",image:"assets/animals/cat.png",animationClass:"anim-cat",favoriteFood:"小鱼",foodIcon:"fish",accentColor:"#e98535",softColor:"#fff0dc"},
+  {id:"shiba",name:"柴犬",personality:"好奇行动型",description:"城市新鲜事，闻到就出发。",rec:"发现了几件值得立刻出门的新鲜事",image:"assets/animals/shiba.png",animationClass:"anim-shiba",favoriteFood:"骨头和肉干",foodIcon:"bone",accentColor:"#df7046",softColor:"#ffebe2"},
+  {id:"kangaroo",name:"袋鼠",personality:"活力带队型",description:"附近新鲜事，我带你找到！",rec:"本地雷达刚捕捉到这些好去处",image:"assets/animals/kangaroo.png",animationClass:"anim-kangaroo",favoriteFood:"青草和树叶",foodIcon:"leaf",accentColor:"#e2a900",softColor:"#fff3ba"},
+  {id:"capybara",name:"水豚",personality:"安静治愈型",description:"不赶时间，舒服最重要。",rec:"今天适合把节奏调慢一点",image:"assets/animals/capybara.png",animationClass:"anim-capybara",favoriteFood:"西瓜",foodIcon:"circle-slice",accentColor:"#53a979",softColor:"#e5f6ec"},
+  {id:"rabbit",name:"白兔",personality:"轻社交型",description:"一点点认识，就很刚好。",rec:"这些活动适合自然地认识同频朋友",image:"assets/animals/rabbit.png",animationClass:"anim-rabbit",favoriteFood:"胡萝卜",foodIcon:"carrot",accentColor:"#f07658",softColor:"#ffe7df"},
+  {id:"fox",name:"狐狸",personality:"小众探索型",description:"转进小巷，故事才刚开始。",rec:"绕开人潮，去看看城市的隐藏面",image:"assets/animals/fox.png",animationClass:"anim-fox",favoriteFood:"莓果",foodIcon:"cherry",accentColor:"#d75b52",softColor:"#ffe4e1"},
+  {id:"penguin",name:"企鹅",personality:"秩序搭子型",description:"路线清楚，准时出发。",rec:"时间地点都替你安排明白了",image:"assets/animals/penguin.png",animationClass:"anim-penguin",favoriteFood:"小鱼",foodIcon:"fish",accentColor:"#3976c8",softColor:"#e3efff"},
+  {id:"panda",name:"熊猫",personality:"随缘吃逛型",description:"先吃一口，再决定下一站。",rec:"好吃与好逛可以一次拥有",image:"assets/animals/panda.png",animationClass:"anim-panda",favoriteFood:"竹叶",foodIcon:"sprout",accentColor:"#4c8c62",softColor:"#e6f3e9"},
+  {id:"otter",name:"海獭",personality:"松弛陪伴型",description:"两三个人，舒服待着就好。",rec:"适合小范围轻松同行的活动在这里",image:"assets/animals/otter.png",animationClass:"anim-otter",favoriteFood:"贝壳和海胆",foodIcon:"shell",accentColor:"#3f76e8",softColor:"#e3eeff"},
+  {id:"alpaca",name:"羊驼",personality:"氛围体验型",description:"灯光、音乐、照片，都要有。",rec:"为你挑了几场氛围感满分的体验",image:"assets/animals/alpaca.png",animationClass:"anim-alpaca",favoriteFood:"青草和小花",foodIcon:"flower-2",accentColor:"#a05ec8",softColor:"#f2e6fa"}
 ];
 
 const activities = [
@@ -42,7 +42,7 @@ const badgeData=[
   ["palette","艺术慢游"],["trees","城市吸氧"],["coffee","咖啡地图"],["music-2","现场音乐"],
   ["camera","街头影像"],["utensils","深夜觅食"],["bike","周末运动"],["map","小众探索"]
 ];
-const modeCopy={solo:{label:"独处充电清单",reason:"可独自参加 · 不强制互动",crew:"适合安静同行的小队"},soft:{label:"轻轻同行清单",reason:"2—4 人 · 安静相处也自在",crew:"低压力、可安静同行的小队"},party:{label:"热闹组局清单",reason:"多人互动 · 新朋友友好",crew:"正在热闹集结的小队"}};
+const modeCopy={solo:{label:"独处充电清单",reason:"可独自参加 · 不强制互动",crew:"适合安静同行的小队",stage:"今天想一个人自在探索，不被打扰。"},soft:{label:"轻轻同行清单",reason:"2—4 人 · 安静相处也自在",crew:"低压力、可安静同行的小队",stage:"今天想要两三个人，舒服待着就好。"},party:{label:"热闹组局清单",reason:"多人互动 · 新朋友友好",crew:"正在热闹集结的小队",stage:"今天电量满格，去热闹现场认识新朋友。"}};
 
 const state={
   mode:localStorage.getItem("weekend-mode")||"solo",
@@ -63,15 +63,38 @@ function refreshIcons(){if(window.lucide)lucide.createIcons()}
 function getAnimal(id){return animals.find(animal=>animal.id===id)||animals[2]}
 
 function renderAnimals(){
-  $("#animalSelector").innerHTML=animals.map(animal=>`<button class="animal-option ${animal.id===state.animal?"selected":""}" data-animal="${animal.id}" data-avatar="${animal.id}" type="button" role="option" aria-selected="${animal.id===state.animal}" aria-label="${animal.name}：${animal.trait}" title="${animal.name} · ${animal.trait}"><img src="${animal.img}" alt="" /></button>`).join("");
-  const animal=getAnimal(state.animal);
-  $("#mainAnimal").src=animal.img;$("#mainAnimal").alt=`${animal.name}城市伙伴`;
-  $("#headerAvatar").src=animal.img;$("#headerAvatar").alt=`${animal.name}头像`;$("#profileButton").dataset.avatar=animal.id;$("#profileButton").setAttribute("aria-label",`当前动物伙伴：${animal.name}`);
-  $("#passportAvatar").src=animal.img;$("#passportAvatar").alt=`护照中的${animal.name}头像`;$("#passportAvatarFrame").dataset.avatar=animal.id;
-  $("#animalName").textContent=`${animal.name} · ${animal.trait}`;$("#animalLine").textContent=animal.line;$("#recommendAnimal").textContent=animal.name;
+  $("#animalSelector").innerHTML=animals.map(animal=>`<button class="animal-option ${animal.id===state.animal?"selected":""}" data-animal="${animal.id}" data-avatar="${animal.id}" type="button" role="option" aria-selected="${animal.id===state.animal}" aria-label="${animal.name}：${animal.personality}"><span class="picker-avatar"><img src="${animal.image}" alt="" /></span><strong>${animal.name}</strong><small>${animal.personality}</small><i data-lucide="check" class="picker-check"></i></button>`).join("");
+  applyAnimalUI(getAnimal(state.animal),false);
   $$(".animal-option").forEach(button=>button.addEventListener("click",()=>selectAnimal(button.dataset.animal)));
+  refreshIcons();
 }
-function selectAnimal(id){state.animal=id;localStorage.setItem("weekend-animal",id);renderAnimals();renderRecommendations();showToast(`已切换为${getAnimal(id).name}伙伴`)}
+function applyAnimalUI(animal,animate){
+  const stage=$("#partnerStage");const main=$("#mainAnimal");
+  const apply=()=>{
+    main.className="partner-animal";main.src=animal.image;main.alt=`${animal.name}城市伙伴`;void main.offsetWidth;main.classList.add(animal.animationClass);
+    $("#currentPartnerAvatar").src=animal.image;$("#currentPartnerAvatar").alt=`${animal.name}伙伴头像`;$("#currentPartnerAvatar").parentElement.dataset.avatar=animal.id;
+    $("#currentPartnerLabel").textContent=`${animal.name} · ${animal.personality}`;$("#animalName").textContent=animal.name;$("#animalPersonality").textContent=animal.personality;$("#animalLine").textContent=animal.description;$("#favoriteFood").textContent=animal.favoriteFood;
+    $("#headerAvatar").src=animal.image;$("#headerAvatar").alt=`${animal.name}头像`;$("#profileButton").dataset.avatar=animal.id;$("#profileButton").setAttribute("aria-label",`当前动物伙伴：${animal.name}`);
+    $("#passportAvatar").src=animal.image;$("#passportAvatar").alt=`护照中的${animal.name}头像`;$("#passportAvatarFrame").dataset.avatar=animal.id;$("#recommendAnimal").textContent=animal.name;
+    stage.style.setProperty("--partner-accent",animal.accentColor);stage.style.setProperty("--partner-soft",animal.softColor);
+  };
+  if(!animate){apply();return}
+  stage.classList.add("is-leaving");setTimeout(()=>{apply();stage.classList.remove("is-leaving")},150);
+}
+function selectAnimal(id){
+  const animal=getAnimal(id);state.animal=id;localStorage.setItem("weekend-animal",id);
+  $$(".animal-option").forEach(button=>{const selected=button.dataset.animal===id;button.classList.toggle("selected",selected);button.setAttribute("aria-selected",String(selected))});
+  applyAnimalUI(animal,true);renderRecommendations();renderCrews();closePartnerPanel();showToast(`已切换为${animal.name}伙伴`);
+}
+
+let partnerPanelOpen=false;let partnerPanelTimer;
+function openPartnerPanel(){
+  clearTimeout(partnerPanelTimer);const panel=$("#partnerPanel");partnerPanelOpen=true;panel.hidden=false;$("#partnerBackdrop").hidden=false;document.body.classList.add("partner-open");$("#partnerToggle").setAttribute("aria-expanded","true");requestAnimationFrame(()=>panel.classList.add("open"));setTimeout(()=>panel.querySelector(".animal-option.selected")?.focus(),80);
+}
+function closePartnerPanel(returnFocus=false){
+  if(!partnerPanelOpen)return;const panel=$("#partnerPanel");partnerPanelOpen=false;panel.classList.remove("open");document.body.classList.remove("partner-open");$("#partnerToggle").setAttribute("aria-expanded","false");partnerPanelTimer=setTimeout(()=>{panel.hidden=true;$("#partnerBackdrop").hidden=true},180);if(returnFocus)$("#partnerToggle").focus();
+}
+function togglePartnerPanel(){partnerPanelOpen?closePartnerPanel(true):openPartnerPanel()}
 
 function renderTypes(){const types=["随便看看","看展","户外","市集","演出","手作","美食","城市夜游"];$("#typeFilters").innerHTML=types.map(type=>`<button class="type-chip ${state.type===type?"active":""}" data-type="${type}" type="button">${type}</button>`).join("");$$(".type-chip").forEach(button=>button.addEventListener("click",()=>{state.type=button.dataset.type;renderTypes()}))}
 
@@ -82,15 +105,17 @@ function selectMode(mode,notify=true){
   if(mode==="party"&&state.people<5)state.people=5;
   localStorage.setItem("weekend-mode",mode);
   $$(".battery-card").forEach(card=>{const active=card.dataset.mode===mode;card.classList.toggle("active",active);card.setAttribute("aria-checked",String(active))});
-  $("#peopleValue").textContent=state.people;$("#recommendMode").textContent=modeCopy[mode].label;$("#crewHeading").textContent=modeCopy[mode].crew;
+  $("#peopleValue").textContent=state.people;$("#recommendMode").textContent=modeCopy[mode].label;$("#crewHeading").textContent=modeCopy[mode].crew;$("#stageEnergyLine").textContent=modeCopy[mode].stage;
   renderRecommendations();renderCrews();
   if(notify)showToast(`社交电量切换为「${modeCopy[mode].label.replace("清单","")}」`);
 }
 
 function filteredActivities(){return activities.filter(item=>{const range=item.people.match(/\d+/g).map(Number);const min=range[0];const max=range[1]??range[0];return item.modes.includes(state.mode)&&(state.type==="随便看看"||item.type===state.type)&&item.price<=state.budget&&item.weather.includes(state.weather)&&state.people>=min&&state.people<=max})}
 function renderRecommendations(){
-  const list=filteredActivities();const animal=getAnimal(state.animal);$("#recommendCount").textContent=`${list.length} 个活动刚刚好`;$("#recommendReason").textContent=`${animal.rec} · ${state.weather}优先 · ${modeCopy[state.mode].reason}`;
-  $("#activityGrid").innerHTML=list.map((item,index)=>`<article class="activity-card" tabindex="0" style="--theme:${item.theme};--image-position:${item.position}"><div class="activity-image"><img src="${item.img}" alt="${item.alt}" width="1400" height="933" loading="lazy" /><span class="match-badge">${Math.max(80,item.match-(state.budget<item.price?8:0))}% 匹配</span><button class="save-button ${state.saved.has(item.name)?"saved":""}" data-save="${item.name}" type="button" aria-label="${state.saved.has(item.name)?"取消收藏":"收藏"}${item.name}"><i data-lucide="heart"></i></button><span class="activity-index">0${index+1}</span></div><div class="activity-body"><div class="tag-row"><span>${item.type}</span><span class="pressure">社交压力：${item.pressure}</span>${item.solo?'<span class="solo-ok">适合独自参加</span>':""}</div><h3>${item.name}</h3><p>${item.feature}</p><div class="activity-info"><span><i data-lucide="calendar-days"></i>${item.time}</span><span><i data-lucide="map-pin"></i>${item.place}</span><span><i data-lucide="users"></i>${item.people}</span><strong>${item.price?`¥${item.price}`:"免费"}</strong></div><div class="activity-actions"><button data-view="${item.name}" type="button">查看活动 <i data-lucide="arrow-up-right"></i></button><button data-find-crew="${item.name}" type="button">找搭子</button></div></div></article>`).join("");
+  const list=filteredActivities();const animal=getAnimal(state.animal);const grid=$("#activityGrid");
+  $("#recommendCount").textContent=`${list.length} 个活动刚刚好`;$("#recommendReason").textContent=`${animal.rec} · ${state.weather}优先 · ${modeCopy[state.mode].reason}`;
+  grid.dataset.foodTheme=animal.id;grid.style.setProperty("--food-color",animal.accentColor);grid.style.setProperty("--food-bg",animal.softColor);grid.style.setProperty("--food-shadow",`${animal.accentColor}2f`);
+  grid.innerHTML=list.map((item,index)=>`<article class="activity-card" tabindex="0" style="--theme:${item.theme};--image-position:${item.position}"><span class="food-motif motif-a" aria-hidden="true"><i data-lucide="${animal.foodIcon}"></i></span><span class="food-motif motif-b" aria-hidden="true"><i data-lucide="${animal.foodIcon}"></i></span><div class="activity-image"><img src="${item.img}" alt="${item.alt}" width="1400" height="933" loading="lazy" /><span class="match-badge">${Math.max(80,item.match-(state.budget<item.price?8:0))}% 匹配</span><button class="save-button ${state.saved.has(item.name)?"saved":""}" data-save="${item.name}" type="button" aria-label="${state.saved.has(item.name)?"取消收藏":"收藏"}${item.name}"><i data-lucide="heart"></i></button><span class="activity-index">0${index+1}</span></div><div class="activity-body"><div class="tag-row"><span>${item.type}</span><span class="pressure">社交压力：${item.pressure}</span>${item.solo?'<span class="solo-ok">适合独自参加</span>':""}</div><h3>${item.name}</h3><p>${item.feature}</p><div class="activity-info"><span><i data-lucide="calendar-days"></i>${item.time}</span><span><i data-lucide="map-pin"></i>${item.place}</span><span><i data-lucide="users"></i>${item.people}</span><strong>${item.price?`¥${item.price}`:"免费"}</strong></div><div class="activity-actions"><button data-view="${item.name}" type="button">查看活动 <i data-lucide="arrow-up-right"></i></button><button data-find-crew="${item.name}" type="button">找搭子</button></div></div></article>`).join("");
   $("#emptyState").hidden=list.length>0;$("#activityGrid").hidden=list.length===0;
   $$("[data-save]").forEach(button=>button.addEventListener("click",()=>toggleSave(button.dataset.save)));
   $$(".activity-image img").forEach(image=>image.addEventListener("error",()=>{const frame=image.closest(".activity-image");frame.dataset.fallback=`${image.alt}暂时无法加载`;frame.classList.add("image-error")}));
@@ -101,7 +126,12 @@ function renderRecommendations(){
 function toggleSave(name){state.saved.has(name)?state.saved.delete(name):state.saved.add(name);localStorage.setItem("weekend-saved",JSON.stringify([...state.saved]));renderRecommendations();showToast(state.saved.has(name)?"已收藏到周末清单":"已取消收藏")}
 
 function renderManual(){$("#manualOptions").innerHTML=manualChoices.map(choice=>`<button class="manual-chip ${state.manual.has(choice)?"active":""}" data-manual="${choice}" type="button">${state.manual.has(choice)?"✓ ":""}${choice}</button>`).join("");$("#manualCount").textContent=`已选择 ${state.manual.size} 项`;$$("[data-manual]").forEach(button=>button.addEventListener("click",()=>{state.manual.has(button.dataset.manual)?state.manual.delete(button.dataset.manual):state.manual.add(button.dataset.manual);localStorage.setItem("weekend-manual",JSON.stringify([...state.manual]));renderManual()}))}
-function renderCrews(){const list=crews[state.mode];$("#crewCards").innerHTML=list.map((crew,index)=>{const animal=getAnimal(crew.animal);return `<article class="crew-card"><div class="crew-animal" data-avatar="${animal.id}"><img src="${animal.img}" alt="发起人${animal.name}头像" /></div><div class="crew-main"><h3>${crew.name}</h3><p>${crew.mood}</p><div class="crew-tags">${crew.tags.map(tag=>`<span>${tag}</span>`).join("")}</div><div class="crew-meta"><span>${crew.time}</span><span>已加入 ${crew.joined} 人</span><strong>还差 ${crew.need} 人</strong></div></div><button class="join-button" data-join="${index}" type="button">加入</button></article>`}).join("");$$("[data-join]").forEach(button=>button.addEventListener("click",()=>{button.textContent="已加入 ✓";button.classList.add("joined");button.disabled=true;state.buddies+=1;localStorage.setItem("weekend-buddies",state.buddies);renderPassport();showToast("加入成功，舒服做自己就好")}))}
+function renderCrews(){
+  const list=crews[state.mode];const themeAnimal=getAnimal(state.animal);const container=$("#crewCards");
+  container.dataset.foodTheme=themeAnimal.id;container.style.setProperty("--food-color",themeAnimal.accentColor);container.style.setProperty("--food-bg",themeAnimal.softColor);container.style.setProperty("--food-shadow",`${themeAnimal.accentColor}2f`);
+  container.innerHTML=list.map((crew,index)=>{const animal=getAnimal(crew.animal);return `<article class="crew-card"><span class="food-motif motif-a" aria-hidden="true"><i data-lucide="${themeAnimal.foodIcon}"></i></span><span class="food-motif motif-b" aria-hidden="true"><i data-lucide="${themeAnimal.foodIcon}"></i></span><div class="crew-animal" data-avatar="${animal.id}"><img src="${animal.image}" alt="发起人${animal.name}头像" /></div><div class="crew-main"><h3>${crew.name}</h3><p>${crew.mood}</p><div class="crew-tags">${crew.tags.map(tag=>`<span>${tag}</span>`).join("")}</div><div class="crew-meta"><span>${crew.time}</span><span>已加入 ${crew.joined} 人</span><strong>还差 ${crew.need} 人</strong></div></div><button class="join-button" data-join="${index}" type="button">加入</button></article>`}).join("");
+  $$("[data-join]").forEach(button=>button.addEventListener("click",()=>{button.textContent="已加入 ✓";button.classList.add("joined");button.disabled=true;state.buddies+=1;localStorage.setItem("weekend-buddies",state.buddies);renderPassport();showToast("加入成功，舒服做自己就好")}));refreshIcons();
+}
 
 function renderPassport(){const level=Math.max(1,Math.floor(state.escapes/3)+1);$("#levelValue").textContent=String(level).padStart(2,"0");$("#escapeCount").textContent=`已出逃 ${state.escapes} 次`;$("#footprintCount").textContent=state.footprints;$("#buddyCount").textContent=state.buddies;$("#levelProgress").style.width=`${Math.min(100,(state.escapes%3||3)/3*100)}%`;const unlocked=Math.min(8,Math.floor(state.escapes/2)+1);$("#stampGrid").innerHTML=badgeData.map(([icon,name],index)=>`<div class="stamp ${index>=unlocked?"locked":""}" style="--r:${index%2?"4deg":"-4deg"}"><i data-lucide="${icon}"></i><span>${name}</span></div>`).join("");refreshIcons()}
 
@@ -111,6 +141,9 @@ function closeHotModal(){modal.classList.remove("open");modal.setAttribute("aria
 function scrollToSection(id){closeHotModal();setTimeout(()=>document.querySelector(id).scrollIntoView({behavior:"smooth"}),180)}
 
 $$(".battery-card").forEach(card=>card.addEventListener("click",()=>selectMode(card.dataset.mode)));
+$("#partnerToggle").addEventListener("click",togglePartnerPanel);$("#profileButton").addEventListener("click",togglePartnerPanel);$("#partnerClose").addEventListener("click",()=>closePartnerPanel(true));$("#partnerBackdrop").addEventListener("click",()=>closePartnerPanel(true));
+document.addEventListener("pointerdown",event=>{if(partnerPanelOpen&&!$("#partnerControlWrap").contains(event.target)&&event.target!==$("#profileButton")&&!$("#profileButton").contains(event.target))closePartnerPanel()});
+$("#animalSelector").addEventListener("keydown",event=>{const option=event.target.closest(".animal-option");if(!option)return;const options=$$(".animal-option");const index=options.indexOf(option);const columns=window.innerWidth<=650?2:5;let next=index;if(event.key==="ArrowRight")next=Math.min(options.length-1,index+1);if(event.key==="ArrowLeft")next=Math.max(0,index-1);if(event.key==="ArrowDown")next=Math.min(options.length-1,index+columns);if(event.key==="ArrowUp")next=Math.max(0,index-columns);if(next!==index){event.preventDefault();options[next].focus()}});
 $("#budgetRange").addEventListener("input",event=>{state.budget=Number(event.target.value);$("#budgetValue").textContent=state.budget===500?"¥500+":`¥${state.budget}`});
 $("#weatherSelect").addEventListener("change",event=>{state.weather=event.target.value;showToast(state.weather==="雨天"?"已切换为雨天室内方案":"已切换为晴天出行方案")});
 $("#peopleMinus").addEventListener("click",()=>{state.people=Math.max(1,state.people-1);$("#peopleValue").textContent=state.people});
@@ -124,7 +157,7 @@ $("#publishGuideButton").addEventListener("click",event=>{if(!$("#guideTitleInpu
 $$('.like-button').forEach(button=>button.addEventListener("click",()=>{const liked=button.classList.toggle("liked");const count=button.querySelector("span");count.textContent=Number(count.textContent)+(liked?1:-1);showToast(liked?"已把这篇攻略收进喜欢":"已取消点赞")}));
 $$('[data-close-modal]').forEach(button=>button.addEventListener("click",closeHotModal));
 $("#modalCrewButton").addEventListener("click",()=>scrollToSection("#crews"));$("#modalBrowseButton").addEventListener("click",()=>scrollToSection("#recommendations"));
-document.addEventListener("keydown",event=>{if(event.key==="Escape"&&modal.classList.contains("open"))closeHotModal()});
+document.addEventListener("keydown",event=>{if(event.key!=="Escape")return;if(partnerPanelOpen){closePartnerPanel(true);return}if(modal.classList.contains("open"))closeHotModal()});
 
 renderAnimals();renderTypes();renderManual();renderPassport();selectMode(state.mode,false);refreshIcons();
 setTimeout(openHotModal,420);

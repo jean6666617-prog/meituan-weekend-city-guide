@@ -29,53 +29,51 @@
   </header>
 
   <main id="home">
-    <section class="hero-section" aria-labelledby="heroTitle">
-      <div class="hero-sticker sticker-one">上海周末<br />新鲜事雷达</div>
-      <div class="hero-sticker sticker-two">逃出去！</div>
-      <div class="hero-copy">
-        <p class="eyebrow"><span></span> 今天想怎么过？</p>
+    <section class="hero-redesign" aria-labelledby="heroTitle">
+      <div class="hero-main">
+        <p class="eyebrow"><span></span> 上海周末 · 按自己的电量出发</p>
         <h1 id="heroTitle">周末不必<br /><em>勉强合群。</em></h1>
         <p class="hero-description">想一个人自在逛，还是和新搭子热闹出发？告诉我们今天的社交电量，活动与陪伴都刚刚好。</p>
-        <div class="battery-picker" role="radiogroup" aria-label="选择社交电量">
-          <button class="battery-card active" data-mode="solo" role="radio" aria-checked="true" type="button">
-            <span class="battery-icon"><i data-lucide="headphones"></i></span>
-            <span><strong>独处充电</strong><small>0% 社交压力</small></span>
-            <i data-lucide="check" class="check-icon"></i>
+
+        <div class="battery-block">
+          <div class="choice-label"><span>01</span><strong>今天的社交电量</strong><small>随时可以改变主意</small></div>
+          <div class="battery-picker" role="radiogroup" aria-label="选择社交电量">
+            <button class="battery-card active" data-mode="solo" role="radio" aria-checked="true" type="button"><span class="battery-icon"><i data-lucide="headphones"></i></span><span><strong>独处充电</strong><small>0% 社交压力</small></span><i data-lucide="check" class="check-icon"></i></button>
+            <button class="battery-card" data-mode="soft" role="radio" aria-checked="false" type="button"><span class="battery-icon"><i data-lucide="coffee"></i></span><span><strong>轻轻同行</strong><small>安静也自在</small></span><i data-lucide="check" class="check-icon"></i></button>
+            <button class="battery-card" data-mode="party" role="radio" aria-checked="false" type="button"><span class="battery-icon"><i data-lucide="party-popper"></i></span><span><strong>热闹组局</strong><small>认识新朋友</small></span><i data-lucide="check" class="check-icon"></i></button>
+          </div>
+        </div>
+
+        <div class="partner-control-wrap" id="partnerControlWrap">
+          <div class="choice-label"><span>02</span><strong>带哪位伙伴出逃</strong></div>
+          <button class="partner-toggle" id="partnerToggle" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="partnerPanel">
+            <span class="current-partner-avatar" data-avatar="kangaroo"><img id="currentPartnerAvatar" src="assets/animals/kangaroo.png" alt="袋鼠伙伴头像" /></span>
+            <span class="current-partner-copy"><small>当前伙伴</small><strong id="currentPartnerLabel">袋鼠 · 活力带队型</strong></span>
+            <span class="partner-change">更换伙伴 <i data-lucide="chevron-down"></i></span>
           </button>
-          <button class="battery-card" data-mode="soft" role="radio" aria-checked="false" type="button">
-            <span class="battery-icon"><i data-lucide="coffee"></i></span>
-            <span><strong>轻轻同行</strong><small>安静也自在</small></span>
-            <i data-lucide="check" class="check-icon"></i>
-          </button>
-          <button class="battery-card" data-mode="party" role="radio" aria-checked="false" type="button">
-            <span class="battery-icon"><i data-lucide="party-popper"></i></span>
-            <span><strong>热闹组局</strong><small>认识新朋友</small></span>
-            <i data-lucide="check" class="check-icon"></i>
-          </button>
+          <div class="partner-panel" id="partnerPanel" hidden>
+            <div class="partner-panel-head"><div><small>WEEKEND PERSONALITY</small><strong>选择你的周末伙伴</strong></div><button id="partnerClose" type="button" aria-label="关闭动物选择"><i data-lucide="x"></i></button></div>
+            <div class="animal-selector" id="animalSelector" role="listbox" aria-label="动物伙伴列表"></div>
+          </div>
         </div>
       </div>
 
-      <div class="animal-stage" aria-label="城市动物伙伴">
-        <div class="sun-disc"></div><span class="scribble">周末<br />出逃中</span>
-        <img class="stage-animal animal-cat" src="assets/animals/cat.png" alt="拿着相机的橘猫伙伴" />
-        <img class="stage-animal animal-kangaroo" id="mainAnimal" src="assets/animals/kangaroo.png" alt="背着黄色探索包的袋鼠伙伴" />
-        <img class="stage-animal animal-shiba" src="assets/animals/shiba.png" alt="拿着城市指南的柴犬伙伴" />
-        <div class="animal-caption"><span id="animalName">袋鼠 · 活力带队型</span><strong id="animalLine">附近新鲜事，我带你找到！</strong></div>
-      </div>
+      <aside class="partner-stage" id="partnerStage" aria-label="当前城市动物伙伴">
+        <div class="stage-map" aria-hidden="true"><i data-lucide="map-pin"></i><span></span><i data-lucide="navigation"></i></div>
+        <span class="escape-status"><i data-lucide="footprints"></i> 本周出逃中</span>
+        <div class="partner-visual"><img class="partner-animal anim-kangaroo" id="mainAnimal" src="assets/animals/kangaroo.png" alt="背着黄色探索包的袋鼠伙伴" /></div>
+        <div class="stage-copy"><span id="animalPersonality">活力带队型</span><h2 id="animalName">袋鼠</h2><p id="animalLine">附近新鲜事，我带你找到！</p><strong id="stageEnergyLine">今天想一个人自在探索，不被打扰。</strong><small><i data-lucide="leaf"></i> 喜欢：<b id="favoriteFood">青草和树叶</b></small></div>
+      </aside>
+      <div class="partner-backdrop" id="partnerBackdrop" hidden></div>
+    </section>
 
-      <div class="animal-selector-wrap">
-        <span class="selector-title">选择你的出逃伙伴</span>
-        <div class="animal-selector" id="animalSelector" role="listbox" aria-label="动物伙伴列表"></div>
-      </div>
-
+    <section class="filter-dock" aria-label="活动场景筛选">
+      <div class="filter-dock-title"><span>03</span><div><strong>把场景也调到刚刚好</strong><small>活动、天气、预算和人数都可以自己决定</small></div></div>
       <div class="quick-filter" aria-label="活动快速筛选">
-        <div class="filter-types">
-          <span class="filter-label">想去哪里</span>
-          <div class="type-scroll" id="typeFilters"></div>
-        </div>
+        <div class="filter-types"><span class="filter-label">活动类型</span><div class="type-scroll" id="typeFilters"></div></div>
         <label class="filter-budget"><span class="filter-label">人均预算 <strong id="budgetValue">¥150</strong></span><input id="budgetRange" type="range" min="0" max="500" step="50" value="150" /></label>
         <label class="filter-weather"><span class="filter-label">天气偏好</span><select id="weatherSelect"><option value="晴天">晴天优先</option><option value="雨天">雨天室内</option></select></label>
-        <div class="filter-people"><span class="filter-label">一起几人</span><div class="stepper"><button id="peopleMinus" type="button" aria-label="减少人数">−</button><strong id="peopleValue">1</strong><span>人</span><button id="peoplePlus" type="button" aria-label="增加人数">＋</button></div></div>
+        <div class="filter-people"><span class="filter-label">同行人数</span><div class="stepper"><button id="peopleMinus" type="button" aria-label="减少人数">−</button><strong id="peopleValue">1</strong><span>人</span><button id="peoplePlus" type="button" aria-label="增加人数">＋</button></div></div>
         <button class="primary-button" id="recommendButton" type="button"><i data-lucide="sparkles"></i> 重新推荐</button>
       </div>
     </section>
