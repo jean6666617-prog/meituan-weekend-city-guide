@@ -24,7 +24,7 @@
     </nav>
     <div class="header-tools">
       <div class="weather-pill"><i data-lucide="sun"></i><span>上海 <strong>26°</strong></span><small>周末晴</small></div>
-      <button class="profile-button" id="profileButton" type="button" aria-label="当前动物伙伴：袋鼠"><img id="headerAvatar" src="assets/animals/kangaroo.png" alt="袋鼠头像" /></button>
+      <button class="profile-button" id="profileButton" data-avatar="kangaroo" type="button" aria-label="当前动物伙伴：袋鼠"><img id="headerAvatar" src="assets/animals/kangaroo.png" alt="袋鼠头像" /></button>
     </div>
   </header>
 
@@ -113,7 +113,7 @@
         <button class="dark-button" id="checkinButton" type="button"><i data-lucide="footprints"></i> 完成本周打卡</button>
       </div>
       <div class="passport-card">
-        <div class="passport-top"><div><small>ANIMAL CITY PASSPORT</small><h3>动物城市护照</h3></div><img id="passportAvatar" src="assets/animals/kangaroo.png" alt="护照中的袋鼠头像" /></div>
+        <div class="passport-top"><div><small>ANIMAL CITY PASSPORT</small><h3>动物城市护照</h3></div><div class="passport-avatar-frame" id="passportAvatarFrame" data-avatar="kangaroo"><img id="passportAvatar" src="assets/animals/kangaroo.png" alt="护照中的袋鼠头像" /></div></div>
         <div class="level-row"><span>LEVEL <strong id="levelValue">03</strong></span><div class="level-track"><i id="levelProgress"></i></div><small id="escapeCount">已出逃 7 次</small></div>
         <div class="stamp-grid" id="stampGrid"></div>
         <div class="passport-foot"><span><i data-lucide="footprints"></i> 脚印 <strong id="footprintCount">12</strong></span><span><i data-lucide="users"></i> 搭子图鉴 <strong id="buddyCount">4</strong></span></div>
@@ -126,9 +126,9 @@
         <button class="primary-button" id="shareGuideButton" type="button"><i data-lucide="pen-line"></i> 分享攻略</button>
       </div>
       <div class="story-grid">
-        <article class="story-card story-yellow"><div class="story-cover"><img src="assets/hero-hiking.jpg" alt="梧桐区秋日街景攻略" /><span>慢走路线</span></div><div class="story-body"><div class="story-author"><img src="assets/animals/fox.png" alt="狐狸作者头像" /><span><strong>狐狸小巷雷达</strong><small>2 小时前</small></span></div><h3>梧桐区不赶路的日落路线</h3><p>避开人流的三个转角、两家可以独坐的咖啡店，都标在路线里了。</p><button class="like-button" type="button" aria-label="点赞梧桐区攻略"><i data-lucide="heart"></i><span>126</span></button></div></article>
-        <article class="story-card story-blue"><div class="story-cover"><img src="assets/hero-exhibition.jpg" alt="西岸艺术展览攻略" /><span>独处友好</span></div><div class="story-body"><div class="story-author"><img src="assets/animals/cat.png" alt="橘猫作者头像" /><span><strong>橘猫慢慢看</strong><small>昨天</small></span></div><h3>一个人逛西岸，也能待满半天</h3><p>从安静展厅到江边长椅，附上存包位置和不用排队的入场时段。</p><button class="like-button" type="button" aria-label="点赞西岸攻略"><i data-lucide="heart"></i><span>89</span></button></div></article>
-        <article class="story-card story-coral"><div class="story-cover"><img src="assets/hero-concert.jpg" alt="天台音乐会攻略" /><span>热闹现场</span></div><div class="story-body"><div class="story-author"><img src="assets/animals/alpaca.png" alt="羊驼作者头像" /><span><strong>羊驼氛围组</strong><small>3 天前</small></span></div><h3>天台音乐会：想蹦或发呆都行</h3><p>舞台左右两侧氛围不同，第一次去的人可以按社交电量选区域。</p><button class="like-button" type="button" aria-label="点赞音乐会攻略"><i data-lucide="heart"></i><span>203</span></button></div></article>
+        <article class="story-card story-yellow"><div class="story-cover"><img src="assets/activities/wukang-sunset.jpg" alt="梧桐区秋日街景攻略" /><span>慢走路线</span></div><div class="story-body"><div class="story-author" data-avatar="fox"><img src="assets/animals/fox.png" alt="狐狸作者头像" /><span><strong>狐狸小巷雷达</strong><small>2 小时前</small></span></div><h3>梧桐区不赶路的日落路线</h3><p>避开人流的三个转角、两家可以独坐的咖啡店，都标在路线里了。</p><button class="like-button" type="button" aria-label="点赞梧桐区攻略"><i data-lucide="heart"></i><span>126</span></button></div></article>
+        <article class="story-card story-blue"><div class="story-cover"><img src="assets/activities/westbund-art.jpg" alt="西岸艺术展览攻略" /><span>独处友好</span></div><div class="story-body"><div class="story-author" data-avatar="cat"><img src="assets/animals/cat.png" alt="橘猫作者头像" /><span><strong>橘猫慢慢看</strong><small>昨天</small></span></div><h3>一个人逛西岸，也能待满半天</h3><p>从安静展厅到江边长椅，附上存包位置和不用排队的入场时段。</p><button class="like-button" type="button" aria-label="点赞西岸攻略"><i data-lucide="heart"></i><span>89</span></button></div></article>
+        <article class="story-card story-coral"><div class="story-cover"><img src="assets/activities/rooftop-concert.jpg" alt="天台音乐会攻略" /><span>热闹现场</span></div><div class="story-body"><div class="story-author" data-avatar="alpaca"><img src="assets/animals/alpaca.png" alt="羊驼作者头像" /><span><strong>羊驼氛围组</strong><small>3 天前</small></span></div><h3>天台音乐会：想蹦或发呆都行</h3><p>舞台左右两侧氛围不同，第一次去的人可以按社交电量选区域。</p><button class="like-button" type="button" aria-label="点赞音乐会攻略"><i data-lucide="heart"></i><span>203</span></button></div></article>
       </div>
     </section>
   </main>
@@ -139,8 +139,8 @@
     <div class="hot-backdrop" data-close-modal></div>
     <div class="hot-dialog" tabindex="-1">
       <button class="modal-close" type="button" aria-label="关闭热门活动" data-close-modal><i data-lucide="x"></i></button>
-      <div class="hot-poster"><img src="assets/hero-concert.jpg" alt="上海城市天台日落音乐会现场" /><span class="hot-rank">当前热门活动 <strong>NO.1</strong></span><div class="poster-crowd"><img src="assets/animals/alpaca.png" alt="羊驼伙伴" /><img src="assets/animals/shiba.png" alt="柴犬伙伴" /><img src="assets/animals/penguin.png" alt="企鹅伙伴" /></div></div>
-      <div class="hot-content"><span class="hot-kicker">THIS WEEKEND · SHANGHAI</span><h2 id="hotTitle">城市天台<br />日落音乐会</h2><div class="hot-details"><span><i data-lucide="calendar-days"></i> 周六 18:00</span><span><i data-lucide="map-pin"></i> 静安大悦城</span><span><i data-lucide="wallet-cards"></i> 人均 ¥128</span></div><div class="going-count"><span class="mini-faces"><img src="assets/animals/cat.png" alt="" /><img src="assets/animals/rabbit.png" alt="" /><img src="assets/animals/otter.png" alt="" /></span><strong>已有 36 只小动物准备出发</strong></div><p>不管是想认识新朋友，还是只想在人群里听歌发呆，都有适合你的区域。</p><div class="modal-actions"><button class="primary-button" id="modalCrewButton" type="button">看看谁想一起去</button><button class="ghost-button" id="modalBrowseButton" type="button">先逛逛其他活动</button></div></div>
+      <div class="hot-poster"><img src="assets/activities/rooftop-concert.jpg" alt="上海城市天台晚霞中的现场音乐会" width="1400" height="933" /><span class="hot-rank">当前热门活动 <strong>NO.1</strong></span><div class="poster-crowd"><img data-avatar="alpaca" src="assets/animals/alpaca.png" alt="羊驼伙伴" /><img data-avatar="shiba" src="assets/animals/shiba.png" alt="柴犬伙伴" /><img data-avatar="penguin" src="assets/animals/penguin.png" alt="企鹅伙伴" /></div></div>
+      <div class="hot-content"><span class="hot-kicker">THIS WEEKEND · SHANGHAI</span><h2 id="hotTitle">城市天台<br />日落音乐会</h2><div class="hot-details"><span><i data-lucide="calendar-days"></i> 周六 18:00</span><span><i data-lucide="map-pin"></i> 静安大悦城</span><span><i data-lucide="wallet-cards"></i> 人均 ¥128</span></div><div class="going-count"><span class="mini-faces"><span data-avatar="cat"><img src="assets/animals/cat.png" alt="橘猫伙伴" /></span><span data-avatar="rabbit"><img src="assets/animals/rabbit.png" alt="白兔伙伴" /></span><span data-avatar="otter"><img src="assets/animals/otter.png" alt="海獭伙伴" /></span></span><strong>已有 36 只小动物准备出发</strong></div><p>不管是想认识新朋友，还是只想在人群里听歌发呆，都有适合你的区域。</p><div class="modal-actions"><button class="primary-button" id="modalCrewButton" type="button">看看谁想一起去</button><button class="ghost-button" id="modalBrowseButton" type="button">先逛逛其他活动</button></div></div>
     </div>
   </div>
 
