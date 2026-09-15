@@ -1,127 +1,153 @@
 <!doctype html>
 <html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="周末搭子——懂天气、预算和你心情的城市探索指南" />
-    <title>周末搭子｜城市探索指南</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <div class="page-shell">
-      <header class="topbar">
-        <a class="brand" href="#" aria-label="周末搭子首页">
-          <span class="brand-mark"><span>☺</span></span>
-          <span>周末搭子</span>
-        </a>
-        <nav class="nav-links" aria-label="主导航">
-          <a class="active" href="#discover">发现活动</a>
-          <a href="#team">找搭子</a>
-          <a href="#stories">打卡圈</a>
-        </nav>
-        <div class="header-actions">
-          <button class="city-button" id="cityButton" type="button"><i data-lucide="map-pin"></i><span id="cityName">上海</span><i data-lucide="chevron-down"></i></button>
-          <button class="avatar-button" type="button" aria-label="个人中心"><span>J</span></button>
-        </div>
-      </header>
-
-      <main>
-        <section class="hero" id="discover">
-          <div class="hero-copy">
-            <div class="eyebrow"><span class="pulse-dot"></span> 已为你同步周末天气</div>
-            <h1>这个周末，<br /><em>去点不一样的地方。</em></h1>
-            <p>不用在十几个 App 里反复横跳。告诉我你的心情，<br class="desktop-only" />剩下的交给周末搭子。</p>
-            <div class="weather-strip">
-              <div class="weather-main"><span class="weather-icon">☀</span><strong>26°</strong><span>晴朗 · 适合出门</span></div>
-              <div class="weather-divider"></div>
-              <div><span>周六</span><strong>24° / 19°</strong></div>
-              <div><span>周日</span><strong>小雨 22°</strong></div>
-            </div>
-          </div>
-          <div class="hero-art" aria-hidden="true">
-            <div class="sun"></div>
-            <div class="cloud cloud-one"></div>
-            <div class="cloud cloud-two"></div>
-            <div class="postcard card-left"><span>WEEKEND</span><div class="mini-mountain"></div></div>
-            <div class="postcard card-right"><span>LET'S GO!</span><div class="mini-ticket">☻</div></div>
-            <div class="spark spark-one">✦</div><div class="spark spark-two">✦</div>
-          </div>
-        </section>
-
-        <section class="preference-card" aria-label="偏好筛选">
-          <div class="pref-block pref-wide">
-            <label>我想去</label>
-            <div class="chip-row" id="interestChips">
-              <button class="chip selected" data-interest="全部" type="button">✨ 随便逛逛</button>
-              <button class="chip" data-interest="展览" type="button">🎨 看展</button>
-              <button class="chip" data-interest="市集" type="button">🛍 逛市集</button>
-              <button class="chip" data-interest="演出" type="button">🎸 看演出</button>
-              <button class="chip" data-interest="户外" type="button">🥾 去户外</button>
-            </div>
-          </div>
-          <div class="pref-block">
-            <label for="budget">人均预算 <strong id="budgetLabel">¥150</strong></label>
-            <input id="budget" type="range" min="50" max="500" value="150" step="50" />
-            <div class="range-labels"><span>¥50</span><span>¥500+</span></div>
-          </div>
-          <div class="pref-block people-block">
-            <label>几个人</label>
-            <div class="stepper"><button id="minusPeople" type="button" aria-label="减少人数">−</button><strong id="peopleCount">2</strong><span>人</span><button id="addPeople" type="button" aria-label="增加人数">＋</button></div>
-          </div>
-          <button class="recommend-button" id="recommendButton" type="button"><i data-lucide="sparkles"></i> 帮我推荐</button>
-        </section>
-
-        <section class="recommend-section">
-          <div class="section-heading">
-            <div><span class="section-kicker">JUST FOR YOU</span><h2>猜你会喜欢</h2><p id="recommendationSummary">结合你的偏好和天气，找到了 6 个好去处</p></div>
-            <button class="refresh-button" id="refreshButton" type="button"><i data-lucide="refresh-cw"></i> 换一批</button>
-          </div>
-          <div class="activity-grid" id="activityGrid"></div>
-          <div class="empty-state" id="emptyState" hidden><span>🛸</span><h3>这个组合有点稀有</h3><p>试试提高预算或换个兴趣吧</p></div>
-        </section>
-
-        <section class="team-section" id="team">
-          <div class="team-copy">
-            <span class="section-kicker light">FIND YOUR CREW</span>
-            <h2>好玩的地方，<br />当然要和对的人一起。</h2>
-            <p>按学校、兴趣和时间匹配同频搭子。<br />安全组队，快乐翻倍。</p>
-            <button class="light-button" id="createTeamButton" type="button">发起组队 <i data-lucide="arrow-up-right"></i></button>
-          </div>
-          <div class="team-board">
-            <article class="team-card featured-team">
-              <div class="team-time"><span>周六</span><strong>14:00</strong></div>
-              <div class="team-info"><div class="tiny-tag">还差 2 人</div><h3>西岸艺术中心看展搭子</h3><p>不赶时间，慢慢看 + 拍照 📸</p><div class="avatars"><span>小程</span><span>KM</span><span class="empty-avatar">+2</span></div></div>
-              <button class="join-button" type="button">加入</button>
-            </article>
-            <article class="team-card">
-              <div class="team-time orange"><span>周日</span><strong>09:30</strong></div>
-              <div class="team-info"><div class="tiny-tag">还差 1 人</div><h3>佘山轻徒步</h3><p>新手友好，地铁集合 🚇</p><div class="avatars"><span>Lin</span><span>🐱</span><span>Y</span></div></div>
-              <button class="join-button" type="button">加入</button>
-            </article>
-          </div>
-        </section>
-
-        <section class="stories-section" id="stories">
-          <div class="section-heading compact"><div><span class="section-kicker">WEEKEND STORIES</span><h2>大家的周末现场</h2></div><button class="share-button" id="shareButton" type="button"><i data-lucide="plus"></i> 分享攻略</button></div>
-          <div class="story-grid">
-            <article class="story-card story-yellow"><div class="story-visual"><span class="sticker">OOTD ✓</span><div class="abstract-face">◡</div></div><div class="story-content"><div class="user-line"><span class="user-avatar pink">桃</span><strong>桃子汽水</strong><span>· 2小时前</span></div><h3>终于打卡了武康路的秋天 🍂</h3><p>避开人流的路线放在最后一张图啦！</p><div class="story-meta"><span>📍 武康路</span><button class="like-button" type="button">♡ <span>126</span></button></div></div></article>
-            <article class="story-card story-purple"><div class="story-visual"><span class="sticker purple">好逛！</span><div class="vinyl">♪</div></div><div class="story-content"><div class="user-line"><span class="user-avatar blue">K</span><strong>K同学</strong><span>· 昨天</span></div><h3>音乐市集淘到宝了</h3><p>学生党 50 元也能快乐一下午。</p><div class="story-meta"><span>📍 上生新所</span><button class="like-button" type="button">♡ <span>88</span></button></div></div></article>
-            <article class="story-card story-green"><div class="story-visual"><span class="sticker green">小众路线</span><div class="abstract-leaf">⌁</div></div><div class="story-content"><div class="user-line"><span class="user-avatar green">森</span><strong>森系阿北</strong><span>· 3天前</span></div><h3>地铁直达的治愈系徒步</h3><p>全程 6km，新手无压力。</p><div class="story-meta"><span>📍 浦江郊野公园</span><button class="like-button" type="button">♡ <span>203</span></button></div></div></article>
-          </div>
-        </section>
-      </main>
-
-      <footer><a class="brand footer-brand" href="#"><span class="brand-mark"><span>☺</span></span><span>周末搭子</span></a><p>把普通周末，过成值得收藏的日子。</p><span>© 2026 Weekend Buddy</span></footer>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="周末出逃俱乐部——为每一种社交电量推荐刚刚好的城市活动与陪伴。" />
+  <title>周末出逃俱乐部｜城市探索指南</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="周末出逃俱乐部首页">
+      <span class="brand-orbit"><i data-lucide="navigation-2"></i></span>
+      <span><strong>周末出逃</strong><small>WEEKEND ESCAPE CLUB</small></span>
+    </a>
+    <nav class="main-nav" aria-label="主导航">
+      <a class="active" href="#recommendations">找活动</a>
+      <a href="#crews">找搭子</a>
+      <a href="#passport">城市护照</a>
+      <a href="#stories">出逃手记</a>
+    </nav>
+    <div class="header-tools">
+      <div class="weather-pill"><i data-lucide="sun"></i><span>上海 <strong>26°</strong></span><small>周末晴</small></div>
+      <button class="profile-button" id="profileButton" type="button" aria-label="当前动物伙伴：袋鼠"><img id="headerAvatar" src="assets/animals/kangaroo.png" alt="袋鼠头像" /></button>
     </div>
+  </header>
 
-    <dialog id="teamDialog">
-      <form method="dialog" class="dialog-card"><button class="dialog-close" value="close" aria-label="关闭">×</button><span class="dialog-emoji">🙌</span><h2>发起一次组队</h2><p>留下活动和集合时间，让同频的人找到你。</p><label>活动名称<input id="teamTitle" placeholder="比如：周六去看插画展" required /></label><label>集合时间<input id="teamDate" type="datetime-local" required /></label><button class="recommend-button dialog-submit" id="submitTeam" value="default">发布组队</button></form>
-    </dialog>
-    <div class="toast" id="toast" role="status"><i data-lucide="check-circle-2"></i><span>操作成功</span></div>
-    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-    <script src="app.js"></script>
-  </body>
+  <main id="home">
+    <section class="hero-section" aria-labelledby="heroTitle">
+      <div class="hero-sticker sticker-one">上海周末<br />新鲜事雷达</div>
+      <div class="hero-sticker sticker-two">逃出去！</div>
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> 今天想怎么过？</p>
+        <h1 id="heroTitle">周末不必<br /><em>勉强合群。</em></h1>
+        <p class="hero-description">想一个人自在逛，还是和新搭子热闹出发？告诉我们今天的社交电量，活动与陪伴都刚刚好。</p>
+        <div class="battery-picker" role="radiogroup" aria-label="选择社交电量">
+          <button class="battery-card active" data-mode="solo" role="radio" aria-checked="true" type="button">
+            <span class="battery-icon"><i data-lucide="headphones"></i></span>
+            <span><strong>独处充电</strong><small>0% 社交压力</small></span>
+            <i data-lucide="check" class="check-icon"></i>
+          </button>
+          <button class="battery-card" data-mode="soft" role="radio" aria-checked="false" type="button">
+            <span class="battery-icon"><i data-lucide="coffee"></i></span>
+            <span><strong>轻轻同行</strong><small>安静也自在</small></span>
+            <i data-lucide="check" class="check-icon"></i>
+          </button>
+          <button class="battery-card" data-mode="party" role="radio" aria-checked="false" type="button">
+            <span class="battery-icon"><i data-lucide="party-popper"></i></span>
+            <span><strong>热闹组局</strong><small>认识新朋友</small></span>
+            <i data-lucide="check" class="check-icon"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="animal-stage" aria-label="城市动物伙伴">
+        <div class="sun-disc"></div><span class="scribble">周末<br />出逃中</span>
+        <img class="stage-animal animal-cat" src="assets/animals/cat.png" alt="拿着相机的橘猫伙伴" />
+        <img class="stage-animal animal-kangaroo" id="mainAnimal" src="assets/animals/kangaroo.png" alt="背着黄色探索包的袋鼠伙伴" />
+        <img class="stage-animal animal-shiba" src="assets/animals/shiba.png" alt="拿着城市指南的柴犬伙伴" />
+        <div class="animal-caption"><span id="animalName">袋鼠 · 活力带队型</span><strong id="animalLine">附近新鲜事，我带你找到！</strong></div>
+      </div>
+
+      <div class="animal-selector-wrap">
+        <span class="selector-title">选择你的出逃伙伴</span>
+        <div class="animal-selector" id="animalSelector" role="listbox" aria-label="动物伙伴列表"></div>
+      </div>
+
+      <div class="quick-filter" aria-label="活动快速筛选">
+        <div class="filter-types">
+          <span class="filter-label">想去哪里</span>
+          <div class="type-scroll" id="typeFilters"></div>
+        </div>
+        <label class="filter-budget"><span class="filter-label">人均预算 <strong id="budgetValue">¥150</strong></span><input id="budgetRange" type="range" min="0" max="500" step="50" value="150" /></label>
+        <label class="filter-weather"><span class="filter-label">天气偏好</span><select id="weatherSelect"><option value="晴天">晴天优先</option><option value="雨天">雨天室内</option></select></label>
+        <div class="filter-people"><span class="filter-label">一起几人</span><div class="stepper"><button id="peopleMinus" type="button" aria-label="减少人数">−</button><strong id="peopleValue">1</strong><span>人</span><button id="peoplePlus" type="button" aria-label="增加人数">＋</button></div></div>
+        <button class="primary-button" id="recommendButton" type="button"><i data-lucide="sparkles"></i> 重新推荐</button>
+      </div>
+    </section>
+
+    <section class="recommend-section" id="recommendations">
+      <div class="section-head">
+        <div><p class="section-label">MATCH YOUR ENERGY</p><h2><span id="recommendAnimal">袋鼠</span>为你找到的<br /><em id="recommendMode">独处充电清单</em></h2></div>
+        <div class="recommend-note"><i data-lucide="cloud-sun"></i><p><strong id="recommendCount">6 个活动刚刚好</strong><span id="recommendReason">晴天优先 · 可独自参加 · 不强制互动</span></p></div>
+      </div>
+      <div class="activity-grid" id="activityGrid"></div>
+      <div class="empty-state" id="emptyState" hidden><i data-lucide="telescope"></i><h3>这次没搜到刚刚好的</h3><p>提高预算或换一种活动类型试试看。</p></div>
+    </section>
+
+    <section class="crew-section" id="crews">
+      <div class="crew-intro">
+        <p class="section-label">LOW-PRESSURE SOCIAL</p>
+        <h2>同行，不等于<br /><em>必须一直聊天。</em></h2>
+        <p>先把彼此舒服的相处方式说清楚，见面少一点猜测，多一点自在。</p>
+        <div class="manual-card">
+          <div class="manual-head"><span><i data-lucide="book-open"></i> 我的相处说明书</span><small id="manualCount">已选择 2 项</small></div>
+          <div class="manual-options" id="manualOptions"></div>
+        </div>
+      </div>
+      <div class="crew-list">
+        <div class="crew-list-head"><div><span class="live-dot"></span><strong id="crewHeading">适合安静同行的小队</strong></div><button id="createCrewButton" type="button">发起一队 <i data-lucide="plus"></i></button></div>
+        <div id="crewCards"></div>
+      </div>
+    </section>
+
+    <section class="passport-section" id="passport">
+      <div class="passport-copy">
+        <p class="section-label">CITY ESCAPE PASSPORT</p>
+        <h2>每次出门，<br />都是城市探索的一页。</h2>
+        <p>独处也能获得完整奖励。没有谁的周末，比谁更“成功”。</p>
+        <button class="dark-button" id="checkinButton" type="button"><i data-lucide="footprints"></i> 完成本周打卡</button>
+      </div>
+      <div class="passport-card">
+        <div class="passport-top"><div><small>ANIMAL CITY PASSPORT</small><h3>动物城市护照</h3></div><img id="passportAvatar" src="assets/animals/kangaroo.png" alt="护照中的袋鼠头像" /></div>
+        <div class="level-row"><span>LEVEL <strong id="levelValue">03</strong></span><div class="level-track"><i id="levelProgress"></i></div><small id="escapeCount">已出逃 7 次</small></div>
+        <div class="stamp-grid" id="stampGrid"></div>
+        <div class="passport-foot"><span><i data-lucide="footprints"></i> 脚印 <strong id="footprintCount">12</strong></span><span><i data-lucide="users"></i> 搭子图鉴 <strong id="buddyCount">4</strong></span></div>
+      </div>
+    </section>
+
+    <section class="story-section" id="stories">
+      <div class="section-head story-heading">
+        <div><p class="section-label">ESCAPE FIELD NOTES</p><h2>把城市的新鲜一面，<br /><em>留给下一只小动物。</em></h2></div>
+        <button class="primary-button" id="shareGuideButton" type="button"><i data-lucide="pen-line"></i> 分享攻略</button>
+      </div>
+      <div class="story-grid">
+        <article class="story-card story-yellow"><div class="story-cover"><img src="assets/hero-hiking.jpg" alt="梧桐区秋日街景攻略" /><span>慢走路线</span></div><div class="story-body"><div class="story-author"><img src="assets/animals/fox.png" alt="狐狸作者头像" /><span><strong>狐狸小巷雷达</strong><small>2 小时前</small></span></div><h3>梧桐区不赶路的日落路线</h3><p>避开人流的三个转角、两家可以独坐的咖啡店，都标在路线里了。</p><button class="like-button" type="button" aria-label="点赞梧桐区攻略"><i data-lucide="heart"></i><span>126</span></button></div></article>
+        <article class="story-card story-blue"><div class="story-cover"><img src="assets/hero-exhibition.jpg" alt="西岸艺术展览攻略" /><span>独处友好</span></div><div class="story-body"><div class="story-author"><img src="assets/animals/cat.png" alt="橘猫作者头像" /><span><strong>橘猫慢慢看</strong><small>昨天</small></span></div><h3>一个人逛西岸，也能待满半天</h3><p>从安静展厅到江边长椅，附上存包位置和不用排队的入场时段。</p><button class="like-button" type="button" aria-label="点赞西岸攻略"><i data-lucide="heart"></i><span>89</span></button></div></article>
+        <article class="story-card story-coral"><div class="story-cover"><img src="assets/hero-concert.jpg" alt="天台音乐会攻略" /><span>热闹现场</span></div><div class="story-body"><div class="story-author"><img src="assets/animals/alpaca.png" alt="羊驼作者头像" /><span><strong>羊驼氛围组</strong><small>3 天前</small></span></div><h3>天台音乐会：想蹦或发呆都行</h3><p>舞台左右两侧氛围不同，第一次去的人可以按社交电量选区域。</p><button class="like-button" type="button" aria-label="点赞音乐会攻略"><i data-lucide="heart"></i><span>203</span></button></div></article>
+      </div>
+    </section>
+  </main>
+
+  <footer><a class="brand" href="#home"><span class="brand-orbit"><i data-lucide="navigation-2"></i></span><span><strong>周末出逃</strong><small>WEEKEND ESCAPE CLUB</small></span></a><p>一个人自在，一群人也尽兴。</p><span>© 2026 Weekend Escape Club</span></footer>
+
+  <div class="hot-modal" id="hotModal" role="dialog" aria-modal="true" aria-labelledby="hotTitle" aria-hidden="true">
+    <div class="hot-backdrop" data-close-modal></div>
+    <div class="hot-dialog" tabindex="-1">
+      <button class="modal-close" type="button" aria-label="关闭热门活动" data-close-modal><i data-lucide="x"></i></button>
+      <div class="hot-poster"><img src="assets/hero-concert.jpg" alt="上海城市天台日落音乐会现场" /><span class="hot-rank">当前热门活动 <strong>NO.1</strong></span><div class="poster-crowd"><img src="assets/animals/alpaca.png" alt="羊驼伙伴" /><img src="assets/animals/shiba.png" alt="柴犬伙伴" /><img src="assets/animals/penguin.png" alt="企鹅伙伴" /></div></div>
+      <div class="hot-content"><span class="hot-kicker">THIS WEEKEND · SHANGHAI</span><h2 id="hotTitle">城市天台<br />日落音乐会</h2><div class="hot-details"><span><i data-lucide="calendar-days"></i> 周六 18:00</span><span><i data-lucide="map-pin"></i> 静安大悦城</span><span><i data-lucide="wallet-cards"></i> 人均 ¥128</span></div><div class="going-count"><span class="mini-faces"><img src="assets/animals/cat.png" alt="" /><img src="assets/animals/rabbit.png" alt="" /><img src="assets/animals/otter.png" alt="" /></span><strong>已有 36 只小动物准备出发</strong></div><p>不管是想认识新朋友，还是只想在人群里听歌发呆，都有适合你的区域。</p><div class="modal-actions"><button class="primary-button" id="modalCrewButton" type="button">看看谁想一起去</button><button class="ghost-button" id="modalBrowseButton" type="button">先逛逛其他活动</button></div></div>
+    </div>
+  </div>
+
+  <dialog id="createCrewDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">START A CREW</span><h2>发起一支出逃小队</h2><label>活动名称<input id="crewTitleInput" placeholder="例如：周六西岸慢慢看展" /></label><label>集合时间<input type="datetime-local" /></label><label>队伍氛围<select><option>可以安静同行</option><option>轻松聊天，不强行热场</option><option>热闹认识新朋友</option></select></label><button class="primary-button" id="publishCrewButton" value="default">发布组队</button></form></dialog>
+  <dialog id="guideDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">SHARE FIELD NOTES</span><h2>分享你的出逃攻略</h2><label>攻略标题<input id="guideTitleInput" placeholder="例如：一个人逛西岸的半日路线" /></label><label>地点<input id="guidePlaceInput" placeholder="上海 · 徐汇滨江" /></label><label>一句经验<textarea id="guideTipInput" rows="4" placeholder="把路线、时间和避坑经验写给下一位探索者"></textarea></label><button class="primary-button" id="publishGuideButton" value="default">发布攻略</button></form></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span>操作成功</span></div>
+  <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+  <script src="app.js"></script>
+</body>
 </html>
