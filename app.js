@@ -98,6 +98,8 @@ function loadPassportState(){
   }catch{try{localStorage.setItem("weekend-passport-v2",JSON.stringify(fallback))}catch{}return fallback}
 }
 let passportState=loadPassportState();
+const passportSpreads=["identity","stamps","buddies"];
+const passportUi={isOpen:false,isAnimating:false,currentSpread:0,totalSpreads:passportSpreads.length,previousFocus:null,timer:null};
 const state={
   mode:localStorage.getItem("weekend-mode")||"solo",
   animal:localStorage.getItem("weekend-animal")||"kangaroo",
@@ -144,7 +146,7 @@ function selectAnimal(id){
 
 let partnerPanelOpen=false;let partnerPanelTimer;let partnerAutoCloseTimer;let partnerPreviousFocus;
 function openPartnerPanel(){
-  clearTimeout(partnerPanelTimer);clearTimeout(partnerAutoCloseTimer);const panel=$("#partnerPanel");partnerPreviousFocus=document.activeElement;partnerPanelOpen=true;panel.hidden=false;$("#drawerEdgeToggle").hidden=false;$("#partnerBackdrop").hidden=false;document.body.classList.add("partner-open");$("#partnerToggle").setAttribute("aria-expanded","true");requestAnimationFrame(()=>{panel.classList.add("open");$("#drawerEdgeToggle").classList.add("open")});setTimeout(()=>panel.focus({preventScroll:true}),80);
+  if(passportUi.isOpen){if(closePassport(false))setTimeout(openPartnerPanel,760);return}clearTimeout(partnerPanelTimer);clearTimeout(partnerAutoCloseTimer);const panel=$("#partnerPanel");partnerPreviousFocus=document.activeElement;partnerPanelOpen=true;panel.hidden=false;$("#drawerEdgeToggle").hidden=false;$("#partnerBackdrop").hidden=false;document.body.classList.add("partner-open");$("#partnerToggle").setAttribute("aria-expanded","true");requestAnimationFrame(()=>{panel.classList.add("open");$("#drawerEdgeToggle").classList.add("open")});setTimeout(()=>panel.focus({preventScroll:true}),80);
 }
 function closePartnerPanel(returnFocus=false){
   if(!partnerPanelOpen)return;clearTimeout(partnerAutoCloseTimer);const panel=$("#partnerPanel");partnerPanelOpen=false;panel.classList.remove("open");$("#drawerEdgeToggle").classList.remove("open");document.body.classList.remove("partner-open");$("#partnerToggle").setAttribute("aria-expanded","false");partnerPanelTimer=setTimeout(()=>{panel.hidden=true;$("#drawerEdgeToggle").hidden=true;$("#partnerBackdrop").hidden=true},300);if(returnFocus)(partnerPreviousFocus?.isConnected?partnerPreviousFocus:$("#partnerToggle")).focus({preventScroll:true});
@@ -216,11 +218,15 @@ function initPassportActivitySelect(){
 function updateCheckinControls(){
   const select=$("#passportActivitySelect");const button=$("#checkinButton");if(!select||!button)return;const completed=passportState.completedActivities.includes(select.value);button.disabled=completed||isStamping;button.innerHTML=completed?'<i data-lucide="badge-check"></i> 该活动已打卡':'<i data-lucide="stamp"></i> 盖下本周印章';$("#checkinHint").textContent=completed?"这段旅程已写进护照，可选择另一个活动。":"每个活动仅能完成一次打卡";refreshIcons()
 }
-function setPassportPage(page,persist=true){
-  if(!["identity","stamps","buddies"].includes(page))page="identity";passportState.currentPage=page;
+function applyPassportPage(page,persist=true){
+  if(!passportSpreads.includes(page))page="identity";passportState.currentPage=page;passportUi.currentSpread=passportSpreads.indexOf(page);
   $$("[data-passport-page]").forEach(button=>{const active=button.dataset.passportPage===page;button.classList.toggle("active",active);button.setAttribute("aria-selected",String(active));button.tabIndex=active?0:-1});
   $$(".passport-view").forEach(view=>{const active=view.dataset.view===page;view.classList.toggle("active",active);view.hidden=!active});
-  $("#stampPopover").hidden=true;if(persist)savePassportState();refreshIcons()
+  $("#stampPopover").hidden=true;$("#passportPrevPage").disabled=passportUi.currentSpread===0;$("#passportNextPage").disabled=passportUi.currentSpread===passportUi.totalSpreads-1;if(persist)savePassportState();refreshIcons()
+}
+function setPassportPage(page,persist=true,animate=passportUi.isOpen){
+  if(!passportSpreads.includes(page))page="identity";const target=passportSpreads.indexOf(page);if(target===passportUi.currentSpread){applyPassportPage(page,persist);return true}if(passportUi.isAnimating)return false;if(!animate){applyPassportPage(page,persist);return true}
+  const book=$("#passportBook");const direction=target>passportUi.currentSpread?"forward":"backward";passportUi.isAnimating=true;book.classList.add("is-turning",`turn-${direction}`);book.setAttribute("aria-busy","true");setTimeout(()=>applyPassportPage(page,persist),260);passportUi.timer=setTimeout(()=>{book.classList.remove("is-turning",`turn-${direction}`);book.removeAttribute("aria-busy");passportUi.isAnimating=false;$(`[data-passport-page="${page}"]`)?.focus({preventScroll:true})},580);return true
 }
 function renderLevelRoute(){
   const {current}=getLevelInfo();$("#levelRoute").innerHTML=levelCatalog.map(item=>`<span class="route-stop ${item.level<current.level?"passed":item.level===current.level?"current":""}"><i>${item.level<=current.level?"✓":item.level}</i><small>${item.name}</small></span>`).join("")
@@ -243,19 +249,27 @@ function renderPassport(justUnlocked=""){
   $("#escapeCount").textContent=passportState.escapeCount;$("#footprintCount").textContent=passportState.footprints;$("#buddyCount").textContent=passportState.buddyCount;$("#buddyVisaCount").textContent=passportState.buddyCount;
   $("#mobileLevelValue").textContent=String(current.level).padStart(2,"0");$("#mobileLevelName").textContent=current.name;$("#mobileLevelMessage").textContent=next?`再完成 ${remaining} 次出逃，升级为“${next.name}”。`:`已解锁最高城市等级。`;$("#mobileEscapeCount").textContent=passportState.escapeCount;$("#mobileFootprintCount").textContent=passportState.footprints;
   $("#unlockedStampCount").textContent=passportState.unlockedStamps.length;$("#totalStampCount").textContent=passportState.unlockedStamps.reduce((sum,stamp)=>sum+stamp.count,0);
+  const nextStamp=stampCatalog.find(meta=>!passportState.unlockedStamps.some(stamp=>stamp.id===meta.id));$("#passportSummaryLevel").textContent=String(current.level).padStart(2,"0");$("#passportSummaryName").textContent=current.name;$("#passportSummaryEscapes").textContent=passportState.escapeCount;$("#passportSummaryStamps").textContent=passportState.unlockedStamps.length;$("#passportSummaryNext").textContent=nextStamp?.name||"全部已收藏";
   const recent=passportState.recentCheckin;$("#recentCheckin").innerHTML=recent?`<i data-lucide="map-pin"></i><div><small>最近到达 · ${recent.date}</small><strong>${recent.activity}</strong><span>${recent.place} · SHA</span></div>`:'<i data-lucide="map-pin"></i><div><small>最近到达</small><strong>等待第一次打卡</strong><span>上海 · SHA</span></div>';
-  renderLevelRoute();renderStamps(justUnlocked);renderBuddyVisas();setPassportPage(passportState.currentPage,false);updateCheckinControls();refreshIcons()
+  renderLevelRoute();renderStamps(justUnlocked);renderBuddyVisas();setPassportPage(passportState.currentPage,false,false);updateCheckinControls();refreshIcons()
 }
 
-let passportOpening=false;let isStamping=false;
+let isStamping=false;
+function hasOtherPrimaryLayer(){return activityDetailOpen||partnerPanelOpen||modal.classList.contains("open")||Boolean(document.querySelector("dialog[open]"))}
 function openPassport(){
-  const experience=$("#passportExperience");if(experience.dataset.open==="true"||passportOpening)return;const cover=$("#passportCover");passportOpening=true;cover.disabled=true;experience.classList.add("opening");experience.dataset.open="true";setTimeout(()=>{passportOpening=false;experience.classList.remove("opening");cover.setAttribute("aria-hidden","true");cover.tabIndex=-1;$("#passportBook").classList.add("ready");$("[data-passport-page].active").focus({preventScroll:true})},820)
+  if(passportUi.isOpen||passportUi.isAnimating||hasOtherPrimaryLayer())return false;const experience=$("#passportExperience");const cover=$("#passportCover");const backdrop=$("#passportBackdrop");const book=$("#passportBook");clearTimeout(passportUi.timer);passportUi.previousFocus=document.activeElement;passportUi.isOpen=true;passportUi.isAnimating=true;applyPassportPage("identity",false);experience.dataset.state="opening";experience.dataset.open="true";backdrop.hidden=false;backdrop.setAttribute("aria-hidden","false");book.setAttribute("aria-hidden","false");book.classList.remove("closing","ready");document.body.classList.add("passport-open");cover.disabled=true;requestAnimationFrame(()=>backdrop.classList.add("show"));passportUi.timer=setTimeout(()=>{passportUi.isAnimating=false;experience.dataset.state="open";experience.classList.remove("opening");cover.setAttribute("aria-hidden","true");cover.tabIndex=-1;book.classList.add("ready");$("[data-passport-page].active").focus({preventScroll:true})},820);return true
+}
+function closePassport(returnFocus=true,force=false){
+  if(!passportUi.isOpen||passportUi.isAnimating&&!force)return false;const experience=$("#passportExperience");const cover=$("#passportCover");const backdrop=$("#passportBackdrop");const book=$("#passportBook");clearTimeout(passportUi.timer);passportUi.isAnimating=true;applyPassportPage("identity",false);book.classList.remove("ready","is-turning","turn-forward","turn-backward");book.classList.add("closing");book.removeAttribute("aria-busy");experience.dataset.state="closing";experience.dataset.open="false";cover.removeAttribute("aria-hidden");cover.tabIndex=0;backdrop.classList.remove("show");passportUi.timer=setTimeout(()=>{passportUi.isOpen=false;passportUi.isAnimating=false;passportUi.currentSpread=0;experience.dataset.state="closed";book.classList.remove("closing");book.setAttribute("aria-hidden","true");backdrop.hidden=true;backdrop.setAttribute("aria-hidden","true");document.body.classList.remove("passport-open");cover.disabled=false;if(returnFocus)(passportUi.previousFocus?.isConnected?passportUi.previousFocus:cover).focus({preventScroll:true})},force?0:720);return true
+}
+function turnPassport(step){
+  if(!passportUi.isOpen||passportUi.isAnimating)return false;const next=Math.min(passportUi.totalSpreads-1,Math.max(0,passportUi.currentSpread+step));if(next===passportUi.currentSpread)return false;return setPassportPage(passportSpreads[next],true,true)
 }
 function completeCheckin(){
   const select=$("#passportActivitySelect");const activity=activities.find(item=>item.name===select.value);if(!activity||isStamping)return;if(passportState.completedActivities.includes(activity.name)){showToast("这个活动已经打卡过了");updateCheckinControls();return}
-  if($("#passportExperience").dataset.open!=="true")openPassport();setPassportPage("stamps");isStamping=true;updateCheckinControls();const book=$("#passportBook");const button=$("#checkinButton");button.classList.add("is-pressed");book.classList.add("is-stamping");
-  const stampId=activityStampMap[activity.name]||"niche";setTimeout(()=>{const existing=passportState.unlockedStamps.find(stamp=>stamp.id===stampId);if(existing){existing.count+=1;existing.lastActivity=activity.name;existing.lastPlace=activity.place;if(!existing.activities.includes(activity.name))existing.activities.push(activity.name)}else{passportState.unlockedStamps.push({id:stampId,firstUnlocked:formatDate(),count:1,activities:[activity.name],lastActivity:activity.name,lastPlace:activity.place})}passportState.completedActivities.push(activity.name);passportState.escapeCount+=1;passportState.footprints+=1;passportState.recentCheckin={activity:activity.name,place:activity.place,date:formatDate()};savePassportState();renderPassport(stampId);book.classList.add("count-bump")},360);
-  setTimeout(()=>{isStamping=false;button.classList.remove("is-pressed");book.classList.remove("is-stamping","count-bump");updateCheckinControls();showToast(`打卡成功！「${stampCatalog.find(item=>item.id===stampId).name}」已更新，获得 1 枚脚印`)},860)
+  const wasOpen=passportUi.isOpen;if(!wasOpen&&!openPassport()){showToast("请先关闭当前弹层再打卡");return}isStamping=true;updateCheckinControls();const book=$("#passportBook");const button=$("#checkinButton");const stampId=activityStampMap[activity.name]||"niche";
+  const startStamp=()=>{const needsTurn=passportUi.currentSpread!==1;if(needsTurn)setPassportPage("stamps",true,true);setTimeout(()=>{button.classList.add("is-pressed");book.classList.add("is-stamping");setTimeout(()=>{const existing=passportState.unlockedStamps.find(stamp=>stamp.id===stampId);if(existing){existing.count+=1;existing.lastActivity=activity.name;existing.lastPlace=activity.place;if(!existing.activities.includes(activity.name))existing.activities.push(activity.name)}else{passportState.unlockedStamps.push({id:stampId,firstUnlocked:formatDate(),count:1,activities:[activity.name],lastActivity:activity.name,lastPlace:activity.place})}passportState.completedActivities.push(activity.name);passportState.escapeCount+=1;passportState.footprints+=1;passportState.recentCheckin={activity:activity.name,place:activity.place,date:formatDate()};savePassportState();renderPassport(stampId);book.classList.add("count-bump")},360);setTimeout(()=>{isStamping=false;button.classList.remove("is-pressed");book.classList.remove("is-stamping","count-bump");updateCheckinControls();showToast(`打卡成功！「${stampCatalog.find(item=>item.id===stampId).name}」已更新，获得 1 枚脚印`)},860)},needsTurn?600:0)};
+  setTimeout(startStamp,wasOpen?0:850)
 }
 
 const activityDetailModal=$("#activityDetailModal");
@@ -283,7 +297,7 @@ function renderActivityDetail(activity){
   const actions=[$("#detailSoloButton"),$("#detailFindButton"),$("#detailJoinButton")];actions.forEach(button=>button.classList.remove("primary-choice"));const primary=state.mode==="solo"?$("#detailSoloButton"):state.mode==="soft"?$("#detailFindButton"):$("#detailJoinButton");primary.classList.add("primary-choice");detailPrimaryMode=state.mode;refreshIcons()
 }
 function openActivityDetail(id,trigger=null){
-  const activity=getActivityById(id);if(!activity||modal.classList.contains("open"))return;clearTimeout(activityDetailTimer);if(partnerPanelOpen)closePartnerPanel(false);activityDetailPreviousFocus=trigger||document.activeElement;renderActivityDetail(activity);activityDetailOpen=true;activityDetailModal.setAttribute("aria-hidden","false");document.body.classList.add("activity-detail-open");requestAnimationFrame(()=>activityDetailModal.classList.add("open"));setTimeout(()=>$(".activity-detail-card").focus({preventScroll:true}),80)
+  const activity=getActivityById(id);if(!activity||modal.classList.contains("open"))return;if(passportUi.isOpen){if(closePassport(false))setTimeout(()=>openActivityDetail(id,trigger),760);return}clearTimeout(activityDetailTimer);if(partnerPanelOpen)closePartnerPanel(false);activityDetailPreviousFocus=trigger||document.activeElement;renderActivityDetail(activity);activityDetailOpen=true;activityDetailModal.setAttribute("aria-hidden","false");document.body.classList.add("activity-detail-open");requestAnimationFrame(()=>activityDetailModal.classList.add("open"));setTimeout(()=>$(".activity-detail-card").focus({preventScroll:true}),80)
 }
 function closeActivityDetail(returnFocus=true){
   if(!activityDetailOpen)return;activityDetailOpen=false;activityDetailModal.classList.remove("open");document.body.classList.remove("activity-detail-open");activityDetailTimer=setTimeout(()=>activityDetailModal.setAttribute("aria-hidden","true"),300);if(returnFocus){const fallback=$(`[data-activity-id="${activeActivityId}"]`);(activityDetailPreviousFocus?.isConnected?activityDetailPreviousFocus:fallback)?.focus({preventScroll:true})}
@@ -299,7 +313,7 @@ function trapFocusIn(container,event){
 }
 
 const modal=$("#hotModal");let previousFocus;
-function openHotModal(){if(activityDetailOpen)return;if(partnerPanelOpen)closePartnerPanel(false);previousFocus=document.activeElement;modal.classList.add("open");modal.setAttribute("aria-hidden","false");document.body.classList.add("hot-open");setTimeout(()=>modal.querySelector(".hot-dialog").focus(),80)}
+function openHotModal(){if(activityDetailOpen)return;if(passportUi.isOpen){if(closePassport(false))setTimeout(openHotModal,760);return}if(partnerPanelOpen)closePartnerPanel(false);previousFocus=document.activeElement;modal.classList.add("open");modal.setAttribute("aria-hidden","false");document.body.classList.add("hot-open");setTimeout(()=>modal.querySelector(".hot-dialog").focus(),80)}
 function closeHotModal(returnFocus=true){modal.classList.remove("open");modal.setAttribute("aria-hidden","true");document.body.classList.remove("hot-open");if(returnFocus)previousFocus?.focus({preventScroll:true})}
 function scrollToSection(id){closeHotModal(false);setTimeout(()=>document.querySelector(id).scrollIntoView({behavior:"smooth"}),180)}
 
@@ -319,8 +333,12 @@ let crewScrollTimer;$("#crewCards").addEventListener("scroll",()=>{if(!matchMedi
 let crewResizeTimer;window.addEventListener("resize",()=>{clearTimeout(crewResizeTimer);crewResizeTimer=setTimeout(()=>{crewPage=0;renderCrews()},160)});
 $("#checkinButton").addEventListener("click",completeCheckin);
 $("#passportCover").addEventListener("click",openPassport);
+$("#passportBookClose").addEventListener("click",()=>closePassport(true));
+$("#passportBackdrop").addEventListener("click",()=>closePassport(true));
+$("#passportPrevPage").addEventListener("click",()=>turnPassport(-1));$("#passportNextPage").addEventListener("click",()=>turnPassport(1));
 $$("[data-passport-page]").forEach(button=>button.addEventListener("click",()=>setPassportPage(button.dataset.passportPage)));
 $(".passport-tabs").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight"].includes(event.key))return;event.preventDefault();const tabs=$$("[data-passport-page]");const current=tabs.indexOf(document.activeElement);const direction=event.key==="ArrowRight"?1:-1;const next=tabs[(current+direction+tabs.length)%tabs.length];next.focus();setPassportPage(next.dataset.passportPage)});
+let passportTouchStart=null;$(".passport-pages").addEventListener("touchstart",event=>{const touch=event.changedTouches[0];passportTouchStart={x:touch.clientX,y:touch.clientY}},{passive:true});$(".passport-pages").addEventListener("touchend",event=>{if(!passportTouchStart||passportUi.isAnimating)return;const touch=event.changedTouches[0];const dx=touch.clientX-passportTouchStart.x;const dy=touch.clientY-passportTouchStart.y;passportTouchStart=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.25)turnPassport(dx<0?1:-1)},{passive:true});
 $("#stampDetailClose").addEventListener("click",()=>{const popover=$("#stampPopover");popover.classList.remove("show");setTimeout(()=>popover.hidden=true,160)});
 $("#passportReset").addEventListener("click",()=>{if(!window.confirm("重置护照的演示成长数据？动物选择不会被改变。"))return;localStorage.removeItem("weekend-passport-v2");passportState=createDefaultPassport();savePassportState();initPassportActivitySelect();renderPassport();setPassportPage("identity");showToast("护照演示数据已重置")});
 $("#activityDetailClose").addEventListener("click",()=>closeActivityDetail(true));$$('[data-close-activity-detail]').forEach(element=>element.addEventListener("click",()=>closeActivityDetail(true)));$("#detailBackButton").addEventListener("click",()=>closeActivityDetail(true));
@@ -335,7 +353,7 @@ $$('.like-button').forEach(button=>button.addEventListener("click",()=>{const li
 $$('[data-close-modal]').forEach(button=>button.addEventListener("click",()=>closeHotModal(true)));
 $("#modalDetailButton").addEventListener("click",()=>{const returnTarget=previousFocus;closeHotModal(false);setTimeout(()=>openActivityDetail("rooftop-concert",returnTarget),240)});
 $("#modalCrewButton").addEventListener("click",()=>scrollToSection("#crews"));$("#modalBrowseButton").addEventListener("click",()=>scrollToSection("#recommendations"));
-document.addEventListener("keydown",event=>{if(activityDetailOpen&&event.key==="Tab"){trapFocusIn($(".activity-detail-card"),event);return}if(partnerPanelOpen&&event.key==="Tab"){trapPartnerFocus(event);return}if(event.key!=="Escape")return;if(activityDetailOpen){closeActivityDetail(true);return}if(!$("#stampPopover").hidden){$("#stampPopover").classList.remove("show");$("#stampPopover").hidden=true;return}if(partnerPanelOpen){closePartnerPanel(true);return}if(modal.classList.contains("open"))closeHotModal()});
+document.addEventListener("keydown",event=>{if(activityDetailOpen&&event.key==="Tab"){trapFocusIn($(".activity-detail-card"),event);return}if(partnerPanelOpen&&event.key==="Tab"){trapPartnerFocus(event);return}if(passportUi.isOpen&&event.key==="Tab"){trapFocusIn($("#passportBook"),event);return}if(event.key!=="Escape")return;if(activityDetailOpen){closeActivityDetail(true);return}if(!$("#stampPopover").hidden){$("#stampPopover").classList.remove("show");$("#stampPopover").hidden=true;return}if(partnerPanelOpen){closePartnerPanel(true);return}if(modal.classList.contains("open")){closeHotModal();return}if(passportUi.isOpen)closePassport(true)});
 
 initPassportActivitySelect();renderAnimals();renderTypes();renderManual();renderPassport();selectMode(state.mode,false);refreshIcons();
 setTimeout(openHotModal,420);

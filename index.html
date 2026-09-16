@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=compact-density-2" />
+  <link rel="stylesheet" href="styles.css?v=passport-turning-1" />
 </head>
 <body>
   <header class="site-header">
@@ -123,7 +123,8 @@
         <p class="checkin-hint" id="checkinHint">每个活动仅能完成一次打卡</p>
       </div>
 
-      <div class="passport-experience" id="passportExperience" data-open="false">
+      <div class="passport-backdrop" id="passportBackdrop" aria-hidden="true" hidden></div>
+      <div class="passport-experience" id="passportExperience" data-open="false" data-state="closed">
         <button class="passport-cover" id="passportCover" type="button" aria-label="打开动物城市护照">
           <span class="cover-route" aria-hidden="true"><i data-lucide="route"></i><i data-lucide="footprints"></i></span>
           <span class="cover-kicker">ANIMAL CITY PASSPORT</span>
@@ -131,11 +132,18 @@
           <span class="cover-emblem passport-avatar-frame" data-avatar="kangaroo"><img id="passportCoverAvatar" src="assets/animals/kangaroo.png" alt="袋鼠护照徽章" /></span>
           <span class="cover-city">SHA · 上海</span>
           <span class="cover-number" id="coverPassportNumber">NO. SHA-260901</span>
-          <span class="cover-open-hint"><i data-lucide="hand"></i> 点击打开</span>
+          <span class="cover-open-hint"><i data-lucide="book-open"></i> 点击打开护照</span>
         </button>
 
-        <div class="passport-book" id="passportBook" aria-label="已打开的动物城市护照">
+        <aside class="passport-closed-summary" id="passportClosedSummary" aria-label="护照成长摘要">
+          <strong>LEVEL <b id="passportSummaryLevel">03</b> · <span id="passportSummaryName">周末探索员</span></strong>
+          <p>已出逃 <b id="passportSummaryEscapes">7</b> 次 · 收集 <b id="passportSummaryStamps">3</b> 枚印章</p>
+          <small>下一枚：<span id="passportSummaryNext">现场音乐</span></small>
+        </aside>
+
+        <div class="passport-book" id="passportBook" role="dialog" aria-modal="true" aria-hidden="true" aria-label="已打开的动物城市护照" tabindex="-1">
           <span class="passport-cover-edge" aria-hidden="true"></span>
+          <button class="passport-book-close" id="passportBookClose" type="button" aria-label="合上护照"><i data-lucide="x"></i></button>
           <nav class="passport-tabs" aria-label="护照页签" role="tablist">
             <button class="active" id="passportTabIdentity" data-passport-page="identity" role="tab" aria-selected="true" aria-controls="passportViewIdentity" type="button"><i data-lucide="contact"></i><span>身份页</span></button>
             <button id="passportTabStamps" data-passport-page="stamps" role="tab" aria-selected="false" aria-controls="passportViewStamps" type="button"><i data-lucide="stamp"></i><span>城市印章</span></button>
@@ -204,6 +212,9 @@
               </article>
             </section>
           </div>
+          <div class="passport-flip-sheet" id="passportFlipSheet" aria-hidden="true"><span></span></div>
+          <button class="passport-turn passport-turn-prev" id="passportPrevPage" type="button" aria-label="上一组护照页"><i data-lucide="arrow-left"></i><span>上一页</span></button>
+          <button class="passport-turn passport-turn-next" id="passportNextPage" type="button" aria-label="下一组护照页"><span>下一页</span><i data-lucide="arrow-right"></i></button>
           <button class="passport-reset" id="passportReset" type="button">重置演示数据</button>
         </div>
       </div>
@@ -262,6 +273,6 @@
   <dialog id="guideDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">SHARE FIELD NOTES</span><h2>分享你的出逃攻略</h2><label>攻略标题<input id="guideTitleInput" placeholder="例如：一个人逛西岸的半日路线" /></label><label>地点<input id="guidePlaceInput" placeholder="上海 · 徐汇滨江" /></label><label>一句经验<textarea id="guideTipInput" rows="4" placeholder="把路线、时间和避坑经验写给下一位探索者"></textarea></label><button class="primary-button" id="publishGuideButton" value="default">发布攻略</button></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span>操作成功</span></div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script src="app.js?v=compact-density-2"></script>
+  <script src="app.js?v=passport-turning-1"></script>
 </body>
 </html>
