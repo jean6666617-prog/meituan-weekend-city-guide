@@ -73,7 +73,8 @@ function applyAnimalUI(animal,animate){
   const apply=()=>{
     main.className="partner-animal";main.src=animal.image;main.alt=`${animal.name}城市伙伴`;void main.offsetWidth;main.classList.add(animal.animationClass);
     $("#currentPartnerAvatar").src=animal.image;$("#currentPartnerAvatar").alt=`${animal.name}伙伴头像`;$("#currentPartnerAvatar").parentElement.dataset.avatar=animal.id;
-    $("#currentPartnerLabel").textContent=`${animal.name} · ${animal.personality}`;$("#animalName").textContent=animal.name;$("#animalPersonality").textContent=animal.personality;$("#animalLine").textContent=animal.description;$("#favoriteFood").textContent=animal.favoriteFood;
+    $("#drawerCurrentAvatar").src=animal.image;$("#drawerCurrentAvatar").alt=`当前选中的${animal.name}伙伴`;$("#drawerCurrentAvatar").parentElement.dataset.avatar=animal.id;
+    $("#currentPartnerLabel").textContent=`${animal.name} · ${animal.personality}`;$("#drawerCurrentDescription").textContent=animal.description;$("#partnerToggle").setAttribute("aria-label",`选择伙伴，当前为${animal.name}`);$("#animalName").textContent=animal.name;$("#animalPersonality").textContent=animal.personality;$("#animalLine").textContent=animal.description;$("#favoriteFood").textContent=animal.favoriteFood;
     $("#headerAvatar").src=animal.image;$("#headerAvatar").alt=`${animal.name}头像`;$("#profileButton").dataset.avatar=animal.id;$("#profileButton").setAttribute("aria-label",`当前动物伙伴：${animal.name}`);
     $("#passportAvatar").src=animal.image;$("#passportAvatar").alt=`护照中的${animal.name}头像`;$("#passportAvatarFrame").dataset.avatar=animal.id;$("#recommendAnimal").textContent=animal.name;
     stage.style.setProperty("--partner-accent",animal.accentColor);stage.style.setProperty("--partner-soft",animal.softColor);
@@ -84,17 +85,20 @@ function applyAnimalUI(animal,animate){
 function selectAnimal(id){
   const animal=getAnimal(id);state.animal=id;localStorage.setItem("weekend-animal",id);
   $$(".animal-option").forEach(button=>{const selected=button.dataset.animal===id;button.classList.toggle("selected",selected);button.setAttribute("aria-selected",String(selected))});
-  applyAnimalUI(animal,true);renderRecommendations();renderCrews();closePartnerPanel();showToast(`已切换为${animal.name}伙伴`);
+  applyAnimalUI(animal,true);renderRecommendations();renderCrews();showToast(`已切换为${animal.name}伙伴`);clearTimeout(partnerAutoCloseTimer);partnerAutoCloseTimer=setTimeout(()=>closePartnerPanel(true),300);
 }
 
-let partnerPanelOpen=false;let partnerPanelTimer;
+let partnerPanelOpen=false;let partnerPanelTimer;let partnerAutoCloseTimer;let partnerPreviousFocus;
 function openPartnerPanel(){
-  clearTimeout(partnerPanelTimer);const panel=$("#partnerPanel");partnerPanelOpen=true;panel.hidden=false;$("#partnerBackdrop").hidden=false;document.body.classList.add("partner-open");$("#partnerToggle").setAttribute("aria-expanded","true");requestAnimationFrame(()=>panel.classList.add("open"));setTimeout(()=>panel.querySelector(".animal-option.selected")?.focus(),80);
+  clearTimeout(partnerPanelTimer);clearTimeout(partnerAutoCloseTimer);const panel=$("#partnerPanel");partnerPreviousFocus=document.activeElement;partnerPanelOpen=true;panel.hidden=false;$("#drawerEdgeToggle").hidden=false;$("#partnerBackdrop").hidden=false;document.body.classList.add("partner-open");$("#partnerToggle").setAttribute("aria-expanded","true");requestAnimationFrame(()=>{panel.classList.add("open");$("#drawerEdgeToggle").classList.add("open")});setTimeout(()=>panel.focus({preventScroll:true}),80);
 }
 function closePartnerPanel(returnFocus=false){
-  if(!partnerPanelOpen)return;const panel=$("#partnerPanel");partnerPanelOpen=false;panel.classList.remove("open");document.body.classList.remove("partner-open");$("#partnerToggle").setAttribute("aria-expanded","false");partnerPanelTimer=setTimeout(()=>{panel.hidden=true;$("#partnerBackdrop").hidden=true},180);if(returnFocus)$("#partnerToggle").focus();
+  if(!partnerPanelOpen)return;clearTimeout(partnerAutoCloseTimer);const panel=$("#partnerPanel");partnerPanelOpen=false;panel.classList.remove("open");$("#drawerEdgeToggle").classList.remove("open");document.body.classList.remove("partner-open");$("#partnerToggle").setAttribute("aria-expanded","false");partnerPanelTimer=setTimeout(()=>{panel.hidden=true;$("#drawerEdgeToggle").hidden=true;$("#partnerBackdrop").hidden=true},300);if(returnFocus)(partnerPreviousFocus?.isConnected?partnerPreviousFocus:$("#partnerToggle")).focus({preventScroll:true});
 }
 function togglePartnerPanel(){partnerPanelOpen?closePartnerPanel(true):openPartnerPanel()}
+function trapPartnerFocus(event){
+  if(!partnerPanelOpen||event.key!=="Tab")return;const panel=$("#partnerPanel");const focusable=$$("#partnerPanel button:not([disabled]),#partnerPanel [href],#partnerPanel [tabindex]:not([tabindex='-1'])").filter(element=>!element.hidden);if(!focusable.length)return;const first=focusable[0];const last=focusable[focusable.length-1];if(!panel.contains(document.activeElement)){event.preventDefault();first.focus();return}if(event.shiftKey&&(document.activeElement===first||document.activeElement===panel)){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+}
 
 function renderTypes(){const types=["随便看看","看展","户外","市集","演出","手作","美食","城市夜游"];$("#typeFilters").innerHTML=types.map(type=>`<button class="type-chip ${state.type===type?"active":""}" data-type="${type}" type="button">${type}</button>`).join("");$$(".type-chip").forEach(button=>button.addEventListener("click",()=>{state.type=button.dataset.type;renderTypes()}))}
 
@@ -141,9 +145,9 @@ function closeHotModal(){modal.classList.remove("open");modal.setAttribute("aria
 function scrollToSection(id){closeHotModal();setTimeout(()=>document.querySelector(id).scrollIntoView({behavior:"smooth"}),180)}
 
 $$(".battery-card").forEach(card=>card.addEventListener("click",()=>selectMode(card.dataset.mode)));
-$("#partnerToggle").addEventListener("click",togglePartnerPanel);$("#profileButton").addEventListener("click",togglePartnerPanel);$("#partnerClose").addEventListener("click",()=>closePartnerPanel(true));$("#partnerBackdrop").addEventListener("click",()=>closePartnerPanel(true));
-document.addEventListener("pointerdown",event=>{if(partnerPanelOpen&&!$("#partnerControlWrap").contains(event.target)&&event.target!==$("#profileButton")&&!$("#profileButton").contains(event.target))closePartnerPanel()});
-$("#animalSelector").addEventListener("keydown",event=>{const option=event.target.closest(".animal-option");if(!option)return;const options=$$(".animal-option");const index=options.indexOf(option);const columns=window.innerWidth<=650?2:5;let next=index;if(event.key==="ArrowRight")next=Math.min(options.length-1,index+1);if(event.key==="ArrowLeft")next=Math.max(0,index-1);if(event.key==="ArrowDown")next=Math.min(options.length-1,index+columns);if(event.key==="ArrowUp")next=Math.max(0,index-columns);if(next!==index){event.preventDefault();options[next].focus()}});
+$("#partnerToggle").addEventListener("click",togglePartnerPanel);$("#drawerEdgeToggle").addEventListener("click",()=>closePartnerPanel(true));$("#profileButton").addEventListener("click",togglePartnerPanel);$("#partnerClose").addEventListener("click",()=>closePartnerPanel(true));$("#partnerBackdrop").addEventListener("click",()=>closePartnerPanel(true));
+document.addEventListener("pointerdown",event=>{if(partnerPanelOpen&&!$("#partnerControlWrap").contains(event.target)&&!$("#partnerPanel").contains(event.target)&&!$("#drawerEdgeToggle").contains(event.target)&&!$("#partnerBackdrop").contains(event.target)&&event.target!==$("#profileButton")&&!$("#profileButton").contains(event.target))closePartnerPanel(true)});
+$("#animalSelector").addEventListener("keydown",event=>{const option=event.target.closest(".animal-option");if(!option)return;const options=$$(".animal-option");const index=options.indexOf(option);const columns=2;let next=index;if(event.key==="ArrowRight")next=Math.min(options.length-1,index+1);if(event.key==="ArrowLeft")next=Math.max(0,index-1);if(event.key==="ArrowDown")next=Math.min(options.length-1,index+columns);if(event.key==="ArrowUp")next=Math.max(0,index-columns);if(next!==index){event.preventDefault();options[next].focus()}});
 $("#budgetRange").addEventListener("input",event=>{state.budget=Number(event.target.value);$("#budgetValue").textContent=state.budget===500?"¥500+":`¥${state.budget}`});
 $("#weatherSelect").addEventListener("change",event=>{state.weather=event.target.value;showToast(state.weather==="雨天"?"已切换为雨天室内方案":"已切换为晴天出行方案")});
 $("#peopleMinus").addEventListener("click",()=>{state.people=Math.max(1,state.people-1);$("#peopleValue").textContent=state.people});
@@ -157,7 +161,7 @@ $("#publishGuideButton").addEventListener("click",event=>{if(!$("#guideTitleInpu
 $$('.like-button').forEach(button=>button.addEventListener("click",()=>{const liked=button.classList.toggle("liked");const count=button.querySelector("span");count.textContent=Number(count.textContent)+(liked?1:-1);showToast(liked?"已把这篇攻略收进喜欢":"已取消点赞")}));
 $$('[data-close-modal]').forEach(button=>button.addEventListener("click",closeHotModal));
 $("#modalCrewButton").addEventListener("click",()=>scrollToSection("#crews"));$("#modalBrowseButton").addEventListener("click",()=>scrollToSection("#recommendations"));
-document.addEventListener("keydown",event=>{if(event.key!=="Escape")return;if(partnerPanelOpen){closePartnerPanel(true);return}if(modal.classList.contains("open"))closeHotModal()});
+document.addEventListener("keydown",event=>{if(partnerPanelOpen&&event.key==="Tab"){trapPartnerFocus(event);return}if(event.key!=="Escape")return;if(partnerPanelOpen){closePartnerPanel(true);return}if(modal.classList.contains("open"))closeHotModal()});
 
 renderAnimals();renderTypes();renderManual();renderPassport();selectMode(state.mode,false);refreshIcons();
 setTimeout(openHotModal,420);

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=yellow-partner" />
+  <link rel="stylesheet" href="styles.css?v=partner-drawer-3" />
 </head>
 <body>
   <header class="site-header">
@@ -53,19 +53,23 @@
         <div class="partner-visual"><img class="partner-animal anim-kangaroo" id="mainAnimal" src="assets/animals/kangaroo.png" alt="背着黄色探索包的袋鼠伙伴" /></div>
         <div class="stage-copy"><span id="animalPersonality">活力带队型</span><h2 id="animalName">袋鼠</h2><p id="animalLine">附近新鲜事，我带你找到！</p><strong id="stageEnergyLine">今天想一个人自在探索，不被打扰。</strong><small><i data-lucide="leaf"></i> 喜欢：<b id="favoriteFood">青草和树叶</b></small></div>
         <div class="partner-control-wrap" id="partnerControlWrap">
-          <button class="partner-toggle" id="partnerToggle" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="partnerPanel">
+          <button class="partner-toggle" id="partnerToggle" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="partnerPanel" aria-label="选择伙伴，当前为袋鼠">
             <span class="current-partner-avatar" data-avatar="kangaroo"><img id="currentPartnerAvatar" src="assets/animals/kangaroo.png" alt="袋鼠伙伴头像" /></span>
-            <span class="current-partner-copy"><small>当前伙伴</small><strong id="currentPartnerLabel">袋鼠 · 活力带队型</strong></span>
-            <span class="partner-change">更换伙伴 <i data-lucide="chevron-down"></i></span>
+            <span class="partner-trigger-label">选择伙伴</span>
+            <i data-lucide="chevron-left" class="partner-trigger-arrow"></i>
           </button>
-          <div class="partner-panel" id="partnerPanel" hidden>
-            <div class="partner-panel-head"><div><small>WEEKEND PERSONALITY</small><strong>选择你的周末伙伴</strong></div><button id="partnerClose" type="button" aria-label="关闭动物选择"><i data-lucide="x"></i></button></div>
-            <div class="animal-selector" id="animalSelector" role="listbox" aria-label="动物伙伴列表"></div>
-          </div>
         </div>
       </aside>
-      <div class="partner-backdrop" id="partnerBackdrop" hidden></div>
     </section>
+
+    <aside class="partner-panel" id="partnerPanel" role="dialog" aria-modal="true" aria-labelledby="partnerPanelTitle" aria-describedby="partnerPanelDescription" tabindex="-1" hidden>
+      <span class="drawer-grabber" aria-hidden="true"></span>
+      <div class="partner-panel-head"><div><small>WEEKEND PERSONALITY</small><strong id="partnerPanelTitle">选择你的周末伙伴</strong><p id="partnerPanelDescription">选一个替你表达社交电量的小伙伴。</p></div><button id="partnerClose" type="button" aria-label="关闭伙伴选择侧边栏"><i data-lucide="x"></i></button></div>
+      <div class="drawer-current"><span data-avatar="kangaroo"><img id="drawerCurrentAvatar" src="assets/animals/kangaroo.png" alt="当前选中的袋鼠伙伴" /></span><div><small>当前选择</small><strong id="currentPartnerLabel">袋鼠 · 活力带队型</strong><p id="drawerCurrentDescription">附近新鲜事，我带你找到！</p></div></div>
+      <div class="animal-selector" id="animalSelector" role="listbox" aria-label="动物伙伴列表"></div>
+    </aside>
+    <button class="drawer-edge-toggle" id="drawerEdgeToggle" type="button" aria-label="收起伙伴选择侧边栏" hidden><i data-lucide="chevron-right"></i><span>选择伙伴</span></button>
+    <div class="partner-backdrop" id="partnerBackdrop" hidden></div>
 
     <section class="filter-dock" aria-label="活动场景筛选">
       <div class="filter-dock-title"><span>03</span><div><strong>把场景也调到刚刚好</strong><small>活动、天气、预算和人数都可以自己决定</small></div></div>
@@ -146,6 +150,6 @@
   <dialog id="guideDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">SHARE FIELD NOTES</span><h2>分享你的出逃攻略</h2><label>攻略标题<input id="guideTitleInput" placeholder="例如：一个人逛西岸的半日路线" /></label><label>地点<input id="guidePlaceInput" placeholder="上海 · 徐汇滨江" /></label><label>一句经验<textarea id="guideTipInput" rows="4" placeholder="把路线、时间和避坑经验写给下一位探索者"></textarea></label><button class="primary-button" id="publishGuideButton" value="default">发布攻略</button></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span>操作成功</span></div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script src="app.js?v=yellow-partner"></script>
+  <script src="app.js?v=partner-drawer-3"></script>
 </body>
 </html>
