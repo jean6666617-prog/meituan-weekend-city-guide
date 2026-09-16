@@ -222,7 +222,7 @@ function applyPassportPage(page,persist=true){
   if(!passportSpreads.includes(page))page="identity";passportState.currentPage=page;passportUi.currentSpread=passportSpreads.indexOf(page);
   $$("[data-passport-page]").forEach(button=>{const active=button.dataset.passportPage===page;button.classList.toggle("active",active);button.setAttribute("aria-selected",String(active));button.tabIndex=active?0:-1});
   $$(".passport-view").forEach(view=>{const active=view.dataset.view===page;view.classList.toggle("active",active);view.hidden=!active});
-  $("#stampPopover").hidden=true;$("#passportPrevPage").disabled=passportUi.currentSpread===0;$("#passportNextPage").disabled=passportUi.currentSpread===passportUi.totalSpreads-1;if(persist)savePassportState();refreshIcons()
+  $("#stampPopover").hidden=true;$("#passportBook").classList.toggle("at-first-spread",passportUi.currentSpread===0);$("#passportBook").classList.toggle("at-last-spread",passportUi.currentSpread===passportUi.totalSpreads-1);if(persist)savePassportState();refreshIcons()
 }
 function setPassportPage(page,persist=true,animate=passportUi.isOpen){
   if(!passportSpreads.includes(page))page="identity";const target=passportSpreads.indexOf(page);if(target===passportUi.currentSpread){applyPassportPage(page,persist);return true}if(passportUi.isAnimating)return false;if(!animate){applyPassportPage(page,persist);return true}
@@ -264,6 +264,17 @@ function closePassport(returnFocus=true,force=false){
 }
 function turnPassport(step){
   if(!passportUi.isOpen||passportUi.isAnimating)return false;const next=Math.min(passportUi.totalSpreads-1,Math.max(0,passportUi.currentSpread+step));if(next===passportUi.currentSpread)return false;return setPassportPage(passportSpreads[next],true,true)
+}
+function isPassportControl(target){const control=target.closest('button,a,input,select,textarea,label,[role="dialog"],[data-no-page-turn]');return Boolean(control&&control!==$("#passportBook"))}
+function updatePassportPageHover(event){
+  const pages=$(".passport-pages");const book=$("#passportBook");if(!passportUi.isOpen||passportUi.isAnimating||isPassportControl(event.target)){book.classList.remove("hover-prev","hover-next");return}const bounds=pages.getBoundingClientRect();const forward=event.clientX>=bounds.left+bounds.width/2;book.classList.toggle("hover-next",forward&&passportUi.currentSpread<passportUi.totalSpreads-1);book.classList.toggle("hover-prev",!forward&&passportUi.currentSpread>0)
+}
+function handlePassportPageClick(event){
+  if(!passportUi.isOpen||passportUi.isAnimating||isPassportControl(event.target))return;const bounds=event.currentTarget.getBoundingClientRect();turnPassport(event.clientX>=bounds.left+bounds.width/2?1:-1)
+}
+function initPassportReveal(){
+  const experience=$("#passportExperience");const reveal=()=>{if(!experience.classList.contains("passport-awaiting"))return;experience.classList.remove("passport-awaiting");experience.classList.add("passport-entering");setTimeout(()=>experience.classList.remove("passport-entering"),820)};
+  if(!("IntersectionObserver" in window)){reveal();return}const observer=new IntersectionObserver(entries=>{if(!entries.some(entry=>entry.isIntersecting))return;reveal();observer.disconnect()},{threshold:.24,rootMargin:"0px 0px -8% 0px"});observer.observe(experience)
 }
 function completeCheckin(){
   const select=$("#passportActivitySelect");const activity=activities.find(item=>item.name===select.value);if(!activity||isStamping)return;if(passportState.completedActivities.includes(activity.name)){showToast("这个活动已经打卡过了");updateCheckinControls();return}
@@ -335,7 +346,7 @@ $("#checkinButton").addEventListener("click",completeCheckin);
 $("#passportCover").addEventListener("click",openPassport);
 $("#passportBookClose").addEventListener("click",()=>closePassport(true));
 $("#passportBackdrop").addEventListener("click",()=>closePassport(true));
-$("#passportPrevPage").addEventListener("click",()=>turnPassport(-1));$("#passportNextPage").addEventListener("click",()=>turnPassport(1));
+$(".passport-pages").addEventListener("click",handlePassportPageClick);$(".passport-pages").addEventListener("mousemove",updatePassportPageHover);$(".passport-pages").addEventListener("mouseleave",()=>$("#passportBook").classList.remove("hover-prev","hover-next"));
 $$("[data-passport-page]").forEach(button=>button.addEventListener("click",()=>setPassportPage(button.dataset.passportPage)));
 $(".passport-tabs").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight"].includes(event.key))return;event.preventDefault();const tabs=$$("[data-passport-page]");const current=tabs.indexOf(document.activeElement);const direction=event.key==="ArrowRight"?1:-1;const next=tabs[(current+direction+tabs.length)%tabs.length];next.focus();setPassportPage(next.dataset.passportPage)});
 let passportTouchStart=null;$(".passport-pages").addEventListener("touchstart",event=>{const touch=event.changedTouches[0];passportTouchStart={x:touch.clientX,y:touch.clientY}},{passive:true});$(".passport-pages").addEventListener("touchend",event=>{if(!passportTouchStart||passportUi.isAnimating)return;const touch=event.changedTouches[0];const dx=touch.clientX-passportTouchStart.x;const dy=touch.clientY-passportTouchStart.y;passportTouchStart=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.25)turnPassport(dx<0?1:-1)},{passive:true});
@@ -355,5 +366,5 @@ $("#modalDetailButton").addEventListener("click",()=>{const returnTarget=previou
 $("#modalCrewButton").addEventListener("click",()=>scrollToSection("#crews"));$("#modalBrowseButton").addEventListener("click",()=>scrollToSection("#recommendations"));
 document.addEventListener("keydown",event=>{if(activityDetailOpen&&event.key==="Tab"){trapFocusIn($(".activity-detail-card"),event);return}if(partnerPanelOpen&&event.key==="Tab"){trapPartnerFocus(event);return}if(passportUi.isOpen&&event.key==="Tab"){trapFocusIn($("#passportBook"),event);return}if(event.key!=="Escape")return;if(activityDetailOpen){closeActivityDetail(true);return}if(!$("#stampPopover").hidden){$("#stampPopover").classList.remove("show");$("#stampPopover").hidden=true;return}if(partnerPanelOpen){closePartnerPanel(true);return}if(modal.classList.contains("open")){closeHotModal();return}if(passportUi.isOpen)closePassport(true)});
 
-initPassportActivitySelect();renderAnimals();renderTypes();renderManual();renderPassport();selectMode(state.mode,false);refreshIcons();
+initPassportActivitySelect();renderAnimals();renderTypes();renderManual();renderPassport();selectMode(state.mode,false);initPassportReveal();refreshIcons();
 setTimeout(openHotModal,420);
