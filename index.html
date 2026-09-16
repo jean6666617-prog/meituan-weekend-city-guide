@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=passport-core-3" />
+  <link rel="stylesheet" href="styles.css?v=activity-detail-2" />
 </head>
 <body>
   <header class="site-header">
@@ -218,12 +218,37 @@
 
   <footer><a class="brand" href="#home"><span class="brand-orbit"><i data-lucide="navigation-2"></i></span><span><strong>周末出逃</strong><small>WEEKEND ESCAPE CLUB</small></span></a><p>一个人自在，一群人也尽兴。</p><span>© 2026 Weekend Escape Club</span></footer>
 
+  <div class="activity-detail-modal" id="activityDetailModal" role="dialog" aria-modal="true" aria-labelledby="activityDetailTitle" aria-describedby="activityDetailDescription" aria-hidden="true">
+    <div class="activity-detail-backdrop" data-close-activity-detail></div>
+    <article class="activity-detail-card" tabindex="-1">
+      <button class="activity-detail-close" id="activityDetailClose" type="button" aria-label="关闭活动详情"><i data-lucide="x"></i></button>
+      <div class="activity-detail-scroll" id="activityDetailScroll">
+        <section class="detail-visual" aria-label="活动图片">
+          <div class="detail-main-image" id="detailMainImageFrame"><img id="detailMainImage" src="assets/activities/westbund-art.jpg" alt="西岸艺术慢逛计划" /><span class="detail-image-fallback" id="detailImageFallback">活动图片暂时无法加载</span><div class="detail-image-badges"><span id="detailCategory">看展</span><strong id="detailMatch">97% 合拍</strong></div><span class="detail-status" id="detailStatus">报名中</span></div>
+          <div class="detail-audience-row"><span id="detailAudience">I人友好</span><span id="detailPressureBadge">低压力</span></div>
+          <div class="detail-thumbnails" id="detailThumbnails" aria-label="切换活动图片"></div>
+          <div class="detail-location-card"><i data-lucide="map-pinned"></i><div><small>MEETING POINT</small><strong id="detailMeeting">美术馆南门售票处</strong><p id="detailLocationLine">徐汇滨江 · 距离你 4.2km · 地铁11号线云锦路站</p></div></div>
+        </section>
+        <section class="detail-info">
+          <header class="detail-heading"><div class="detail-heading-meta"><span id="detailTopCategory">展览 · I人友好</span><button class="detail-heading-save" id="detailHeadingSave" type="button" aria-label="收藏当前活动"><i data-lucide="heart"></i></button></div><h2 id="activityDetailTitle">西岸艺术慢逛计划</h2><p id="activityDetailDescription">戴着耳机各自看展，想交流时再去休息区碰面。</p></header>
+          <div class="detail-facts" id="detailFacts"></div>
+          <section class="detail-copy-block"><h3>活动介绍</h3><p id="detailDescriptionLong"></p></section>
+          <section class="detail-social"><div class="detail-section-title"><span>HOW WE HANG OUT</span><h3>这场活动怎么相处</h3></div><div class="detail-social-summary"><span><small>社交压力</small><strong id="detailSocialPressure">低</strong></span><span><small>推荐人数</small><strong id="detailGroupSize">1—4人</strong></span></div><ul id="detailSocialFeatures"></ul><p class="detail-energy-note" id="detailEnergyNote"></p></section>
+          <section class="detail-reason"><i data-lucide="sparkles"></i><div><h3>为什么推荐给你？</h3><p id="detailReason"></p></div></section>
+          <section class="detail-schedule"><div class="detail-section-title"><span>RUN OF SHOW</span><h3>活动流程</h3></div><ol id="detailSchedule"></ol></section>
+          <section class="detail-teams" id="detailTeamsSection"><div class="detail-section-title"><span>GO WITH BUDDIES</span><h3>当前搭子队伍</h3></div><div id="detailTeams"></div></section>
+        </section>
+      </div>
+      <footer class="activity-detail-actions"><button class="detail-action-icon" id="detailFooterSave" type="button" aria-label="收藏活动"><i data-lucide="heart"></i></button><button class="detail-back-button" id="detailBackButton" type="button"><i data-lucide="arrow-left"></i> 返回活动列表</button><button class="detail-secondary-action" id="detailSoloButton" type="button"><i data-lucide="headphones"></i> 独自参加</button><button class="detail-secondary-action" id="detailFindButton" type="button"><i data-lucide="users"></i> 找搭子</button><button class="detail-primary-action" id="detailJoinButton" type="button">立即加入 <i data-lucide="arrow-up-right"></i></button></footer>
+    </article>
+  </div>
+
   <div class="hot-modal" id="hotModal" role="dialog" aria-modal="true" aria-labelledby="hotTitle" aria-hidden="true">
     <div class="hot-backdrop" data-close-modal></div>
     <div class="hot-dialog" tabindex="-1">
       <button class="modal-close" type="button" aria-label="关闭热门活动" data-close-modal><i data-lucide="x"></i></button>
       <div class="hot-poster"><img src="assets/activities/rooftop-concert.jpg" alt="上海城市天台晚霞中的现场音乐会" width="1400" height="933" /><span class="hot-rank">当前热门活动 <strong>NO.1</strong></span><div class="poster-crowd"><img data-avatar="alpaca" src="assets/animals/alpaca.png" alt="羊驼伙伴" /><img data-avatar="shiba" src="assets/animals/shiba.png" alt="柴犬伙伴" /><img data-avatar="penguin" src="assets/animals/penguin.png" alt="企鹅伙伴" /></div></div>
-      <div class="hot-content"><span class="hot-kicker">THIS WEEKEND · SHANGHAI</span><h2 id="hotTitle">城市天台<br />日落音乐会</h2><div class="hot-details"><span><i data-lucide="calendar-days"></i> 周六 18:00</span><span><i data-lucide="map-pin"></i> 静安大悦城</span><span><i data-lucide="wallet-cards"></i> 人均 ¥128</span></div><div class="going-count"><span class="mini-faces"><span data-avatar="cat"><img src="assets/animals/cat.png" alt="橘猫伙伴" /></span><span data-avatar="rabbit"><img src="assets/animals/rabbit.png" alt="白兔伙伴" /></span><span data-avatar="otter"><img src="assets/animals/otter.png" alt="海獭伙伴" /></span></span><strong>已有 36 只小动物准备出发</strong></div><p>不管是想认识新朋友，还是只想在人群里听歌发呆，都有适合你的区域。</p><div class="modal-actions"><button class="primary-button" id="modalCrewButton" type="button">看看谁想一起去</button><button class="ghost-button" id="modalBrowseButton" type="button">先逛逛其他活动</button></div></div>
+      <div class="hot-content"><span class="hot-kicker">THIS WEEKEND · SHANGHAI</span><h2 id="hotTitle">城市天台<br />日落音乐会</h2><div class="hot-details"><span><i data-lucide="calendar-days"></i> 周六 18:00</span><span><i data-lucide="map-pin"></i> 静安大悦城</span><span><i data-lucide="wallet-cards"></i> 人均 ¥128</span></div><div class="going-count"><span class="mini-faces"><span data-avatar="cat"><img src="assets/animals/cat.png" alt="橘猫伙伴" /></span><span data-avatar="rabbit"><img src="assets/animals/rabbit.png" alt="白兔伙伴" /></span><span data-avatar="otter"><img src="assets/animals/otter.png" alt="海獭伙伴" /></span></span><strong>已有 36 只小动物准备出发</strong></div><p>不管是想认识新朋友，还是只想在人群里听歌发呆，都有适合你的区域。</p><div class="modal-actions"><button class="primary-button" id="modalDetailButton" type="button">查看活动详情</button><button class="ghost-button" id="modalCrewButton" type="button">看看谁想一起去</button><button class="ghost-button" id="modalBrowseButton" type="button">先逛逛其他活动</button></div></div>
     </div>
   </div>
 
@@ -231,6 +256,6 @@
   <dialog id="guideDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">SHARE FIELD NOTES</span><h2>分享你的出逃攻略</h2><label>攻略标题<input id="guideTitleInput" placeholder="例如：一个人逛西岸的半日路线" /></label><label>地点<input id="guidePlaceInput" placeholder="上海 · 徐汇滨江" /></label><label>一句经验<textarea id="guideTipInput" rows="4" placeholder="把路线、时间和避坑经验写给下一位探索者"></textarea></label><button class="primary-button" id="publishGuideButton" value="default">发布攻略</button></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span>操作成功</span></div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script src="app.js?v=passport-core-3"></script>
+  <script src="app.js?v=activity-detail-2"></script>
 </body>
 </html>
