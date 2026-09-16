@@ -226,7 +226,7 @@ function applyPassportPage(page,persist=true){
 }
 function setPassportPage(page,persist=true,animate=passportUi.isOpen){
   if(!passportSpreads.includes(page))page="identity";const target=passportSpreads.indexOf(page);if(target===passportUi.currentSpread){applyPassportPage(page,persist);return true}if(passportUi.isAnimating)return false;if(!animate){applyPassportPage(page,persist);return true}
-  const book=$("#passportBook");const direction=target>passportUi.currentSpread?"forward":"backward";passportUi.isAnimating=true;book.classList.add("is-turning",`turn-${direction}`);book.setAttribute("aria-busy","true");setTimeout(()=>applyPassportPage(page,persist),260);passportUi.timer=setTimeout(()=>{book.classList.remove("is-turning",`turn-${direction}`);book.removeAttribute("aria-busy");passportUi.isAnimating=false;$(`[data-passport-page="${page}"]`)?.focus({preventScroll:true})},580);return true
+  const book=$("#passportBook");const direction=target>passportUi.currentSpread?"forward":"backward";passportUi.isAnimating=true;book.classList.remove("hover-prev","hover-next");book.classList.add("is-turning",`turn-${direction}`);book.setAttribute("aria-busy","true");applyPassportPage(page,persist);passportUi.timer=setTimeout(()=>{book.classList.remove("is-turning",`turn-${direction}`);book.removeAttribute("aria-busy");passportUi.isAnimating=false;$(`[data-passport-page="${page}"]`)?.focus({preventScroll:true})},580);return true
 }
 function renderLevelRoute(){
   const {current}=getLevelInfo();$("#levelRoute").innerHTML=levelCatalog.map(item=>`<span class="route-stop ${item.level<current.level?"passed":item.level===current.level?"current":""}"><i>${item.level<=current.level?"✓":item.level}</i><small>${item.name}</small></span>`).join("")
