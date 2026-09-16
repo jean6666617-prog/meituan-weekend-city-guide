@@ -267,11 +267,7 @@
         <div><p class="section-label">ESCAPE FIELD NOTES</p><h2>把城市的新鲜一面，<br /><em>留给下一只小动物。</em></h2></div>
         <button class="primary-button" id="shareGuideButton" type="button"><i data-lucide="pen-line"></i> 分享攻略</button>
       </div>
-      <div class="story-grid">
-        <article class="story-card story-yellow"><div class="story-cover"><img src="assets/activities/wukang-sunset.jpg" alt="梧桐区秋日街景攻略" /><span>慢走路线</span></div><div class="story-body"><div class="story-author" data-avatar="fox"><img src="assets/animals/fox.png" alt="狐狸作者头像" /><span><strong>狐狸小巷雷达</strong><small>2 小时前</small></span></div><h3>梧桐区不赶路的日落路线</h3><p>避开人流的三个转角、两家可以独坐的咖啡店，都标在路线里了。</p><button class="like-button" type="button" aria-label="点赞梧桐区攻略"><i data-lucide="heart"></i><span>126</span></button></div></article>
-        <article class="story-card story-blue"><div class="story-cover"><img src="assets/activities/westbund-art.jpg" alt="西岸艺术展览攻略" /><span>独处友好</span></div><div class="story-body"><div class="story-author" data-avatar="cat"><img src="assets/animals/cat.png" alt="橘猫作者头像" /><span><strong>橘猫慢慢看</strong><small>昨天</small></span></div><h3>一个人逛西岸，也能待满半天</h3><p>从安静展厅到江边长椅，附上存包位置和不用排队的入场时段。</p><button class="like-button" type="button" aria-label="点赞西岸攻略"><i data-lucide="heart"></i><span>89</span></button></div></article>
-        <article class="story-card story-coral"><div class="story-cover"><img src="assets/activities/rooftop-concert.jpg" alt="天台音乐会攻略" /><span>热闹现场</span></div><div class="story-body"><div class="story-author" data-avatar="alpaca"><img src="assets/animals/alpaca.png" alt="羊驼作者头像" /><span><strong>羊驼氛围组</strong><small>3 天前</small></span></div><h3>天台音乐会：想蹦或发呆都行</h3><p>舞台左右两侧氛围不同，第一次去的人可以按社交电量选区域。</p><button class="like-button" type="button" aria-label="点赞音乐会攻略"><i data-lucide="heart"></i><span>203</span></button></div></article>
-      </div>
+      <div class="story-grid" id="storyGrid"></div>
     </section>
   </main>
 
@@ -302,6 +298,15 @@
     </article>
   </div>
 
+  <div class="content-detail-modal" id="contentDetailModal" role="dialog" aria-modal="true" aria-labelledby="contentDetailTitle" aria-describedby="contentDetailDescription" aria-hidden="true">
+    <div class="content-detail-backdrop" data-close-content-detail></div>
+    <article class="content-detail-card" id="contentDetailCard" tabindex="-1">
+      <button class="content-detail-close" id="contentDetailClose" type="button" aria-label="关闭详情"><i data-lucide="x"></i></button>
+      <div class="content-detail-scroll" id="contentDetailContent"></div>
+      <footer class="content-detail-actions" id="contentDetailActions"></footer>
+    </article>
+  </div>
+
   <div class="hot-modal" id="hotModal" role="dialog" aria-modal="true" aria-labelledby="hotTitle" aria-hidden="true">
     <div class="hot-backdrop" data-close-modal></div>
     <div class="hot-dialog" tabindex="-1">
@@ -315,6 +320,6 @@
   <dialog id="guideDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">SHARE FIELD NOTES</span><h2>分享你的出逃攻略</h2><label>攻略标题<input id="guideTitleInput" placeholder="例如：一个人逛西岸的半日路线" /></label><label>地点<input id="guidePlaceInput" placeholder="上海 · 徐汇滨江" /></label><label>一句经验<textarea id="guideTipInput" rows="4" placeholder="把路线、时间和避坑经验写给下一位探索者"></textarea></label><button class="primary-button" id="publishGuideButton" value="default">发布攻略</button></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span>操作成功</span></div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script src="app.js?v=animal-divider-1"></script>
+  <script src="app.js?v=guide-crew-detail-1"></script>
 </body>
 </html>
