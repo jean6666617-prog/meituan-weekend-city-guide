@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=partner-drawer-3" />
+  <link rel="stylesheet" href="styles.css?v=passport-core-3" />
 </head>
 <body>
   <header class="site-header">
@@ -110,15 +110,96 @@
     <section class="passport-section" id="passport">
       <div class="passport-copy">
         <p class="section-label">CITY ESCAPE PASSPORT</p>
-        <h2>每次出门，<br />都是城市探索的一页。</h2>
-        <p>独处也能获得完整奖励。没有谁的周末，比谁更“成功”。</p>
-        <button class="dark-button" id="checkinButton" type="button"><i data-lucide="footprints"></i> 完成本周打卡</button>
+        <h2>把普通周末，<br />盖成值得收藏的印章。</h2>
+        <p>独自出发，也是一段完整旅程。每次打卡都会写进你的城市成长档案。</p>
+        <label class="checkin-activity"><span>本周待打卡活动</span><select id="passportActivitySelect" aria-label="选择要打卡的活动"></select></label>
+        <button class="dark-button stamp-action" id="checkinButton" type="button"><i data-lucide="stamp"></i> 盖下本周印章</button>
+        <p class="checkin-hint" id="checkinHint">每个活动仅能完成一次打卡</p>
       </div>
-      <div class="passport-card">
-        <div class="passport-top"><div><small>ANIMAL CITY PASSPORT</small><h3>动物城市护照</h3></div><div class="passport-avatar-frame" id="passportAvatarFrame" data-avatar="kangaroo"><img id="passportAvatar" src="assets/animals/kangaroo.png" alt="护照中的袋鼠头像" /></div></div>
-        <div class="level-row"><span>LEVEL <strong id="levelValue">03</strong></span><div class="level-track"><i id="levelProgress"></i></div><small id="escapeCount">已出逃 7 次</small></div>
-        <div class="stamp-grid" id="stampGrid"></div>
-        <div class="passport-foot"><span><i data-lucide="footprints"></i> 脚印 <strong id="footprintCount">12</strong></span><span><i data-lucide="users"></i> 搭子图鉴 <strong id="buddyCount">4</strong></span></div>
+
+      <div class="passport-experience" id="passportExperience" data-open="false">
+        <button class="passport-cover" id="passportCover" type="button" aria-label="打开动物城市护照">
+          <span class="cover-route" aria-hidden="true"><i data-lucide="route"></i><i data-lucide="footprints"></i></span>
+          <span class="cover-kicker">ANIMAL CITY PASSPORT</span>
+          <span class="cover-title">动物城市护照</span>
+          <span class="cover-emblem passport-avatar-frame" data-avatar="kangaroo"><img id="passportCoverAvatar" src="assets/animals/kangaroo.png" alt="袋鼠护照徽章" /></span>
+          <span class="cover-city">SHA · 上海</span>
+          <span class="cover-number" id="coverPassportNumber">NO. SHA-260901</span>
+          <span class="cover-open-hint"><i data-lucide="hand"></i> 点击打开</span>
+        </button>
+
+        <div class="passport-book" id="passportBook" aria-label="已打开的动物城市护照">
+          <span class="passport-cover-edge" aria-hidden="true"></span>
+          <nav class="passport-tabs" aria-label="护照页签" role="tablist">
+            <button class="active" id="passportTabIdentity" data-passport-page="identity" role="tab" aria-selected="true" aria-controls="passportViewIdentity" type="button"><i data-lucide="contact"></i><span>身份页</span></button>
+            <button id="passportTabStamps" data-passport-page="stamps" role="tab" aria-selected="false" aria-controls="passportViewStamps" type="button"><i data-lucide="stamp"></i><span>城市印章</span></button>
+            <button id="passportTabBuddies" data-passport-page="buddies" role="tab" aria-selected="false" aria-controls="passportViewBuddies" type="button"><i data-lucide="users"></i><span>搭子图鉴</span></button>
+          </nav>
+
+          <div class="passport-pages">
+            <section class="passport-view active" id="passportViewIdentity" data-view="identity" role="tabpanel" aria-labelledby="passportTabIdentity">
+              <article class="book-page identity-page">
+                <div class="page-watermark" aria-hidden="true">SHA</div>
+                <header class="page-heading"><span>ANIMAL IDENTITY</span><strong>城市出逃身份页</strong></header>
+                <div class="identity-main">
+                  <div class="passport-photo passport-avatar-frame" id="passportAvatarFrame" data-avatar="kangaroo"><img id="passportAvatar" src="assets/animals/kangaroo.png" alt="护照中的袋鼠头像" /></div>
+                  <dl class="identity-fields">
+                    <div><dt>PARTNER / 伙伴</dt><dd id="passportAnimalName">袋鼠</dd></div>
+                    <div><dt>PERSONALITY / 人格</dt><dd id="passportPersonality">活力带队型</dd></div>
+                    <div><dt>CITY / 城市</dt><dd>上海 SHANGHAI</dd></div>
+                    <div><dt>FAVORITE / 喜欢</dt><dd id="passportFavorite">青草和树叶</dd></div>
+                  </dl>
+                </div>
+                <blockquote id="passportSignature">“附近新鲜事，我带你找到！”</blockquote>
+                <div class="passport-meta"><span>签发日 <strong id="passportIssueDate">2026.09.01</strong></span><span>编号 <strong id="passportNumber">SHA-260901</strong></span></div>
+                <div class="mobile-passport-progress"><strong>LEVEL <b id="mobileLevelValue">03</b> · <span id="mobileLevelName">周末探索员</span></strong><p id="mobileLevelMessage">再完成2次出逃，即可升级。</p><div><span><i data-lucide="map-pinned"></i><b id="mobileEscapeCount">7</b> 次出逃</span><span><i data-lucide="footprints"></i><b id="mobileFootprintCount">12</b> 枚脚印</span></div></div>
+                <footer class="page-footer"><span>SHA · 31.2304°N 121.4737°E</span><b>01</b></footer>
+              </article>
+              <article class="book-page route-page">
+                <header class="page-heading"><span>ESCAPE ROUTE</span><strong id="levelName">周末探索员</strong></header>
+                <div class="level-ticket"><span>LEVEL <strong id="levelValue">03</strong></span><p id="levelMessage">再完成2次出逃，即可升级。</p></div>
+                <div class="metro-progress" id="levelRoute" aria-label="护照成长路线"></div>
+                <div class="passport-counters"><span><i data-lucide="map-pinned"></i><strong id="escapeCount">7</strong><small>已出逃</small></span><span><i data-lucide="footprints"></i><strong id="footprintCount">12</strong><small>脚印</small></span><span><i data-lucide="users"></i><strong id="buddyCount">4</strong><small>搭子图鉴</small></span></div>
+                <p class="passport-quote">下一枚印章，留给这个周末。</p>
+                <footer class="page-footer"><span>WEEKEND ESCAPE CLUB</span><b>02</b></footer>
+              </article>
+            </section>
+
+            <section class="passport-view" id="passportViewStamps" data-view="stamps" role="tabpanel" aria-labelledby="passportTabStamps" hidden>
+              <article class="book-page stamp-index-page">
+                <header class="page-heading"><span>CITY VISA</span><strong>城市印章目录</strong></header>
+                <p class="page-lead">每种城市体验只收藏一枚印章，重复出发会在同一枚上留下次数。</p>
+                <div class="stamp-summary"><span><strong id="unlockedStampCount">0</strong>/8<small>已解锁</small></span><span><strong id="totalStampCount">0</strong><small>累计盖章</small></span></div>
+                <div class="recent-checkin" id="recentCheckin"><i data-lucide="map-pin"></i><div><small>最近到达</small><strong>等待第一次打卡</strong><span>上海 · SHA</span></div></div>
+                <footer class="page-footer"><span>VALID FOR CITY WEEKENDS</span><b>03</b></footer>
+              </article>
+              <article class="book-page stamp-page">
+                <div class="stamp-tool" id="stampTool" aria-hidden="true"><i data-lucide="stamp"></i></div>
+                <div class="ink-bloom" id="inkBloom" aria-hidden="true"></div>
+                <header class="page-heading"><span>STAMP COLLECTION</span><strong>已获得的城市记忆</strong></header>
+                <div class="stamp-grid" id="stampGrid"></div>
+                <div class="stamp-popover" id="stampPopover" role="dialog" aria-modal="false" aria-labelledby="stampDetailTitle" hidden><button id="stampDetailClose" type="button" aria-label="关闭印章详情"><i data-lucide="x"></i></button><small>CITY STAMP</small><h3 id="stampDetailTitle"></h3><dl><div><dt>首次解锁</dt><dd id="stampDetailDate"></dd></div><div><dt>完成次数</dt><dd id="stampDetailCount"></dd></div><div><dt>对应活动</dt><dd id="stampDetailActivity"></dd></div><div><dt>最近地点</dt><dd id="stampDetailPlace"></dd></div></dl></div>
+                <footer class="page-footer"><span>COLLECT MOMENTS, NOT PRESSURE</span><b>04</b></footer>
+              </article>
+            </section>
+
+            <section class="passport-view" id="passportViewBuddies" data-view="buddies" role="tabpanel" aria-labelledby="passportTabBuddies" hidden>
+              <article class="book-page buddy-intro-page">
+                <header class="page-heading"><span>TRAVEL COMPANIONS</span><strong>搭子入境记录</strong></header>
+                <p class="page-lead">同行不是任务，是刚刚好的陪伴。每一次同频相遇，都会成为护照里的一张签证。</p>
+                <div class="buddy-stat"><i data-lucide="tickets"></i><span><strong id="buddyVisaCount">4</strong>张同行签证</span></div>
+                <div class="locked-buddy"><span><i data-lucide="user-round"></i></span><p>下一次出逃，<br />也许会遇见新的同频伙伴。</p></div>
+                <footer class="page-footer"><span>COMPANIONS OF SHANGHAI</span><b>05</b></footer>
+              </article>
+              <article class="book-page buddy-visas-page">
+                <header class="page-heading"><span>VISA STICKERS</span><strong>一起走过的城市片段</strong></header>
+                <div class="buddy-visas" id="buddyVisas"></div>
+                <footer class="page-footer"><span>QUIET COMPANY IS COMPANY TOO</span><b>06</b></footer>
+              </article>
+            </section>
+          </div>
+          <button class="passport-reset" id="passportReset" type="button">重置演示数据</button>
+        </div>
       </div>
     </section>
 
@@ -150,6 +231,6 @@
   <dialog id="guideDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">SHARE FIELD NOTES</span><h2>分享你的出逃攻略</h2><label>攻略标题<input id="guideTitleInput" placeholder="例如：一个人逛西岸的半日路线" /></label><label>地点<input id="guidePlaceInput" placeholder="上海 · 徐汇滨江" /></label><label>一句经验<textarea id="guideTipInput" rows="4" placeholder="把路线、时间和避坑经验写给下一位探索者"></textarea></label><button class="primary-button" id="publishGuideButton" value="default">发布攻略</button></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span>操作成功</span></div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script src="app.js?v=partner-drawer-3"></script>
+  <script src="app.js?v=passport-core-3"></script>
 </body>
 </html>

@@ -38,19 +38,63 @@ const crews = {
 };
 
 const manualChoices=["不强行热场","可以安静同行","第一次见面想参加多人局","主要想拍照","希望准时集合","活动结束后自由安排","可以一起吃饭","不接受临时放鸽子"];
-const badgeData=[
-  ["palette","艺术慢游"],["trees","城市吸氧"],["coffee","咖啡地图"],["music-2","现场音乐"],
-  ["camera","街头影像"],["utensils","深夜觅食"],["bike","周末运动"],["map","小众探索"]
+const stampCatalog=[
+  {id:"art",icon:"palette",name:"艺术慢游",color:"#315fc9"},
+  {id:"nature",icon:"trees",name:"城市吸氧",color:"#3f9365"},
+  {id:"coffee",icon:"coffee",name:"咖啡地图",color:"#9a633f"},
+  {id:"music",icon:"music-2",name:"现场音乐",color:"#d94f55"},
+  {id:"street",icon:"camera",name:"街头影像",color:"#8d55b4"},
+  {id:"food",icon:"utensils",name:"深夜觅食",color:"#e15d3e"},
+  {id:"sport",icon:"bike",name:"周末运动",color:"#237c88"},
+  {id:"niche",icon:"map",name:"小众探索",color:"#c17b16"}
+];
+const activityStampMap={
+  "西岸艺术慢逛计划":"art","梧桐区日落散步":"street","城市天台日落音乐会":"music","上生新所黑胶市集":"coffee",
+  "苏州河夜骑":"sport","小型陶艺体验局":"niche","世纪公园松弛野餐":"nature","深夜觅食地图":"food"
+};
+const levelCatalog=[
+  {level:1,name:"刚刚出门",min:0},
+  {level:2,name:"城市散步者",min:2},
+  {level:3,name:"周末探索员",min:5},
+  {level:4,name:"同频召集人",min:9},
+  {level:5,name:"城市生活家",min:14}
 ];
 const modeCopy={solo:{label:"独处充电清单",reason:"可独自参加 · 不强制互动",crew:"适合安静同行的小队",stage:"今天想一个人自在探索，不被打扰。"},soft:{label:"轻轻同行清单",reason:"2—4 人 · 安静相处也自在",crew:"低压力、可安静同行的小队",stage:"今天想要两三个人，舒服待着就好。"},party:{label:"热闹组局清单",reason:"多人互动 · 新朋友友好",crew:"正在热闹集结的小队",stage:"今天电量满格，去热闹现场认识新朋友。"}};
 
+function safeArray(key,fallback){try{const value=JSON.parse(localStorage.getItem(key)||"");return Array.isArray(value)?value:fallback}catch{return fallback}}
+function formatDate(date=new Date()){return new Intl.DateTimeFormat("zh-CN",{year:"numeric",month:"2-digit",day:"2-digit"}).format(date).replaceAll("/",".")}
+function makePassportNumber(){return `SHA-${String(Date.now()).slice(-6)}`}
+const defaultBuddyRecords=[
+  {id:"seed-otter",animal:"otter",nickname:"海獭小陶",activity:"苏州河慢走",date:"2026.09.12",tags:["安静同行","不强行热场"],count:2,memory:"没说很多话，但一起看完了整场日落。"},
+  {id:"seed-cat",animal:"cat",nickname:"橘猫慢慢",activity:"西岸艺术慢逛",date:"2026.09.06",tags:["各看各的","结束后自由安排"],count:1,memory:"在喜欢的画前停了很久，谁也没有催谁。"},
+  {id:"seed-penguin",animal:"penguin",nickname:"企鹅准时到",activity:"苏州河夜骑",date:"2026.08.30",tags:["准时集合","路线明确"],count:1,memory:"风很大，但沿河的灯一直很亮。"},
+  {id:"seed-rabbit",animal:"rabbit",nickname:"白兔小枝",activity:"小型陶艺体验局",date:"2026.08.23",tags:["轻松聊天","可以一起吃饭"],count:1,memory:"捏了两只不太圆的杯子，笑得很开心。"}
+];
+function createDefaultPassport(){
+  const legacyEscapes=Number(localStorage.getItem("weekend-escapes")||7);
+  const legacyFootprints=Number(localStorage.getItem("weekend-footprints")||12);
+  return {version:2,level:3,escapeCount:Number.isFinite(legacyEscapes)?legacyEscapes:7,footprints:Number.isFinite(legacyFootprints)?legacyFootprints:12,buddyCount:4,completedActivities:[],unlockedStamps:[
+    {id:"art",firstUnlocked:"2026.08.16",count:2,activities:["西岸艺术慢逛计划"],lastActivity:"西岸艺术慢逛计划",lastPlace:"西岸美术馆"},
+    {id:"street",firstUnlocked:"2026.08.23",count:1,activities:["梧桐区日落散步"],lastActivity:"梧桐区日落散步",lastPlace:"武康路"},
+    {id:"sport",firstUnlocked:"2026.08.30",count:1,activities:["苏州河夜骑"],lastActivity:"苏州河夜骑",lastPlace:"昌平路桥"}
+  ],buddyRecords:defaultBuddyRecords.map(record=>({...record,tags:[...record.tags]})),joinedCrews:[],recentCheckin:null,currentPage:"identity",issueDate:"2026.09.01",passportNumber:makePassportNumber()}
+}
+function loadPassportState(){
+  const fallback=createDefaultPassport();
+  try{
+    const parsed=JSON.parse(localStorage.getItem("weekend-passport-v2")||"null");
+    const valid=parsed&&typeof parsed==="object"&&Array.isArray(parsed.completedActivities)&&parsed.completedActivities.every(item=>typeof item==="string")&&Array.isArray(parsed.unlockedStamps)&&parsed.unlockedStamps.every(item=>item&&stampCatalog.some(meta=>meta.id===item.id)&&Number.isFinite(Number(item.count))&&Array.isArray(item.activities))&&Array.isArray(parsed.buddyRecords)&&parsed.buddyRecords.every(item=>item&&typeof item.nickname==="string"&&typeof item.animal==="string"&&Array.isArray(item.tags));
+    if(!valid){localStorage.setItem("weekend-passport-v2",JSON.stringify(fallback));return fallback}
+    const clean={...fallback,...parsed};clean.escapeCount=Number.isFinite(Number(clean.escapeCount))?Math.max(0,Number(clean.escapeCount)):fallback.escapeCount;clean.footprints=Number.isFinite(Number(clean.footprints))?Math.max(0,Number(clean.footprints)):fallback.footprints;clean.joinedCrews=Array.isArray(clean.joinedCrews)?clean.joinedCrews:[];clean.currentPage=["identity","stamps","buddies"].includes(clean.currentPage)?clean.currentPage:"identity";return clean;
+  }catch{try{localStorage.setItem("weekend-passport-v2",JSON.stringify(fallback))}catch{}return fallback}
+}
+let passportState=loadPassportState();
 const state={
   mode:localStorage.getItem("weekend-mode")||"solo",
   animal:localStorage.getItem("weekend-animal")||"kangaroo",
   type:"随便看看",budget:150,people:1,weather:"晴天",
-  saved:new Set(JSON.parse(localStorage.getItem("weekend-saved")||"[]")),
-  manual:new Set(JSON.parse(localStorage.getItem("weekend-manual")||'["不强行热场","可以安静同行"]')),
-  escapes:Number(localStorage.getItem("weekend-escapes")||7),footprints:Number(localStorage.getItem("weekend-footprints")||12),buddies:Number(localStorage.getItem("weekend-buddies")||4)
+  saved:new Set(safeArray("weekend-saved",[])),
+  manual:new Set(safeArray("weekend-manual",["不强行热场","可以安静同行"]))
 };
 
 const $=selector=>document.querySelector(selector);
@@ -76,7 +120,8 @@ function applyAnimalUI(animal,animate){
     $("#drawerCurrentAvatar").src=animal.image;$("#drawerCurrentAvatar").alt=`当前选中的${animal.name}伙伴`;$("#drawerCurrentAvatar").parentElement.dataset.avatar=animal.id;
     $("#currentPartnerLabel").textContent=`${animal.name} · ${animal.personality}`;$("#drawerCurrentDescription").textContent=animal.description;$("#partnerToggle").setAttribute("aria-label",`选择伙伴，当前为${animal.name}`);$("#animalName").textContent=animal.name;$("#animalPersonality").textContent=animal.personality;$("#animalLine").textContent=animal.description;$("#favoriteFood").textContent=animal.favoriteFood;
     $("#headerAvatar").src=animal.image;$("#headerAvatar").alt=`${animal.name}头像`;$("#profileButton").dataset.avatar=animal.id;$("#profileButton").setAttribute("aria-label",`当前动物伙伴：${animal.name}`);
-    $("#passportAvatar").src=animal.image;$("#passportAvatar").alt=`护照中的${animal.name}头像`;$("#passportAvatarFrame").dataset.avatar=animal.id;$("#recommendAnimal").textContent=animal.name;
+    $("#passportAvatar").src=animal.image;$("#passportAvatar").alt=`护照中的${animal.name}头像`;$("#passportAvatarFrame").dataset.avatar=animal.id;
+    $("#passportCoverAvatar").src=animal.image;$("#passportCoverAvatar").alt=`${animal.name}护照徽章`;$("#passportCoverAvatar").parentElement.dataset.avatar=animal.id;$("#recommendAnimal").textContent=animal.name;
     stage.style.setProperty("--partner-accent",animal.accentColor);stage.style.setProperty("--partner-soft",animal.softColor);
   };
   if(!animate){apply();return}
@@ -85,7 +130,7 @@ function applyAnimalUI(animal,animate){
 function selectAnimal(id){
   const animal=getAnimal(id);state.animal=id;localStorage.setItem("weekend-animal",id);
   $$(".animal-option").forEach(button=>{const selected=button.dataset.animal===id;button.classList.toggle("selected",selected);button.setAttribute("aria-selected",String(selected))});
-  applyAnimalUI(animal,true);renderRecommendations();renderCrews();showToast(`已切换为${animal.name}伙伴`);clearTimeout(partnerAutoCloseTimer);partnerAutoCloseTimer=setTimeout(()=>closePartnerPanel(true),300);
+  applyAnimalUI(animal,true);renderRecommendations();renderCrews();renderPassport();showToast(`已切换为${animal.name}伙伴`);clearTimeout(partnerAutoCloseTimer);partnerAutoCloseTimer=setTimeout(()=>closePartnerPanel(true),300);
 }
 
 let partnerPanelOpen=false;let partnerPanelTimer;let partnerAutoCloseTimer;let partnerPreviousFocus;
@@ -119,11 +164,11 @@ function renderRecommendations(){
   const list=filteredActivities();const animal=getAnimal(state.animal);const grid=$("#activityGrid");
   $("#recommendCount").textContent=`${list.length} 个活动刚刚好`;$("#recommendReason").textContent=`${animal.rec} · ${state.weather}优先 · ${modeCopy[state.mode].reason}`;
   grid.dataset.foodTheme=animal.id;grid.style.setProperty("--food-color",animal.accentColor);grid.style.setProperty("--food-bg",animal.softColor);grid.style.setProperty("--food-shadow",`${animal.accentColor}2f`);
-  grid.innerHTML=list.map((item,index)=>`<article class="activity-card" tabindex="0" style="--theme:${item.theme};--image-position:${item.position}"><span class="food-motif motif-a" aria-hidden="true"><i data-lucide="${animal.foodIcon}"></i></span><span class="food-motif motif-b" aria-hidden="true"><i data-lucide="${animal.foodIcon}"></i></span><div class="activity-image"><img src="${item.img}" alt="${item.alt}" width="1400" height="933" loading="lazy" /><span class="match-badge">${Math.max(80,item.match-(state.budget<item.price?8:0))}% 匹配</span><button class="save-button ${state.saved.has(item.name)?"saved":""}" data-save="${item.name}" type="button" aria-label="${state.saved.has(item.name)?"取消收藏":"收藏"}${item.name}"><i data-lucide="heart"></i></button><span class="activity-index">0${index+1}</span></div><div class="activity-body"><div class="tag-row"><span>${item.type}</span><span class="pressure">社交压力：${item.pressure}</span>${item.solo?'<span class="solo-ok">适合独自参加</span>':""}</div><h3>${item.name}</h3><p>${item.feature}</p><div class="activity-info"><span><i data-lucide="calendar-days"></i>${item.time}</span><span><i data-lucide="map-pin"></i>${item.place}</span><span><i data-lucide="users"></i>${item.people}</span><strong>${item.price?`¥${item.price}`:"免费"}</strong></div><div class="activity-actions"><button data-view="${item.name}" type="button">查看活动 <i data-lucide="arrow-up-right"></i></button><button data-find-crew="${item.name}" type="button">找搭子</button></div></div></article>`).join("");
+  grid.innerHTML=list.map((item,index)=>`<article class="activity-card" tabindex="0" style="--theme:${item.theme};--image-position:${item.position}"><span class="food-motif motif-a" aria-hidden="true"><i data-lucide="${animal.foodIcon}"></i></span><span class="food-motif motif-b" aria-hidden="true"><i data-lucide="${animal.foodIcon}"></i></span><div class="activity-image"><img src="${item.img}" alt="${item.alt}" width="1400" height="933" loading="lazy" /><span class="match-badge">${Math.max(80,item.match-(state.budget<item.price?8:0))}% 匹配</span><button class="save-button ${state.saved.has(item.name)?"saved":""}" data-save="${item.name}" type="button" aria-label="${state.saved.has(item.name)?"取消收藏":"收藏"}${item.name}"><i data-lucide="heart"></i></button><span class="activity-index">0${index+1}</span></div><div class="activity-body"><div class="tag-row"><span>${item.type}</span><span class="pressure">社交压力：${item.pressure}</span>${item.solo?'<span class="solo-ok">适合独自参加</span>':""}</div><h3>${item.name}</h3><p>${item.feature}</p><div class="activity-info"><span><i data-lucide="calendar-days"></i>${item.time}</span><span><i data-lucide="map-pin"></i>${item.place}</span><span><i data-lucide="users"></i>${item.people}</span><strong>${item.price?`¥${item.price}`:"免费"}</strong></div><div class="activity-actions"><button data-activity-view="${item.name}" type="button">查看活动 <i data-lucide="arrow-up-right"></i></button><button data-find-crew="${item.name}" type="button">找搭子</button></div></div></article>`).join("");
   $("#emptyState").hidden=list.length>0;$("#activityGrid").hidden=list.length===0;
   $$("[data-save]").forEach(button=>button.addEventListener("click",()=>toggleSave(button.dataset.save)));
   $$(".activity-image img").forEach(image=>image.addEventListener("error",()=>{const frame=image.closest(".activity-image");frame.dataset.fallback=`${image.alt}暂时无法加载`;frame.classList.add("image-error")}));
-  $$("[data-view]").forEach(button=>button.addEventListener("click",()=>showToast(`已打开「${button.dataset.view}」活动详情`)));
+  $$("[data-activity-view]").forEach(button=>button.addEventListener("click",()=>{const name=button.dataset.activityView;const select=$("#passportActivitySelect");if(select){select.value=name;passportState.selectedActivity=name;savePassportState();updateCheckinControls()}showToast(`已将「${name}」设为本周待打卡活动`)}));
   $$("[data-find-crew]").forEach(button=>button.addEventListener("click",()=>{$("#crews").scrollIntoView({behavior:"smooth"});showToast(`正在寻找「${button.dataset.findCrew}」的同频搭子`)}));
   $("#recommendAnimal").textContent=animal.name;refreshIcons();
 }
@@ -133,11 +178,69 @@ function renderManual(){$("#manualOptions").innerHTML=manualChoices.map(choice=>
 function renderCrews(){
   const list=crews[state.mode];const themeAnimal=getAnimal(state.animal);const container=$("#crewCards");
   container.dataset.foodTheme=themeAnimal.id;container.style.setProperty("--food-color",themeAnimal.accentColor);container.style.setProperty("--food-bg",themeAnimal.softColor);container.style.setProperty("--food-shadow",`${themeAnimal.accentColor}2f`);
-  container.innerHTML=list.map((crew,index)=>{const animal=getAnimal(crew.animal);return `<article class="crew-card"><span class="food-motif motif-a" aria-hidden="true"><i data-lucide="${themeAnimal.foodIcon}"></i></span><span class="food-motif motif-b" aria-hidden="true"><i data-lucide="${themeAnimal.foodIcon}"></i></span><div class="crew-animal" data-avatar="${animal.id}"><img src="${animal.image}" alt="发起人${animal.name}头像" /></div><div class="crew-main"><h3>${crew.name}</h3><p>${crew.mood}</p><div class="crew-tags">${crew.tags.map(tag=>`<span>${tag}</span>`).join("")}</div><div class="crew-meta"><span>${crew.time}</span><span>已加入 ${crew.joined} 人</span><strong>还差 ${crew.need} 人</strong></div></div><button class="join-button" data-join="${index}" type="button">加入</button></article>`}).join("");
-  $$("[data-join]").forEach(button=>button.addEventListener("click",()=>{button.textContent="已加入 ✓";button.classList.add("joined");button.disabled=true;state.buddies+=1;localStorage.setItem("weekend-buddies",state.buddies);renderPassport();showToast("加入成功，舒服做自己就好")}));refreshIcons();
+  container.innerHTML=list.map((crew,index)=>{const animal=getAnimal(crew.animal);const crewId=`${state.mode}-${index}`;const joined=passportState.joinedCrews.includes(crewId);return `<article class="crew-card"><span class="food-motif motif-a" aria-hidden="true"><i data-lucide="${themeAnimal.foodIcon}"></i></span><span class="food-motif motif-b" aria-hidden="true"><i data-lucide="${themeAnimal.foodIcon}"></i></span><div class="crew-animal" data-avatar="${animal.id}"><img src="${animal.image}" alt="发起人${animal.name}头像" /></div><div class="crew-main"><h3>${crew.name}</h3><p>${crew.mood}</p><div class="crew-tags">${crew.tags.map(tag=>`<span>${tag}</span>`).join("")}</div><div class="crew-meta"><span>${crew.time}</span><span>已加入 ${crew.joined+(joined?1:0)} 人</span><strong>${joined?"已收录至图鉴":`还差 ${crew.need} 人`}</strong></div></div><button class="join-button ${joined?"joined":""}" data-join="${index}" data-crew-id="${crewId}" type="button" ${joined?"disabled":""}>${joined?"已加入 ✓":"加入"}</button></article>`}).join("");
+  $$("[data-join]").forEach(button=>button.addEventListener("click",()=>joinCrew(button)));refreshIcons();
 }
 
-function renderPassport(){const level=Math.max(1,Math.floor(state.escapes/3)+1);$("#levelValue").textContent=String(level).padStart(2,"0");$("#escapeCount").textContent=`已出逃 ${state.escapes} 次`;$("#footprintCount").textContent=state.footprints;$("#buddyCount").textContent=state.buddies;$("#levelProgress").style.width=`${Math.min(100,(state.escapes%3||3)/3*100)}%`;const unlocked=Math.min(8,Math.floor(state.escapes/2)+1);$("#stampGrid").innerHTML=badgeData.map(([icon,name],index)=>`<div class="stamp ${index>=unlocked?"locked":""}" style="--r:${index%2?"4deg":"-4deg"}"><i data-lucide="${icon}"></i><span>${name}</span></div>`).join("");refreshIcons()}
+function savePassportState(){
+  const current=[...levelCatalog].reverse().find(item=>passportState.escapeCount>=item.min)||levelCatalog[0];passportState.level=current.level;passportState.buddyCount=passportState.buddyRecords.length;
+  localStorage.setItem("weekend-passport-v2",JSON.stringify(passportState));
+}
+function joinCrew(button){
+  const index=Number(button.dataset.join);const crew=crews[state.mode][index];const crewId=button.dataset.crewId;if(!crew||passportState.joinedCrews.includes(crewId))return;
+  const host=getAnimal(crew.animal);passportState.joinedCrews.push(crewId);passportState.buddyRecords.unshift({id:`crew-${crewId}`,animal:crew.animal,nickname:`${host.name}搭子`,activity:crew.name,date:formatDate(),tags:crew.tags.slice(0,2),count:1,memory:`这次同行很自在，${crew.mood}。`});savePassportState();renderCrews();renderPassport();showToast("加入成功，新搭子已收录进护照图鉴")
+}
+function getLevelInfo(){
+  const index=Math.max(0,levelCatalog.findLastIndex(item=>passportState.escapeCount>=item.min));const current=levelCatalog[index];const next=levelCatalog[index+1];return {current,next,remaining:next?Math.max(0,next.min-passportState.escapeCount):0}
+}
+function initPassportActivitySelect(){
+  const select=$("#passportActivitySelect");select.innerHTML=activities.map(item=>`<option value="${item.name}">${item.name} · ${item.place}</option>`).join("");
+  const saved=activities.some(item=>item.name===passportState.selectedActivity)?passportState.selectedActivity:activities[0].name;passportState.selectedActivity=saved;select.value=saved;select.onchange=()=>{passportState.selectedActivity=select.value;savePassportState();updateCheckinControls()};updateCheckinControls();
+}
+function updateCheckinControls(){
+  const select=$("#passportActivitySelect");const button=$("#checkinButton");if(!select||!button)return;const completed=passportState.completedActivities.includes(select.value);button.disabled=completed||isStamping;button.innerHTML=completed?'<i data-lucide="badge-check"></i> 该活动已打卡':'<i data-lucide="stamp"></i> 盖下本周印章';$("#checkinHint").textContent=completed?"这段旅程已写进护照，可选择另一个活动。":"每个活动仅能完成一次打卡";refreshIcons()
+}
+function setPassportPage(page,persist=true){
+  if(!["identity","stamps","buddies"].includes(page))page="identity";passportState.currentPage=page;
+  $$("[data-passport-page]").forEach(button=>{const active=button.dataset.passportPage===page;button.classList.toggle("active",active);button.setAttribute("aria-selected",String(active));button.tabIndex=active?0:-1});
+  $$(".passport-view").forEach(view=>{const active=view.dataset.view===page;view.classList.toggle("active",active);view.hidden=!active});
+  $("#stampPopover").hidden=true;if(persist)savePassportState();refreshIcons()
+}
+function renderLevelRoute(){
+  const {current}=getLevelInfo();$("#levelRoute").innerHTML=levelCatalog.map(item=>`<span class="route-stop ${item.level<current.level?"passed":item.level===current.level?"current":""}"><i>${item.level<=current.level?"✓":item.level}</i><small>${item.name}</small></span>`).join("")
+}
+function renderStamps(justUnlocked=""){
+  const lookup=new Map(passportState.unlockedStamps.map(stamp=>[stamp.id,stamp]));
+  $("#stampGrid").innerHTML=stampCatalog.map((meta,index)=>{const stamp=lookup.get(meta.id);if(!stamp)return `<div class="city-stamp locked" style="--stamp:${meta.color};--r:${index%2?"4deg":"-5deg"}" aria-label="${meta.name}尚未解锁"><i data-lucide="lock-keyhole"></i><strong>${meta.name}</strong><small>尚未到达</small></div>`;return `<button class="city-stamp unlocked ${justUnlocked===meta.id?"just-inked":""}" style="--stamp:${meta.color};--r:${index%2?"4deg":"-5deg"}" data-stamp-id="${meta.id}" type="button" aria-label="查看${meta.name}印章详情"><i data-lucide="${meta.icon}"></i><strong>${meta.name}</strong><small>${stamp.firstUnlocked}</small>${stamp.count>1?`<b>×${stamp.count}</b>`:""}</button>`}).join("");
+  $$("[data-stamp-id]").forEach(button=>button.addEventListener("click",()=>showStampDetail(button.dataset.stampId,button)));refreshIcons()
+}
+function showStampDetail(id){
+  const stamp=passportState.unlockedStamps.find(item=>item.id===id);const meta=stampCatalog.find(item=>item.id===id);if(!stamp||!meta)return;$("#stampDetailTitle").textContent=meta.name;$("#stampDetailDate").textContent=stamp.firstUnlocked;$("#stampDetailCount").textContent=`${stamp.count} 次`;$("#stampDetailActivity").textContent=stamp.activities.join("、");$("#stampDetailPlace").textContent=stamp.lastPlace;const popover=$("#stampPopover");popover.hidden=false;popover.style.setProperty("--detail-color",meta.color);requestAnimationFrame(()=>popover.classList.add("show"));$("#stampDetailClose").focus({preventScroll:true})
+}
+function renderBuddyVisas(){
+  $("#buddyVisas").innerHTML=passportState.buddyRecords.map((buddy,index)=>{const animal=getAnimal(buddy.animal);return `<article class="buddy-visa visa-${index%3}" style="--visa-accent:${animal.accentColor};--visa-soft:${animal.softColor}"><div class="visa-avatar" data-avatar="${animal.id}"><img src="${animal.image}" alt="${buddy.nickname}的${animal.name}头像" /></div><div class="visa-copy"><div><strong>${buddy.nickname}</strong><span>${buddy.date}</span></div><p>一起完成：${buddy.activity}</p><div>${buddy.tags.map(tag=>`<small>${tag}</small>`).join("")}<b>同行 ${buddy.count} 次</b></div><blockquote>“${buddy.memory}”</blockquote></div></article>`}).join("")
+}
+function renderPassport(justUnlocked=""){
+  const animal=getAnimal(state.animal);const {current,next,remaining}=getLevelInfo();passportState.level=current.level;passportState.buddyCount=passportState.buddyRecords.length;
+  $("#passportAnimalName").textContent=animal.name;$("#passportPersonality").textContent=animal.personality;$("#passportFavorite").textContent=animal.favoriteFood;$("#passportSignature").textContent=`“${animal.description}”`;$("#passportIssueDate").textContent=passportState.issueDate;$("#passportNumber").textContent=passportState.passportNumber;$("#coverPassportNumber").textContent=`NO. ${passportState.passportNumber}`;
+  $("#levelValue").textContent=String(current.level).padStart(2,"0");$("#levelName").textContent=current.name;$("#levelMessage").textContent=next?`再完成 ${remaining} 次出逃，即可升级为“${next.name}”。`:`已经是“${current.name}”，继续收藏城市新鲜事。`;
+  $("#escapeCount").textContent=passportState.escapeCount;$("#footprintCount").textContent=passportState.footprints;$("#buddyCount").textContent=passportState.buddyCount;$("#buddyVisaCount").textContent=passportState.buddyCount;
+  $("#mobileLevelValue").textContent=String(current.level).padStart(2,"0");$("#mobileLevelName").textContent=current.name;$("#mobileLevelMessage").textContent=next?`再完成 ${remaining} 次出逃，升级为“${next.name}”。`:`已解锁最高城市等级。`;$("#mobileEscapeCount").textContent=passportState.escapeCount;$("#mobileFootprintCount").textContent=passportState.footprints;
+  $("#unlockedStampCount").textContent=passportState.unlockedStamps.length;$("#totalStampCount").textContent=passportState.unlockedStamps.reduce((sum,stamp)=>sum+stamp.count,0);
+  const recent=passportState.recentCheckin;$("#recentCheckin").innerHTML=recent?`<i data-lucide="map-pin"></i><div><small>最近到达 · ${recent.date}</small><strong>${recent.activity}</strong><span>${recent.place} · SHA</span></div>`:'<i data-lucide="map-pin"></i><div><small>最近到达</small><strong>等待第一次打卡</strong><span>上海 · SHA</span></div>';
+  renderLevelRoute();renderStamps(justUnlocked);renderBuddyVisas();setPassportPage(passportState.currentPage,false);updateCheckinControls();refreshIcons()
+}
+
+let passportOpening=false;let isStamping=false;
+function openPassport(){
+  const experience=$("#passportExperience");if(experience.dataset.open==="true"||passportOpening)return;const cover=$("#passportCover");passportOpening=true;cover.disabled=true;experience.classList.add("opening");experience.dataset.open="true";setTimeout(()=>{passportOpening=false;experience.classList.remove("opening");cover.setAttribute("aria-hidden","true");cover.tabIndex=-1;$("#passportBook").classList.add("ready");$("[data-passport-page].active").focus({preventScroll:true})},820)
+}
+function completeCheckin(){
+  const select=$("#passportActivitySelect");const activity=activities.find(item=>item.name===select.value);if(!activity||isStamping)return;if(passportState.completedActivities.includes(activity.name)){showToast("这个活动已经打卡过了");updateCheckinControls();return}
+  if($("#passportExperience").dataset.open!=="true")openPassport();setPassportPage("stamps");isStamping=true;updateCheckinControls();const book=$("#passportBook");const button=$("#checkinButton");button.classList.add("is-pressed");book.classList.add("is-stamping");
+  const stampId=activityStampMap[activity.name]||"niche";setTimeout(()=>{const existing=passportState.unlockedStamps.find(stamp=>stamp.id===stampId);if(existing){existing.count+=1;existing.lastActivity=activity.name;existing.lastPlace=activity.place;if(!existing.activities.includes(activity.name))existing.activities.push(activity.name)}else{passportState.unlockedStamps.push({id:stampId,firstUnlocked:formatDate(),count:1,activities:[activity.name],lastActivity:activity.name,lastPlace:activity.place})}passportState.completedActivities.push(activity.name);passportState.escapeCount+=1;passportState.footprints+=1;passportState.recentCheckin={activity:activity.name,place:activity.place,date:formatDate()};savePassportState();renderPassport(stampId);book.classList.add("count-bump")},360);
+  setTimeout(()=>{isStamping=false;button.classList.remove("is-pressed");book.classList.remove("is-stamping","count-bump");updateCheckinControls();showToast(`打卡成功！「${stampCatalog.find(item=>item.id===stampId).name}」已更新，获得 1 枚脚印`)},860)
+}
 
 const modal=$("#hotModal");let previousFocus;
 function openHotModal(){previousFocus=document.activeElement;modal.classList.add("open");modal.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";setTimeout(()=>modal.querySelector(".hot-dialog").focus(),80)}
@@ -153,7 +256,12 @@ $("#weatherSelect").addEventListener("change",event=>{state.weather=event.target
 $("#peopleMinus").addEventListener("click",()=>{state.people=Math.max(1,state.people-1);$("#peopleValue").textContent=state.people});
 $("#peoplePlus").addEventListener("click",()=>{state.people=Math.min(8,state.people+1);$("#peopleValue").textContent=state.people});
 $("#recommendButton").addEventListener("click",()=>{renderRecommendations();$("#recommendations").scrollIntoView({behavior:"smooth"});showToast("已按你的今日状态重新推荐")});
-$("#checkinButton").addEventListener("click",()=>{state.escapes+=1;state.footprints+=1;localStorage.setItem("weekend-escapes",state.escapes);localStorage.setItem("weekend-footprints",state.footprints);renderPassport();showToast("打卡成功！获得 1 枚动物脚印")});
+$("#checkinButton").addEventListener("click",completeCheckin);
+$("#passportCover").addEventListener("click",openPassport);
+$$("[data-passport-page]").forEach(button=>button.addEventListener("click",()=>setPassportPage(button.dataset.passportPage)));
+$(".passport-tabs").addEventListener("keydown",event=>{if(!["ArrowLeft","ArrowRight"].includes(event.key))return;event.preventDefault();const tabs=$$("[data-passport-page]");const current=tabs.indexOf(document.activeElement);const direction=event.key==="ArrowRight"?1:-1;const next=tabs[(current+direction+tabs.length)%tabs.length];next.focus();setPassportPage(next.dataset.passportPage)});
+$("#stampDetailClose").addEventListener("click",()=>{const popover=$("#stampPopover");popover.classList.remove("show");setTimeout(()=>popover.hidden=true,160)});
+$("#passportReset").addEventListener("click",()=>{if(!window.confirm("重置护照的演示成长数据？动物选择不会被改变。"))return;localStorage.removeItem("weekend-passport-v2");passportState=createDefaultPassport();savePassportState();initPassportActivitySelect();renderPassport();setPassportPage("identity");showToast("护照演示数据已重置")});
 $("#createCrewButton").addEventListener("click",()=>$("#createCrewDialog").showModal());
 $("#publishCrewButton").addEventListener("click",event=>{if(!$("#crewTitleInput").value.trim()){event.preventDefault();showToast("先给小队起个名字吧");return}showToast("小队已发布，等待同频伙伴")});
 $("#shareGuideButton").addEventListener("click",()=>$("#guideDialog").showModal());
@@ -161,7 +269,7 @@ $("#publishGuideButton").addEventListener("click",event=>{if(!$("#guideTitleInpu
 $$('.like-button').forEach(button=>button.addEventListener("click",()=>{const liked=button.classList.toggle("liked");const count=button.querySelector("span");count.textContent=Number(count.textContent)+(liked?1:-1);showToast(liked?"已把这篇攻略收进喜欢":"已取消点赞")}));
 $$('[data-close-modal]').forEach(button=>button.addEventListener("click",closeHotModal));
 $("#modalCrewButton").addEventListener("click",()=>scrollToSection("#crews"));$("#modalBrowseButton").addEventListener("click",()=>scrollToSection("#recommendations"));
-document.addEventListener("keydown",event=>{if(partnerPanelOpen&&event.key==="Tab"){trapPartnerFocus(event);return}if(event.key!=="Escape")return;if(partnerPanelOpen){closePartnerPanel(true);return}if(modal.classList.contains("open"))closeHotModal()});
+document.addEventListener("keydown",event=>{if(partnerPanelOpen&&event.key==="Tab"){trapPartnerFocus(event);return}if(event.key!=="Escape")return;if(!$("#stampPopover").hidden){$("#stampPopover").classList.remove("show");$("#stampPopover").hidden=true;return}if(partnerPanelOpen){closePartnerPanel(true);return}if(modal.classList.contains("open"))closeHotModal()});
 
-renderAnimals();renderTypes();renderManual();renderPassport();selectMode(state.mode,false);refreshIcons();
+initPassportActivitySelect();renderAnimals();renderTypes();renderManual();renderPassport();selectMode(state.mode,false);refreshIcons();
 setTimeout(openHotModal,420);
