@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=activity-detail-2" />
+  <link rel="stylesheet" href="styles.css?v=compact-density-2" />
 </head>
 <body>
   <header class="site-header">
@@ -102,8 +102,14 @@
         </div>
       </div>
       <div class="crew-list">
-        <div class="crew-list-head"><div><span class="live-dot"></span><strong id="crewHeading">适合安静同行的小队</strong></div><button id="createCrewButton" type="button">发起一队 <i data-lucide="plus"></i></button></div>
-        <div id="crewCards"></div>
+        <div class="crew-list-head"><div><span class="live-dot"></span><strong id="crewHeading">适合安静同行的小队</strong></div><div class="crew-head-actions"><button id="crewBatchButton" type="button">换一批 <i data-lucide="refresh-cw"></i></button><button id="createCrewButton" type="button">发起一队 <i data-lucide="plus"></i></button></div></div>
+        <p class="crew-sort-note" id="crewSortNote">根据你的社交电量，为你优先排列了 8 个合适小队。</p>
+        <div class="crew-carousel" aria-label="同行搭子轮播">
+          <button class="crew-carousel-arrow previous" id="crewPrev" type="button" aria-label="上一组搭子"><i data-lucide="chevron-left"></i></button>
+          <div id="crewCards" role="list"></div>
+          <button class="crew-carousel-arrow next" id="crewNext" type="button" aria-label="下一组搭子"><i data-lucide="chevron-right"></i></button>
+        </div>
+        <div class="crew-pagination"><div class="crew-dots" id="crewDots" aria-label="搭子分页"></div><span id="crewPage">1 / 3</span></div>
       </div>
     </section>
 
@@ -256,6 +262,6 @@
   <dialog id="guideDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">SHARE FIELD NOTES</span><h2>分享你的出逃攻略</h2><label>攻略标题<input id="guideTitleInput" placeholder="例如：一个人逛西岸的半日路线" /></label><label>地点<input id="guidePlaceInput" placeholder="上海 · 徐汇滨江" /></label><label>一句经验<textarea id="guideTipInput" rows="4" placeholder="把路线、时间和避坑经验写给下一位探索者"></textarea></label><button class="primary-button" id="publishGuideButton" value="default">发布攻略</button></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span>操作成功</span></div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script src="app.js?v=activity-detail-2"></script>
+  <script src="app.js?v=compact-density-2"></script>
 </body>
 </html>

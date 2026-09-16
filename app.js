@@ -34,20 +34,17 @@ const activityDetails={
 };
 const activities=activityBase.map(item=>{const detail=activityDetails[item.name];return {...item,...detail,title:item.name,category:item.type,location:item.place,socialPressure:item.pressure,images:[{src:item.img,alt:item.alt,position:item.position,label:"现场"},{src:item.img,alt:`${item.name}的细节视角`,position:item.position.includes(" ")?item.position:"center 38%",label:"细节"}],matchScore:item.match,recommendedGroupSize:item.people,tags:[item.type,item.pressure,detail.audience],reasons:[detail.reason]}});
 
-const crews = {
-  solo:[
-    {name:"西岸各看各的搭子",animal:"cat",joined:2,need:1,time:"周六 10:20",mood:"见面打招呼，展厅内自由行动",tags:["允许安静同行","结束后自由安排"]},
-    {name:"梧桐区摄影散步",animal:"fox",joined:2,need:2,time:"周六 16:30",mood:"主要拍照，按自己的节奏走",tags:["不强行热场","可随时离队"]}
-  ],
-  soft:[
-    {name:"小型陶艺舒服小局",animal:"rabbit",joined:3,need:1,time:"周日 13:45",mood:"做手作时安静，休息时轻松聊",tags:["可以安静同行","活动后可吃饭"]},
-    {name:"上生新所黑胶闲逛",animal:"otter",joined:2,need:2,time:"周日 12:50",mood:"两三人慢慢逛，不赶行程",tags:["不强行热场","希望准时集合"]}
-  ],
-  party:[
-    {name:"天台音乐会前排小队",animal:"alpaca",joined:5,need:2,time:"周六 17:40",mood:"热闹但尊重边界，一起拍照蹦跳",tags:["多人新朋友局","可以一起吃饭"]},
-    {name:"夜幕桌游破冰局",animal:"shiba",joined:6,need:2,time:"周六 18:45",mood:"主持人带场，互动感拉满",tags:["高互动","不接受临时放鸽子"]}
-  ]
-};
+const crewCatalog = [
+  {id:"westbund-quiet",name:"西岸各看各的看展搭子",activity:"西岸艺术慢逛计划",category:"看展",animal:"cat",image:"assets/activities/westbund-art.jpg",alt:"西岸美术馆观展空间",current:2,total:3,time:"周六 10:20",place:"西岸美术馆南门",pressure:"低压力",energy:["solo","soft"],mood:"见面打招呼，展厅内自由行动，出口再集合。",tags:["不强行热场","结束后自由安排","各看各的"],animalFit:["cat","capybara","penguin"]},
+  {id:"wukang-photo",name:"梧桐区摄影散步",activity:"梧桐区日落散步",category:"户外",animal:"fox",image:"assets/activities/wukang-sunset.jpg",alt:"上海梧桐街道日落散步",current:2,total:4,time:"周六 16:30",place:"武康大楼北侧",pressure:"轻互动",energy:["solo","soft"],mood:"主要拍照，按自己的光线和步速走。",tags:["主要想拍照","可以安静同行","可随时离队"],animalFit:["fox","rabbit","otter"]},
+  {id:"suzhou-ride",name:"苏州河日落骑行",activity:"苏州河夜骑",category:"城市夜游",animal:"penguin",image:"assets/activities/suzhou-creek-night-ride.jpg",alt:"苏州河城市灯光骑行",current:5,total:8,time:"周六 19:15",place:"昌平路桥南侧",pressure:"团队协作",energy:["soft","party"],mood:"领队控速、路线明确，骑行中不用持续聊天。",tags:["希望准时集合","有领队带领","不接受放鸽子"],animalFit:["penguin","shiba","kangaroo"]},
+  {id:"vinyl-market",name:"上生新所黑胶慢淘小队",activity:"上生新所黑胶市集",category:"市集",animal:"otter",image:"assets/activities/vinyl-market.jpg",alt:"上生新所黑胶创意市集",current:2,total:4,time:"周日 12:50",place:"海军俱乐部门口",pressure:"自然交流",energy:["solo","soft","party"],mood:"两三人慢慢逛，共同兴趣就是自然开场白。",tags:["不强行热场","可以安静同行","可以一起吃饭"],animalFit:["otter","panda","cat"]},
+  {id:"rooftop-live",name:"天台日落音乐会氛围组",activity:"城市天台日落音乐会",category:"演出",animal:"alpaca",image:"assets/activities/rooftop-concert.jpg",alt:"城市天台日落音乐现场",current:5,total:7,time:"周六 17:40",place:"静安大悦城北座",pressure:"自由社交",energy:["soft","party"],mood:"一起看晚霞和 Live，想蹦或安静听歌都可以。",tags:["第一次见面多人局","主要想拍照","可以一起吃饭"],animalFit:["alpaca","shiba","kangaroo"]},
+  {id:"pottery-soft",name:"陶艺手作轻社交",activity:"小型陶艺体验局",category:"手作",animal:"rabbit",image:"assets/activities/pottery-workshop.jpg",alt:"小型陶艺工作室手作体验",current:3,total:4,time:"周日 13:45",place:"愚园路工作室",pressure:"低压力",energy:["solo","soft"],mood:"手里有陶土时各做各的，休息时再轻松聊。",tags:["可以安静同行","活动后自由安排","不强行热场"],animalFit:["rabbit","capybara","otter"]},
+  {id:"park-picnic",name:"公园野餐松弛小队",activity:"世纪公园松弛野餐",category:"户外",animal:"capybara",image:"assets/activities/park-picnic.jpg",alt:"世纪公园草坪野餐活动",current:2,total:4,time:"周日 14:50",place:"世纪公园7号门",pressure:"轻互动",energy:["solo","soft"],mood:"自带一本书，分享水果或安静晒太阳都自在。",tags:["可以安静同行","结束后自由安排","可以一起吃饭"],animalFit:["capybara","panda","otter"]},
+  {id:"late-food",name:"深夜觅食搭子",activity:"深夜觅食地图",category:"美食",animal:"panda",image:"assets/activities/late-night-food.jpg",alt:"上海深夜街头美食路线",current:4,total:6,time:"周六 22:20",place:"黄河路凤阳路口",pressure:"自由社交",energy:["soft","party"],mood:"每站分食小份，按食量和电量自由加入下一站。",tags:["可以一起吃饭","可中途离队","不接受放鸽子"],animalFit:["panda","shiba","alpaca"]}
+];
+let crewPage=0;
 
 const manualChoices=["不强行热场","可以安静同行","第一次见面想参加多人局","主要想拍照","希望准时集合","活动结束后自由安排","可以一起吃饭","不接受临时放鸽子"];
 const stampCatalog=[
@@ -157,10 +154,10 @@ function trapPartnerFocus(event){
   if(!partnerPanelOpen||event.key!=="Tab")return;const panel=$("#partnerPanel");const focusable=$$("#partnerPanel button:not([disabled]),#partnerPanel [href],#partnerPanel [tabindex]:not([tabindex='-1'])").filter(element=>!element.hidden);if(!focusable.length)return;const first=focusable[0];const last=focusable[focusable.length-1];if(!panel.contains(document.activeElement)){event.preventDefault();first.focus();return}if(event.shiftKey&&(document.activeElement===first||document.activeElement===panel)){event.preventDefault();last.focus()}else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
 }
 
-function renderTypes(){const types=["随便看看","看展","户外","市集","演出","手作","美食","城市夜游"];$("#typeFilters").innerHTML=types.map(type=>`<button class="type-chip ${state.type===type?"active":""}" data-type="${type}" type="button">${type}</button>`).join("");$$(".type-chip").forEach(button=>button.addEventListener("click",()=>{state.type=button.dataset.type;renderTypes()}))}
+function renderTypes(){const types=["随便看看","看展","户外","市集","演出","手作","美食","城市夜游"];$("#typeFilters").innerHTML=types.map(type=>`<button class="type-chip ${state.type===type?"active":""}" data-type="${type}" type="button">${type}</button>`).join("");$$(".type-chip").forEach(button=>button.addEventListener("click",()=>{state.type=button.dataset.type;crewPage=0;renderTypes();renderCrews()}))}
 
 function selectMode(mode,notify=true){
-  state.mode=mode;
+  state.mode=mode;crewPage=0;
   if(mode==="solo")state.people=1;
   if(mode==="soft"&&(state.people<2||state.people>4))state.people=2;
   if(mode==="party"&&state.people<5)state.people=5;
@@ -187,12 +184,18 @@ function renderRecommendations(){
 }
 function toggleSave(name){state.saved.has(name)?state.saved.delete(name):state.saved.add(name);localStorage.setItem("weekend-saved",JSON.stringify([...state.saved]));renderRecommendations();syncDetailSaveButtons();showToast(state.saved.has(name)?"已收藏到周末清单":"已取消收藏")}
 
-function renderManual(){$("#manualOptions").innerHTML=manualChoices.map(choice=>`<button class="manual-chip ${state.manual.has(choice)?"active":""}" data-manual="${choice}" type="button">${state.manual.has(choice)?"✓ ":""}${choice}</button>`).join("");$("#manualCount").textContent=`已选择 ${state.manual.size} 项`;$$("[data-manual]").forEach(button=>button.addEventListener("click",()=>{state.manual.has(button.dataset.manual)?state.manual.delete(button.dataset.manual):state.manual.add(button.dataset.manual);localStorage.setItem("weekend-manual",JSON.stringify([...state.manual]));renderManual()}))}
+function renderManual(){$("#manualOptions").innerHTML=manualChoices.map(choice=>`<button class="manual-chip ${state.manual.has(choice)?"active":""}" data-manual="${choice}" type="button">${state.manual.has(choice)?"✓ ":""}${choice}</button>`).join("");$("#manualCount").textContent=`已选择 ${state.manual.size} 项`;$$("[data-manual]").forEach(button=>button.addEventListener("click",()=>{state.manual.has(button.dataset.manual)?state.manual.delete(button.dataset.manual):state.manual.add(button.dataset.manual);localStorage.setItem("weekend-manual",JSON.stringify([...state.manual]));crewPage=0;renderManual();renderCrews()}))}
+function getRankedCrews(){
+  return crewCatalog.map((crew,index)=>{let score=crew.energy.includes(state.mode)?28:0;if(state.type!=="随便看看"&&crew.category===state.type)score+=18;score+=crew.tags.filter(tag=>state.manual.has(tag)).length*6;if(crew.animalFit.includes(state.animal))score+=5;const available=crew.total-crew.current-(passportState.joinedCrews.includes(crew.id)?1:0);if(available>0)score+=4;if(state.people<=crew.total)score+=Math.max(0,5-Math.abs(crew.total-state.people));return {crew,index,score}}).sort((a,b)=>b.score-a.score||a.index-b.index).map(item=>item.crew)
+}
+function updateCrewPagination(total,current){
+  const mobile=matchMedia("(max-width:650px)").matches;const pages=mobile?total:Math.ceil(total/3);const active=Math.min(Math.max(current,0),Math.max(0,pages-1));$("#crewPage").textContent=`${active+1} / ${pages}`;$("#crewDots").innerHTML=Array.from({length:pages},(_,index)=>`<button class="${index===active?"active":""}" data-crew-page="${index}" type="button" aria-label="查看第 ${index+1} 组搭子" aria-current="${index===active?"true":"false"}"></button>`).join("");$$("[data-crew-page]").forEach(button=>button.addEventListener("click",()=>{const page=Number(button.dataset.crewPage);if(mobile){const card=$("#crewCards").children[page];card?.scrollIntoView({behavior:"smooth",block:"nearest",inline:"start"})}else{crewPage=page;renderCrews()}}));$("#crewPrev").disabled=!mobile&&active===0;$("#crewNext").disabled=!mobile&&active===pages-1
+}
 function renderCrews(){
-  const list=crews[state.mode];const themeAnimal=getAnimal(state.animal);const container=$("#crewCards");
-  container.dataset.foodTheme=themeAnimal.id;container.style.setProperty("--food-color",themeAnimal.accentColor);container.style.setProperty("--food-bg",themeAnimal.softColor);container.style.setProperty("--food-shadow",`${themeAnimal.accentColor}2f`);
-  container.innerHTML=list.map((crew,index)=>{const animal=getAnimal(crew.animal);const crewId=`${state.mode}-${index}`;const joined=passportState.joinedCrews.includes(crewId);return `<article class="crew-card"><span class="food-motif motif-a" aria-hidden="true"><i data-lucide="${themeAnimal.foodIcon}"></i></span><span class="food-motif motif-b" aria-hidden="true"><i data-lucide="${themeAnimal.foodIcon}"></i></span><div class="crew-animal" data-avatar="${animal.id}"><img src="${animal.image}" alt="发起人${animal.name}头像" /></div><div class="crew-main"><h3>${crew.name}</h3><p>${crew.mood}</p><div class="crew-tags">${crew.tags.map(tag=>`<span>${tag}</span>`).join("")}</div><div class="crew-meta"><span>${crew.time}</span><span>已加入 ${crew.joined+(joined?1:0)} 人</span><strong>${joined?"已收录至图鉴":`还差 ${crew.need} 人`}</strong></div></div><button class="join-button ${joined?"joined":""}" data-join="${index}" data-crew-id="${crewId}" type="button" ${joined?"disabled":""}>${joined?"已加入 ✓":"加入"}</button></article>`}).join("");
-  $$("[data-join]").forEach(button=>button.addEventListener("click",()=>joinCrew(button)));refreshIcons();
+  const ranked=getRankedCrews();const themeAnimal=getAnimal(state.animal);const container=$("#crewCards");const mobile=matchMedia("(max-width:650px)").matches;const pageCount=Math.ceil(ranked.length/3);crewPage=Math.min(crewPage,pageCount-1);const list=mobile?ranked:ranked.slice(crewPage*3,crewPage*3+3);
+  container.dataset.foodTheme=themeAnimal.id;container.style.setProperty("--food-color",themeAnimal.accentColor);container.style.setProperty("--food-bg",themeAnimal.softColor);container.style.setProperty("--food-shadow",`${themeAnimal.accentColor}2f`);$("#crewSortNote").textContent=`根据你的社交电量，为你优先排列了 ${ranked.length} 个合适小队。`;
+  container.innerHTML=list.map(crew=>{const animal=getAnimal(crew.animal);const joined=passportState.joinedCrews.includes(crew.id);const current=Math.min(crew.total,crew.current+(joined?1:0));const remaining=Math.max(0,crew.total-current);const full=remaining===0;const buttonLabel=joined?"已加入":full?"已满员":"加入小队";const seatCopy=full?"队伍已满":`还差 ${remaining} 人`;return `<article class="crew-card" role="listitem" tabindex="0" aria-label="${crew.name}，${current}/${crew.total}人"><span class="food-motif motif-a" aria-hidden="true"><i data-lucide="${themeAnimal.foodIcon}"></i></span><span class="food-motif motif-b" aria-hidden="true"><i data-lucide="${themeAnimal.foodIcon}"></i></span><span class="crew-card-hint"><i data-lucide="maximize-2"></i> 查看队伍详情</span><div class="crew-cover"><img src="${crew.image}" alt="${crew.alt}" /><span class="crew-pressure">${crew.pressure}</span><span class="crew-animal" data-avatar="${animal.id}"><img src="${animal.image}" alt="发起人${animal.name}头像" /></span></div><div class="crew-main"><div class="crew-kicker"><span>${crew.category}</span><span>${crew.energy.map(mode=>modeCopy[mode].label.replace("清单","")).join(" · ")}</span></div><h3>${crew.name}</h3><p>${crew.mood}</p><div class="crew-tags">${crew.tags.slice(0,3).map(tag=>`<span>${tag}</span>`).join("")}</div><div class="crew-meta"><span><i data-lucide="clock-3"></i>${crew.time}</span><span><i data-lucide="map-pin"></i>${crew.place}</span><span><i data-lucide="users"></i>${current}/${crew.total} 人</span><strong>${seatCopy}</strong></div></div><button class="join-button ${joined?"joined":""} ${full&&!joined?"full":""}" data-crew-id="${crew.id}" type="button" ${joined||full?"disabled":""}><span>${buttonLabel}</span><i data-lucide="arrow-right"></i></button></article>`}).join("");
+  $$("[data-crew-id]").forEach(button=>button.addEventListener("click",()=>joinCrew(button)));updateCrewPagination(ranked.length,mobile?0:crewPage);refreshIcons()
 }
 
 function savePassportState(){
@@ -200,8 +203,8 @@ function savePassportState(){
   localStorage.setItem("weekend-passport-v2",JSON.stringify(passportState));
 }
 function joinCrew(button){
-  const index=Number(button.dataset.join);const crew=crews[state.mode][index];const crewId=button.dataset.crewId;if(!crew||passportState.joinedCrews.includes(crewId))return;
-  const host=getAnimal(crew.animal);passportState.joinedCrews.push(crewId);passportState.buddyRecords.unshift({id:`crew-${crewId}`,animal:crew.animal,nickname:`${host.name}搭子`,activity:crew.name,date:formatDate(),tags:crew.tags.slice(0,2),count:1,memory:`这次同行很自在，${crew.mood}。`});savePassportState();renderCrews();renderPassport();showToast("加入成功，新搭子已收录进护照图鉴")
+  const crew=crewCatalog.find(item=>item.id===button.dataset.crewId);if(!crew||passportState.joinedCrews.includes(crew.id)||crew.current>=crew.total)return;
+  const host=getAnimal(crew.animal);passportState.joinedCrews.push(crew.id);passportState.buddyRecords.unshift({id:`crew-${crew.id}`,animal:crew.animal,nickname:`${host.name}搭子`,activity:crew.activity,date:formatDate(),tags:crew.tags.slice(0,2),count:1,memory:`这次同行很自在，${crew.mood}`});savePassportState();renderCrews();renderPassport();showToast(`已加入「${crew.name}」，当前人数 ${Math.min(crew.total,crew.current+1)}/${crew.total}`)
 }
 function getLevelInfo(){
   const index=Math.max(0,levelCatalog.findLastIndex(item=>passportState.escapeCount>=item.min));const current=levelCatalog[index];const next=levelCatalog[index+1];return {current,next,remaining:next?Math.max(0,next.min-passportState.escapeCount):0}
@@ -306,9 +309,14 @@ document.addEventListener("pointerdown",event=>{if(partnerPanelOpen&&!$("#partne
 $("#animalSelector").addEventListener("keydown",event=>{const option=event.target.closest(".animal-option");if(!option)return;const options=$$(".animal-option");const index=options.indexOf(option);const columns=2;let next=index;if(event.key==="ArrowRight")next=Math.min(options.length-1,index+1);if(event.key==="ArrowLeft")next=Math.max(0,index-1);if(event.key==="ArrowDown")next=Math.min(options.length-1,index+columns);if(event.key==="ArrowUp")next=Math.max(0,index-columns);if(next!==index){event.preventDefault();options[next].focus()}});
 $("#budgetRange").addEventListener("input",event=>{state.budget=Number(event.target.value);$("#budgetValue").textContent=state.budget===500?"¥500+":`¥${state.budget}`});
 $("#weatherSelect").addEventListener("change",event=>{state.weather=event.target.value;showToast(state.weather==="雨天"?"已切换为雨天室内方案":"已切换为晴天出行方案")});
-$("#peopleMinus").addEventListener("click",()=>{state.people=Math.max(1,state.people-1);$("#peopleValue").textContent=state.people});
-$("#peoplePlus").addEventListener("click",()=>{state.people=Math.min(8,state.people+1);$("#peopleValue").textContent=state.people});
+$("#peopleMinus").addEventListener("click",()=>{state.people=Math.max(1,state.people-1);$("#peopleValue").textContent=state.people;crewPage=0;renderCrews()});
+$("#peoplePlus").addEventListener("click",()=>{state.people=Math.min(8,state.people+1);$("#peopleValue").textContent=state.people;crewPage=0;renderCrews()});
 $("#recommendButton").addEventListener("click",()=>{renderRecommendations();$("#recommendations").scrollIntoView({behavior:"smooth"});showToast("已按你的今日状态重新推荐")});
+$("#crewPrev").addEventListener("click",()=>{crewPage=Math.max(0,crewPage-1);renderCrews()});
+$("#crewNext").addEventListener("click",()=>{crewPage=Math.min(Math.ceil(crewCatalog.length/3)-1,crewPage+1);renderCrews()});
+$("#crewBatchButton").addEventListener("click",()=>{crewPage=(crewPage+1)%Math.ceil(crewCatalog.length/3);renderCrews();showToast("已换一批同频小队")});
+let crewScrollTimer;$("#crewCards").addEventListener("scroll",()=>{if(!matchMedia("(max-width:650px)").matches)return;clearTimeout(crewScrollTimer);crewScrollTimer=setTimeout(()=>{const container=$("#crewCards");const first=container.firstElementChild;if(!first)return;const index=Math.round(container.scrollLeft/(first.getBoundingClientRect().width+12));updateCrewPagination(crewCatalog.length,index)},80)});
+let crewResizeTimer;window.addEventListener("resize",()=>{clearTimeout(crewResizeTimer);crewResizeTimer=setTimeout(()=>{crewPage=0;renderCrews()},160)});
 $("#checkinButton").addEventListener("click",completeCheckin);
 $("#passportCover").addEventListener("click",openPassport);
 $$("[data-passport-page]").forEach(button=>button.addEventListener("click",()=>setPassportPage(button.dataset.passportPage)));
