@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=yellow-partner" />
 </head>
 <body>
   <header class="site-header">
@@ -45,8 +45,14 @@
           </div>
         </div>
 
+      </div>
+
+      <aside class="partner-stage" id="partnerStage" aria-label="当前城市动物伙伴">
+        <div class="stage-map" aria-hidden="true"><i data-lucide="map-pin"></i><span></span><i data-lucide="navigation"></i></div>
+        <span class="escape-status"><i data-lucide="footprints"></i> 本周出逃中</span>
+        <div class="partner-visual"><img class="partner-animal anim-kangaroo" id="mainAnimal" src="assets/animals/kangaroo.png" alt="背着黄色探索包的袋鼠伙伴" /></div>
+        <div class="stage-copy"><span id="animalPersonality">活力带队型</span><h2 id="animalName">袋鼠</h2><p id="animalLine">附近新鲜事，我带你找到！</p><strong id="stageEnergyLine">今天想一个人自在探索，不被打扰。</strong><small><i data-lucide="leaf"></i> 喜欢：<b id="favoriteFood">青草和树叶</b></small></div>
         <div class="partner-control-wrap" id="partnerControlWrap">
-          <div class="choice-label"><span>02</span><strong>带哪位伙伴出逃</strong></div>
           <button class="partner-toggle" id="partnerToggle" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="partnerPanel">
             <span class="current-partner-avatar" data-avatar="kangaroo"><img id="currentPartnerAvatar" src="assets/animals/kangaroo.png" alt="袋鼠伙伴头像" /></span>
             <span class="current-partner-copy"><small>当前伙伴</small><strong id="currentPartnerLabel">袋鼠 · 活力带队型</strong></span>
@@ -57,13 +63,6 @@
             <div class="animal-selector" id="animalSelector" role="listbox" aria-label="动物伙伴列表"></div>
           </div>
         </div>
-      </div>
-
-      <aside class="partner-stage" id="partnerStage" aria-label="当前城市动物伙伴">
-        <div class="stage-map" aria-hidden="true"><i data-lucide="map-pin"></i><span></span><i data-lucide="navigation"></i></div>
-        <span class="escape-status"><i data-lucide="footprints"></i> 本周出逃中</span>
-        <div class="partner-visual"><img class="partner-animal anim-kangaroo" id="mainAnimal" src="assets/animals/kangaroo.png" alt="背着黄色探索包的袋鼠伙伴" /></div>
-        <div class="stage-copy"><span id="animalPersonality">活力带队型</span><h2 id="animalName">袋鼠</h2><p id="animalLine">附近新鲜事，我带你找到！</p><strong id="stageEnergyLine">今天想一个人自在探索，不被打扰。</strong><small><i data-lucide="leaf"></i> 喜欢：<b id="favoriteFood">青草和树叶</b></small></div>
       </aside>
       <div class="partner-backdrop" id="partnerBackdrop" hidden></div>
     </section>
@@ -147,6 +146,6 @@
   <dialog id="guideDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">SHARE FIELD NOTES</span><h2>分享你的出逃攻略</h2><label>攻略标题<input id="guideTitleInput" placeholder="例如：一个人逛西岸的半日路线" /></label><label>地点<input id="guidePlaceInput" placeholder="上海 · 徐汇滨江" /></label><label>一句经验<textarea id="guideTipInput" rows="4" placeholder="把路线、时间和避坑经验写给下一位探索者"></textarea></label><button class="primary-button" id="publishGuideButton" value="default">发布攻略</button></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span>操作成功</span></div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=yellow-partner"></script>
 </body>
 </html>
