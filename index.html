@@ -71,7 +71,7 @@
     <button class="drawer-edge-toggle" id="drawerEdgeToggle" type="button" aria-label="收起伙伴选择侧边栏" hidden><i data-lucide="chevron-right"></i><span>选择伙伴</span></button>
     <div class="partner-backdrop" id="partnerBackdrop" hidden></div>
 
-    <section class="filter-dock" aria-label="活动场景筛选">
+    <section class="filter-dock section-before-divider" aria-label="活动场景筛选">
       <div class="filter-dock-title"><span>03</span><div><strong>把场景也调到刚刚好</strong><small>活动、天气、预算和人数都可以自己决定</small></div></div>
       <div class="quick-filter" aria-label="活动快速筛选">
         <div class="filter-types"><span class="filter-label">活动类型</span><div class="type-scroll" id="typeFilters"></div></div>
@@ -82,7 +82,18 @@
       </div>
     </section>
 
-    <section class="recommend-section" id="recommendations">
+    <div class="animal-divider animal-divider-shiba" data-animal-divider role="separator" aria-label="下一章节：去找活动">
+      <span class="animal-divider-line animal-divider-line-left" aria-hidden="true"></span>
+      <span class="animal-divider-center">
+        <span class="animal-divider-pop">
+          <span class="animal-divider-avatar"><img src="assets/animals/shiba.png" alt="柴犬伙伴" width="72" height="72" /></span>
+          <small>去找活动</small>
+        </span>
+      </span>
+      <span class="animal-divider-line animal-divider-line-right" aria-hidden="true"></span>
+    </div>
+
+    <section class="recommend-section section-before-divider" id="recommendations">
       <div class="section-head">
         <div><p class="section-label">MATCH YOUR ENERGY</p><h2><span id="recommendAnimal">袋鼠</span>为你找到的<br /><em id="recommendMode">独处充电清单</em></h2></div>
         <div class="recommend-note"><i data-lucide="cloud-sun"></i><p><strong id="recommendCount">6 个活动刚刚好</strong><span id="recommendReason">晴天优先 · 可独自参加 · 不强制互动</span></p></div>
@@ -91,7 +102,18 @@
       <div class="empty-state" id="emptyState" hidden><i data-lucide="telescope"></i><h3>这次没搜到刚刚好的</h3><p>提高预算或换一种活动类型试试看。</p></div>
     </section>
 
-    <section class="crew-section" id="crews">
+    <div class="animal-divider animal-divider-cat" data-animal-divider role="separator" aria-label="下一章节：遇见搭子">
+      <span class="animal-divider-line animal-divider-line-left" aria-hidden="true"></span>
+      <span class="animal-divider-center">
+        <span class="animal-divider-pop">
+          <span class="animal-divider-avatar"><img src="assets/animals/cat.png" alt="橘猫伙伴" width="72" height="72" /></span>
+          <small>遇见搭子</small>
+        </span>
+      </span>
+      <span class="animal-divider-line animal-divider-line-right" aria-hidden="true"></span>
+    </div>
+
+    <section class="crew-section section-before-divider" id="crews">
       <div class="crew-intro">
         <p class="section-label">LOW-PRESSURE SOCIAL</p>
         <h2>同行，不等于<br /><em>必须一直聊天。</em></h2>
@@ -113,7 +135,18 @@
       </div>
     </section>
 
-    <section class="passport-section" id="passport">
+    <div class="animal-divider animal-divider-capybara" data-animal-divider role="separator" aria-label="下一章节：盖下一枚章">
+      <span class="animal-divider-line animal-divider-line-left" aria-hidden="true"></span>
+      <span class="animal-divider-center">
+        <span class="animal-divider-pop">
+          <span class="animal-divider-avatar"><img src="assets/animals/capybara.png" alt="水豚伙伴" width="72" height="72" /></span>
+          <small>盖下一枚章</small>
+        </span>
+      </span>
+      <span class="animal-divider-line animal-divider-line-right" aria-hidden="true"></span>
+    </div>
+
+    <section class="passport-section section-before-divider" id="passport">
       <div class="passport-copy">
         <p class="section-label">CITY ESCAPE PASSPORT</p>
         <h2>把普通周末，<br />盖成值得收藏的印章。</h2>
@@ -218,6 +251,17 @@
       </div>
     </section>
 
+    <div class="animal-divider animal-divider-fox" data-animal-divider role="separator" aria-label="下一章节：翻翻攻略">
+      <span class="animal-divider-line animal-divider-line-left" aria-hidden="true"></span>
+      <span class="animal-divider-center">
+        <span class="animal-divider-pop">
+          <span class="animal-divider-avatar"><img src="assets/animals/fox.png" alt="狐狸伙伴" width="72" height="72" /></span>
+          <small>翻翻攻略</small>
+        </span>
+      </span>
+      <span class="animal-divider-line animal-divider-line-right" aria-hidden="true"></span>
+    </div>
+
     <section class="story-section" id="stories">
       <div class="section-head story-heading">
         <div><p class="section-label">ESCAPE FIELD NOTES</p><h2>把城市的新鲜一面，<br /><em>留给下一只小动物。</em></h2></div>
@@ -271,6 +315,6 @@
   <dialog id="guideDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">SHARE FIELD NOTES</span><h2>分享你的出逃攻略</h2><label>攻略标题<input id="guideTitleInput" placeholder="例如：一个人逛西岸的半日路线" /></label><label>地点<input id="guidePlaceInput" placeholder="上海 · 徐汇滨江" /></label><label>一句经验<textarea id="guideTipInput" rows="4" placeholder="把路线、时间和避坑经验写给下一位探索者"></textarea></label><button class="primary-button" id="publishGuideButton" value="default">发布攻略</button></form></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span>操作成功</span></div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script src="app.js?v=passport-flip-sync-1"></script>
+  <script src="app.js?v=animal-divider-1"></script>
 </body>
 </html>

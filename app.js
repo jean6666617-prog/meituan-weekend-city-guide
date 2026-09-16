@@ -276,6 +276,11 @@ function initPassportReveal(){
   const experience=$("#passportExperience");const reveal=()=>{if(!experience.classList.contains("passport-awaiting"))return;experience.classList.remove("passport-awaiting");experience.classList.add("passport-entering");setTimeout(()=>experience.classList.remove("passport-entering"),820)};
   if(!("IntersectionObserver" in window)){reveal();return}const observer=new IntersectionObserver(entries=>{if(!entries.some(entry=>entry.isIntersecting))return;reveal();observer.disconnect()},{threshold:.24,rootMargin:"0px 0px -8% 0px"});observer.observe(experience)
 }
+function initAnimalDividers(){
+  const dividers=$$("[data-animal-divider]");if(!dividers.length)return;const reveal=divider=>divider.classList.add("is-visible");
+  if(!("IntersectionObserver" in window)){dividers.forEach(reveal);return}
+  const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(!entry.isIntersecting)return;reveal(entry.target);observer.unobserve(entry.target)})},{threshold:.38,rootMargin:"0px 0px -8% 0px"});dividers.forEach(divider=>observer.observe(divider))
+}
 function completeCheckin(){
   const select=$("#passportActivitySelect");const activity=activities.find(item=>item.name===select.value);if(!activity||isStamping)return;if(passportState.completedActivities.includes(activity.name)){showToast("这个活动已经打卡过了");updateCheckinControls();return}
   const wasOpen=passportUi.isOpen;if(!wasOpen&&!openPassport()){showToast("请先关闭当前弹层再打卡");return}isStamping=true;updateCheckinControls();const book=$("#passportBook");const button=$("#checkinButton");const stampId=activityStampMap[activity.name]||"niche";
@@ -366,5 +371,5 @@ $("#modalDetailButton").addEventListener("click",()=>{const returnTarget=previou
 $("#modalCrewButton").addEventListener("click",()=>scrollToSection("#crews"));$("#modalBrowseButton").addEventListener("click",()=>scrollToSection("#recommendations"));
 document.addEventListener("keydown",event=>{if(activityDetailOpen&&event.key==="Tab"){trapFocusIn($(".activity-detail-card"),event);return}if(partnerPanelOpen&&event.key==="Tab"){trapPartnerFocus(event);return}if(passportUi.isOpen&&event.key==="Tab"){trapFocusIn($("#passportBook"),event);return}if(event.key!=="Escape")return;if(activityDetailOpen){closeActivityDetail(true);return}if(!$("#stampPopover").hidden){$("#stampPopover").classList.remove("show");$("#stampPopover").hidden=true;return}if(partnerPanelOpen){closePartnerPanel(true);return}if(modal.classList.contains("open")){closeHotModal();return}if(passportUi.isOpen)closePassport(true)});
 
-initPassportActivitySelect();renderAnimals();renderTypes();renderManual();renderPassport();selectMode(state.mode,false);initPassportReveal();refreshIcons();
+initPassportActivitySelect();renderAnimals();renderTypes();renderManual();renderPassport();selectMode(state.mode,false);initPassportReveal();initAnimalDividers();refreshIcons();
 setTimeout(openHotModal,420);
