@@ -5,11 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="周末出逃俱乐部——为每一种社交电量推荐刚刚好的城市活动与陪伴。" />
   <title>周末出逃俱乐部｜城市探索指南</title>
-  <link rel="icon" type="image/png" href="assets/animals/kangaroo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@600;700;800&family=Noto+Sans+SC:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=crew-media-fill-1" />
+  <link rel="stylesheet" href="styles.css?v=shape-system-1" />
 </head>
 <body>
   <header class="site-header">
@@ -18,44 +17,68 @@
       <span><strong>周末出逃</strong><small>WEEKEND ESCAPE CLUB</small></span>
     </a>
     <nav class="main-nav" aria-label="主导航">
-      <a class="active" href="#recommendations">找活动</a>
+      <a class="active" href="#discover">找活动</a>
       <a href="#crews">找搭子</a>
-      <a href="#passport">城市护照</a>
+      <a href="#passport">城市拼图册</a>
       <a href="#stories">出逃手记</a>
     </nav>
     <div class="header-tools">
       <div class="weather-pill"><i data-lucide="sun"></i><span>上海 <strong>26°</strong></span><small>周末晴</small></div>
-      <button class="profile-button" id="profileButton" data-avatar="kangaroo" type="button" aria-label="当前动物伙伴：袋鼠"><img id="headerAvatar" src="assets/animals/kangaroo.png" alt="袋鼠头像" /></button>
+      <div class="header-guide-cluster" id="helpAndProfile">
+        <div class="guide-menu-wrap" id="guideMenuWrap">
+          <button class="guide-menu-button" id="guideMenuButton" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="guideMenu"><i data-lucide="circle-help"></i><span>使用指南</span></button>
+          <div class="guide-menu" id="guideMenu" role="menu" aria-label="网站使用指南" hidden>
+            <header><small>HOW TO ESCAPE</small><strong>第一次来也不迷路</strong><button id="guideMenuClose" type="button" aria-label="关闭使用指南菜单"><i data-lucide="x"></i></button></header>
+            <button class="guide-replay" id="restartGuideButton" role="menuitem" type="button"><i data-lucide="play"></i><span><strong>新手导航再看一遍</strong><small>由黄色引导拼块带你逛一圈</small></span></button>
+            <div class="guide-menu-links">
+              <button data-guide-info="网站功能介绍" role="menuitem" type="button"><i data-lucide="map"></i>网站功能介绍</button>
+              <button data-guide-info="社交电量说明" role="menuitem" type="button"><i data-lucide="battery-charging"></i>社交电量说明</button>
+              <button data-guide-info="几何拼块说明" role="menuitem" type="button"><i data-lucide="shapes"></i>几何拼块说明</button>
+              <button data-guide-info="活动与搭子安全提示" role="menuitem" type="button"><i data-lucide="shield-check"></i>活动与搭子安全提示</button>
+            </div>
+            <p class="guide-menu-detail" id="guideMenuDetail">从社交电量开始，筛选活动、寻找拼友、完成打卡，再把周末收进城市拼图册。</p>
+          </div>
+        </div>
+        <div class="profile-entry" id="profileEntry">
+          <button class="profile-button" id="profileButton" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="profilePopover" aria-label="游客账户与当前拼块"><span id="headerAvatar" class="shape-avatar"></span></button>
+          <div class="profile-popover" id="profilePopover" role="dialog" aria-label="游客账户入口" hidden>
+            <div class="profile-popover-intro"><span id="profilePopoverAvatar" class="shape-avatar"></span><div><small>当前为游客</small><strong>把周末记录留下来</strong></div></div>
+            <p>登录后可同步保存城市拼图册、充电清单与拼友记录。</p>
+            <div><button id="loginDemoButton" type="button">登录</button><button id="registerDemoButton" type="button">注册</button></div>
+          </div>
+        </div>
+      </div>
     </div>
   </header>
 
   <main id="home">
     <section class="hero-redesign" aria-labelledby="heroTitle">
+      <span class="hero-edge-decor hero-edge-decor--yellow" aria-hidden="true">
+        <svg viewBox="0 0 120 120" focusable="false">
+          <path class="hero-edge-decor__outline" d="M60 10 C79 9 98 18 106 34 C113 49 111 72 104 89 C96 104 79 111 60 109 C41 111 24 103 16 89 C8 73 9 49 15 34 C23 18 41 11 60 10 Z" />
+          <path class="hero-edge-decor__fill" d="M60 18 C76 17 91 24 98 38 C104 51 102 70 96 84 C89 96 75 102 60 100 C45 102 31 96 24 84 C17 71 18 52 23 39 C29 26 44 19 60 18 Z" />
+        </svg>
+      </span>
+      <span class="hero-edge-decor hero-edge-decor--blue" aria-hidden="true">
+        <svg viewBox="0 0 120 120" focusable="false">
+          <path class="hero-edge-decor__outline" d="M60 11 C80 8 97 18 105 34 C112 50 110 72 103 88 C95 103 79 110 60 108 C42 110 25 104 17 89 C9 74 10 50 16 35 C24 19 41 12 60 11 Z" />
+          <path class="hero-edge-decor__fill" d="M60 19 C76 17 90 25 97 38 C103 51 101 69 95 83 C88 95 74 101 60 99 C45 101 32 95 25 83 C18 70 19 52 24 40 C30 27 44 20 60 19 Z" />
+        </svg>
+      </span>
       <div class="hero-main">
-        <p class="eyebrow"><span></span> 上海周末 · 按自己的电量出发</p>
-        <h1 id="heroTitle">周末不必<br /><em>勉强合群。</em></h1>
-        <p class="hero-description">想一个人自在逛，还是和新搭子热闹出发？告诉我们今天的社交电量，活动与陪伴都刚刚好。</p>
-
-        <div class="battery-block">
-          <div class="choice-label"><span>01</span><strong>今天的社交电量</strong><small>随时可以改变主意</small></div>
-          <div class="battery-picker" role="radiogroup" aria-label="选择社交电量">
-            <button class="battery-card active" data-mode="solo" role="radio" aria-checked="true" type="button"><span class="battery-icon"><i data-lucide="headphones"></i></span><span><strong>独处充电</strong><small>0% 社交压力</small></span><i data-lucide="check" class="check-icon"></i></button>
-            <button class="battery-card" data-mode="soft" role="radio" aria-checked="false" type="button"><span class="battery-icon"><i data-lucide="coffee"></i></span><span><strong>轻轻同行</strong><small>安静也自在</small></span><i data-lucide="check" class="check-icon"></i></button>
-            <button class="battery-card" data-mode="party" role="radio" aria-checked="false" type="button"><span class="battery-icon"><i data-lucide="party-popper"></i></span><span><strong>热闹组局</strong><small>认识新朋友</small></span><i data-lucide="check" class="check-icon"></i></button>
-          </div>
-        </div>
-
+        <h1 class="hero-title" id="heroTitle" tabindex="-1">
+          <span class="hero-title-line hero-title-line-lead">把周末，</span>
+          <span class="hero-title-line hero-title-line-build"><em>拼成</em>喜欢的样子。</span>
+        </h1>
       </div>
 
-      <aside class="partner-stage" id="partnerStage" aria-label="当前城市动物伙伴">
-        <div class="stage-map" aria-hidden="true"><i data-lucide="map-pin"></i><span></span><i data-lucide="navigation"></i></div>
-        <span class="escape-status"><i data-lucide="footprints"></i> 本周出逃中</span>
-        <div class="partner-visual"><img class="partner-animal anim-kangaroo" id="mainAnimal" src="assets/animals/kangaroo.png" alt="背着黄色探索包的袋鼠伙伴" /></div>
-        <div class="stage-copy"><span id="animalPersonality">活力带队型</span><h2 id="animalName">袋鼠</h2><p id="animalLine">附近新鲜事，我带你找到！</p><strong id="stageEnergyLine">今天想一个人自在探索，不被打扰。</strong><small><i data-lucide="leaf"></i> 喜欢：<b id="favoriteFood">青草和树叶</b></small></div>
+      <aside class="partner-stage shape-hero-stage" id="partnerStage" aria-label="彩色几何伙伴从页面上方落入城市舞台">
+        <div class="hero-puzzle shape-drop-stage" id="heroPuzzle" role="img" aria-label="彩色几何伙伴依次掉落并组成的城市伙伴群像"></div>
+        <div class="stage-copy"><span id="animalPersonality">行动探索者</span><h2 id="animalName">黄色三角拼块</h2><p id="animalLine">带着地图，去看看城市的新鲜面。</p><strong id="stageEnergyLine">今天想一个人自在探索，不被打扰。</strong><small><i data-lucide="sparkles"></i> 状态：<b id="favoriteFood">独自充电</b></small></div>
         <div class="partner-control-wrap" id="partnerControlWrap">
-          <button class="partner-toggle" id="partnerToggle" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="partnerPanel" aria-label="选择伙伴，当前为袋鼠">
-            <span class="current-partner-avatar" data-avatar="kangaroo"><img id="currentPartnerAvatar" src="assets/animals/kangaroo.png" alt="袋鼠伙伴头像" /></span>
-            <span class="partner-trigger-label">选择伙伴</span>
+          <button class="partner-toggle" id="partnerToggle" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="partnerPanel" aria-label="创建我的拼块">
+            <span class="current-partner-avatar shape-avatar" id="currentPartnerAvatar"></span>
+            <span class="partner-trigger-label">创建拼块</span>
             <i data-lucide="chevron-left" class="partner-trigger-arrow"></i>
           </button>
         </div>
@@ -64,29 +87,49 @@
 
     <aside class="partner-panel" id="partnerPanel" role="dialog" aria-modal="true" aria-labelledby="partnerPanelTitle" aria-describedby="partnerPanelDescription" tabindex="-1" hidden>
       <span class="drawer-grabber" aria-hidden="true"></span>
-      <div class="partner-panel-head"><div><small>WEEKEND PERSONALITY</small><strong id="partnerPanelTitle">选择你的周末伙伴</strong><p id="partnerPanelDescription">选一个替你表达社交电量的小伙伴。</p></div><button id="partnerClose" type="button" aria-label="关闭伙伴选择侧边栏"><i data-lucide="x"></i></button></div>
-      <div class="drawer-current"><span data-avatar="kangaroo"><img id="drawerCurrentAvatar" src="assets/animals/kangaroo.png" alt="当前选中的袋鼠伙伴" /></span><div><small>当前选择</small><strong id="currentPartnerLabel">袋鼠 · 活力带队型</strong><p id="drawerCurrentDescription">附近新鲜事，我带你找到！</p></div></div>
-      <div class="animal-selector" id="animalSelector" role="listbox" aria-label="动物伙伴列表"></div>
+      <div class="partner-panel-head"><div><small>BUILD YOUR WEEKEND PIECE</small><strong id="partnerPanelTitle">创建我的拼块</strong><p id="partnerPanelDescription">选形状、颜色、表情、社交状态和一件小装饰。</p></div><button id="partnerClose" type="button" aria-label="关闭拼块创建侧边栏"><i data-lucide="x"></i></button></div>
+      <div class="drawer-current"><span id="drawerCurrentAvatar" class="shape-avatar"></span><div><small>你的周末拼块</small><strong id="currentPartnerLabel">黄色三角 · 行动探索者</strong><p id="drawerCurrentDescription">独自出发时它已经完整，遇到合适的人时还能拼出新风景。</p></div></div>
+      <div class="animal-selector shape-builder" id="animalSelector" aria-label="几何拼块创建器"></div>
     </aside>
-    <button class="drawer-edge-toggle" id="drawerEdgeToggle" type="button" aria-label="收起伙伴选择侧边栏" hidden><i data-lucide="chevron-right"></i><span>选择伙伴</span></button>
+    <button class="drawer-edge-toggle" id="drawerEdgeToggle" type="button" aria-label="收起拼块创建侧边栏" hidden><i data-lucide="chevron-right"></i><span>创建拼块</span></button>
     <div class="partner-backdrop" id="partnerBackdrop" hidden></div>
 
-    <section class="filter-dock section-before-divider" aria-label="活动场景筛选">
-      <div class="filter-dock-title"><span>03</span><div><strong>把场景也调到刚刚好</strong><small>活动、天气、预算和人数都可以自己决定</small></div></div>
-      <div class="quick-filter" aria-label="活动快速筛选">
+    <section class="weekend-config section-before-divider" id="discover" aria-labelledby="weekendConfigTitle">
+      <header class="weekend-config__header">
+        <span class="section-number">01</span>
+        <div><h2 id="weekendConfigTitle">定制你的周末</h2><p>先选今天的社交电量，再把活动场景调到刚刚好。</p></div>
+        <div class="weekend-config__partner-slot" id="partnerControlSlot">
+          <div class="selected-shape-display" aria-live="polite" aria-label="当前选择的几何拼块">
+            <span class="selected-shape-display__avatar shape-avatar" id="selectedShapeDisplayAvatar"></span>
+            <span class="selected-shape-display__copy"><span id="selectedShapeDisplayPersonality">松弛连接者</span></span>
+          </div>
+        </div>
+      </header>
+      <div class="weekend-config__content">
+        <div class="weekend-config__energy battery-block" aria-labelledby="energyTitle">
+          <div class="choice-label"><strong id="energyTitle">今天的社交电量</strong></div>
+          <div class="battery-picker energy-options" role="radiogroup" aria-label="选择社交电量">
+            <button class="battery-card energy-option active" data-mode="solo" role="radio" aria-checked="true" type="button"><span class="battery-icon"><i data-lucide="headphones"></i></span><span><strong>独处充电</strong><small>0% 社交压力</small></span><i data-lucide="check" class="check-icon"></i></button>
+            <button class="battery-card energy-option" data-mode="soft" role="radio" aria-checked="false" type="button"><span class="battery-icon"><i data-lucide="coffee"></i></span><span><strong>轻轻同行</strong><small>安静也自在</small></span><i data-lucide="check" class="check-icon"></i></button>
+            <button class="battery-card energy-option" data-mode="party" role="radio" aria-checked="false" type="button"><span class="battery-icon"><i data-lucide="party-popper"></i></span><span><strong>热闹组局</strong><small>认识新朋友</small></span><i data-lucide="check" class="check-icon"></i></button>
+          </div>
+        </div>
+        <div class="weekend-config__divider" aria-hidden="true"></div>
+        <div class="quick-filter weekend-config__filters" aria-label="活动快速筛选">
         <div class="filter-types"><span class="filter-label">活动类型</span><div class="type-scroll" id="typeFilters"></div></div>
         <label class="filter-budget"><span class="filter-label">人均预算 <strong id="budgetValue">¥150</strong></span><input id="budgetRange" type="range" min="0" max="500" step="50" value="150" /></label>
         <label class="filter-weather"><span class="filter-label">天气偏好</span><select id="weatherSelect"><option value="晴天">晴天优先</option><option value="雨天">雨天室内</option></select></label>
         <div class="filter-people"><span class="filter-label">同行人数</span><div class="stepper"><button id="peopleMinus" type="button" aria-label="减少人数">−</button><strong id="peopleValue">1</strong><span>人</span><button id="peoplePlus" type="button" aria-label="增加人数">＋</button></div></div>
         <button class="primary-button" id="recommendButton" type="button"><i data-lucide="sparkles"></i> 重新推荐</button>
+        </div>
       </div>
     </section>
 
-    <div class="animal-divider animal-divider-shiba" data-animal-divider role="separator" aria-label="下一章节：去找活动">
+    <div class="animal-divider shape-divider" data-animal-divider data-shapes="dot,triangle,square" role="separator" aria-label="下一章节：去找活动">
       <span class="animal-divider-line animal-divider-line-left" aria-hidden="true"></span>
       <span class="animal-divider-center">
         <span class="animal-divider-pop">
-          <span class="animal-divider-avatar"><img src="assets/animals/shiba.png" alt="柴犬伙伴" width="72" height="72" /></span>
+          <span class="animal-divider-avatar" aria-hidden="true"></span>
           <small>去找活动</small>
         </span>
       </span>
@@ -95,19 +138,19 @@
 
     <section class="recommend-section section-before-divider" id="recommendations">
       <div class="section-head">
-        <div><p class="section-label">MATCH YOUR ENERGY</p><h2><span id="recommendAnimal">袋鼠</span>为你找到的<br /><em id="recommendMode">独处充电清单</em></h2></div>
+        <div class="section-title-cluster"><span class="section-number">02</span><div><p class="section-label">MATCH YOUR ENERGY</p><h2><span id="recommendAnimal">黄色三角</span>为你找到的<br /><em id="recommendMode">独处充电清单</em></h2></div></div>
         <div class="recommend-note"><i data-lucide="cloud-sun"></i><p><strong id="recommendCount">6 个活动刚刚好</strong><span id="recommendReason">晴天优先 · 可独自参加 · 不强制互动</span></p></div>
       </div>
       <div class="activity-grid" id="activityGrid"></div>
       <div class="empty-state" id="emptyState" hidden><i data-lucide="telescope"></i><h3>这次没搜到刚刚好的</h3><p>提高预算或换一种活动类型试试看。</p></div>
     </section>
 
-    <div class="animal-divider animal-divider-cat" data-animal-divider role="separator" aria-label="下一章节：遇见搭子">
+    <div class="animal-divider shape-divider" data-animal-divider data-shapes="circle,rectangle,semicircle" role="separator" aria-label="下一章节：遇见拼友">
       <span class="animal-divider-line animal-divider-line-left" aria-hidden="true"></span>
       <span class="animal-divider-center">
         <span class="animal-divider-pop">
-          <span class="animal-divider-avatar"><img src="assets/animals/cat.png" alt="橘猫伙伴" width="72" height="72" /></span>
-          <small>遇见搭子</small>
+          <span class="animal-divider-avatar" aria-hidden="true"></span>
+          <small>遇见拼友</small>
         </span>
       </span>
       <span class="animal-divider-line animal-divider-line-right" aria-hidden="true"></span>
@@ -115,6 +158,7 @@
 
     <section class="crew-section section-before-divider" id="crews">
       <div class="crew-intro">
+        <span class="section-number section-number--light">03</span>
         <p class="section-label">LOW-PRESSURE SOCIAL</p>
         <h2>同行，不等于<br /><em>必须一直聊天。</em></h2>
         <p>先把彼此舒服的相处方式说清楚，见面少一点猜测，多一点自在。</p>
@@ -135,12 +179,12 @@
       </div>
     </section>
 
-    <div class="animal-divider animal-divider-capybara" data-animal-divider role="separator" aria-label="下一章节：盖下一枚章">
+    <div class="animal-divider shape-divider" data-animal-divider data-shapes="arch,dot,square" role="separator" aria-label="下一章节：收藏一幅拼图">
       <span class="animal-divider-line animal-divider-line-left" aria-hidden="true"></span>
       <span class="animal-divider-center">
         <span class="animal-divider-pop">
-          <span class="animal-divider-avatar"><img src="assets/animals/capybara.png" alt="水豚伙伴" width="72" height="72" /></span>
-          <small>盖下一枚章</small>
+          <span class="animal-divider-avatar" aria-hidden="true"></span>
+          <small>收藏一幅拼图</small>
         </span>
       </span>
       <span class="animal-divider-line animal-divider-line-right" aria-hidden="true"></span>
@@ -148,56 +192,57 @@
 
     <section class="passport-section section-before-divider" id="passport">
       <div class="passport-copy">
-        <p class="section-label">CITY ESCAPE PASSPORT</p>
-        <h2>把普通周末，<br />盖成值得收藏的印章。</h2>
-        <p>独自出发，也是一段完整旅程。每次打卡都会写进你的城市成长档案。</p>
+        <span class="section-number">04</span>
+        <p class="section-label">CITY PUZZLE ALBUM</p>
+        <h2>每次出门，<br />都会留下一幅新图案。</h2>
+        <p>独自出发也是完整的一块。同行时，这次组合会被收进你的城市拼图册。</p>
         <label class="checkin-activity"><span>本周待打卡活动</span><select id="passportActivitySelect" aria-label="选择要打卡的活动"></select></label>
-        <button class="dark-button stamp-action" id="checkinButton" type="button"><i data-lucide="stamp"></i> 盖下本周印章</button>
+        <button class="dark-button stamp-action" id="checkinButton" type="button"><i data-lucide="shapes"></i> 收藏本周拼图</button>
         <p class="checkin-hint" id="checkinHint">每个活动仅能完成一次打卡</p>
       </div>
 
       <div class="passport-backdrop" id="passportBackdrop" aria-hidden="true" hidden></div>
       <div class="passport-experience passport-awaiting" id="passportExperience" data-open="false" data-state="closed">
-        <button class="passport-cover" id="passportCover" type="button" aria-label="打开动物城市护照">
+        <button class="passport-cover" id="passportCover" type="button" aria-label="打开城市拼图册">
           <span class="cover-route" aria-hidden="true"><i data-lucide="route"></i><i data-lucide="footprints"></i></span>
-          <span class="cover-kicker">ANIMAL CITY PASSPORT</span>
-          <span class="cover-title">动物城市护照</span>
-          <span class="cover-emblem passport-avatar-frame" data-avatar="kangaroo"><img id="passportCoverAvatar" src="assets/animals/kangaroo.png" alt="袋鼠护照徽章" /></span>
+          <span class="cover-kicker">CITY PUZZLE ALBUM</span>
+          <span class="cover-title">城市拼图册</span>
+          <span class="cover-emblem passport-avatar-frame shape-avatar" id="passportCoverAvatar"></span>
           <span class="cover-city">SHA · 上海</span>
           <span class="cover-number" id="coverPassportNumber">NO. SHA-260901</span>
-          <span class="cover-open-hint"><i data-lucide="book-open"></i> 点击打开护照</span>
+          <span class="cover-open-hint"><i data-lucide="book-open"></i> 点击打开拼图册</span>
         </button>
 
-        <aside class="passport-closed-summary" id="passportClosedSummary" aria-label="护照成长摘要">
+        <aside class="passport-closed-summary" id="passportClosedSummary" aria-label="城市拼图册成长摘要">
           <strong>LEVEL <b id="passportSummaryLevel">03</b> · <span id="passportSummaryName">周末探索员</span></strong>
-          <p>已出逃 <b id="passportSummaryEscapes">7</b> 次 · 收集 <b id="passportSummaryStamps">3</b> 枚印章</p>
+          <p>已出逃 <b id="passportSummaryEscapes">7</b> 次 · 收藏 <b id="passportSummaryStamps">3</b> 幅图案</p>
           <small>下一枚：<span id="passportSummaryNext">现场音乐</span></small>
         </aside>
 
-        <div class="passport-book" id="passportBook" role="dialog" aria-modal="true" aria-hidden="true" aria-label="已打开的动物城市护照" tabindex="-1">
+        <div class="passport-book" id="passportBook" role="dialog" aria-modal="true" aria-hidden="true" aria-label="已打开的城市拼图册" tabindex="-1">
           <span class="passport-cover-edge" aria-hidden="true"></span>
-          <button class="passport-book-close" id="passportBookClose" type="button" aria-label="合上护照"><i data-lucide="x"></i></button>
-          <nav class="passport-tabs" aria-label="护照页签" role="tablist">
-            <button class="active" id="passportTabIdentity" data-passport-page="identity" role="tab" aria-selected="true" aria-controls="passportViewIdentity" type="button"><i data-lucide="contact"></i><span>身份页</span></button>
-            <button id="passportTabStamps" data-passport-page="stamps" role="tab" aria-selected="false" aria-controls="passportViewStamps" type="button"><i data-lucide="stamp"></i><span>城市印章</span></button>
-            <button id="passportTabBuddies" data-passport-page="buddies" role="tab" aria-selected="false" aria-controls="passportViewBuddies" type="button"><i data-lucide="users"></i><span>搭子图鉴</span></button>
+          <button class="passport-book-close" id="passportBookClose" type="button" aria-label="合上拼图册"><i data-lucide="x"></i></button>
+          <nav class="passport-tabs" aria-label="城市拼图册页签" role="tablist">
+            <button class="active" id="passportTabIdentity" data-passport-page="identity" role="tab" aria-selected="true" aria-controls="passportViewIdentity" type="button"><i data-lucide="contact"></i><span>我的拼块</span></button>
+            <button id="passportTabStamps" data-passport-page="stamps" role="tab" aria-selected="false" aria-controls="passportViewStamps" type="button"><i data-lucide="shapes"></i><span>城市图案</span></button>
+            <button id="passportTabBuddies" data-passport-page="buddies" role="tab" aria-selected="false" aria-controls="passportViewBuddies" type="button"><i data-lucide="users"></i><span>拼友记录</span></button>
           </nav>
 
           <div class="passport-pages">
             <section class="passport-view active" id="passportViewIdentity" data-view="identity" role="tabpanel" aria-labelledby="passportTabIdentity">
               <article class="book-page identity-page">
                 <div class="page-watermark" aria-hidden="true">SHA</div>
-                <header class="page-heading"><span>ANIMAL IDENTITY</span><strong>城市出逃身份页</strong></header>
+                <header class="page-heading"><span>CITY PIECE ID</span><strong>城市拼块身份页</strong></header>
                 <div class="identity-main">
-                  <div class="passport-photo passport-avatar-frame" id="passportAvatarFrame" data-avatar="kangaroo"><img id="passportAvatar" src="assets/animals/kangaroo.png" alt="护照中的袋鼠头像" /></div>
+                  <div class="passport-photo passport-avatar-frame shape-avatar" id="passportAvatar"></div>
                   <dl class="identity-fields">
-                    <div><dt>PARTNER / 伙伴</dt><dd id="passportAnimalName">袋鼠</dd></div>
-                    <div><dt>PERSONALITY / 人格</dt><dd id="passportPersonality">活力带队型</dd></div>
+                    <div><dt>SHAPE / 形状</dt><dd id="passportAnimalName">三角形</dd></div>
+                    <div><dt>STYLE / 特质</dt><dd id="passportPersonality">行动探索者</dd></div>
                     <div><dt>CITY / 城市</dt><dd>上海 SHANGHAI</dd></div>
-                    <div><dt>FAVORITE / 喜欢</dt><dd id="passportFavorite">青草和树叶</dd></div>
+                    <div><dt>STATUS / 状态</dt><dd id="passportFavorite">独自充电</dd></div>
                   </dl>
                 </div>
-                <blockquote id="passportSignature">“附近新鲜事，我带你找到！”</blockquote>
+                <blockquote id="passportSignature">“独自时完整，同行时拼成风景。”</blockquote>
                 <div class="passport-meta"><span>签发日 <strong id="passportIssueDate">2026.09.01</strong></span><span>编号 <strong id="passportNumber">SHA-260901</strong></span></div>
                 <div class="mobile-passport-progress"><strong>LEVEL <b id="mobileLevelValue">03</b> · <span id="mobileLevelName">周末探索员</span></strong><p id="mobileLevelMessage">再完成2次出逃，即可升级。</p><div><span><i data-lucide="map-pinned"></i><b id="mobileEscapeCount">7</b> 次出逃</span><span><i data-lucide="footprints"></i><b id="mobileFootprintCount">12</b> 枚脚印</span></div></div>
                 <footer class="page-footer"><span>SHA · 31.2304°N 121.4737°E</span><b>01</b></footer>
@@ -205,17 +250,17 @@
               <article class="book-page route-page">
                 <header class="page-heading"><span>ESCAPE ROUTE</span><strong id="levelName">周末探索员</strong></header>
                 <div class="level-ticket"><span>LEVEL <strong id="levelValue">03</strong></span><p id="levelMessage">再完成2次出逃，即可升级。</p></div>
-                <div class="metro-progress" id="levelRoute" aria-label="护照成长路线"></div>
-                <div class="passport-counters"><span><i data-lucide="map-pinned"></i><strong id="escapeCount">7</strong><small>已出逃</small></span><span><i data-lucide="footprints"></i><strong id="footprintCount">12</strong><small>脚印</small></span><span><i data-lucide="users"></i><strong id="buddyCount">4</strong><small>搭子图鉴</small></span></div>
-                <p class="passport-quote">下一枚印章，留给这个周末。</p>
+                <div class="metro-progress" id="levelRoute" aria-label="拼图册成长路线"></div>
+                <div class="passport-counters"><span><i data-lucide="map-pinned"></i><strong id="escapeCount">7</strong><small>已出逃</small></span><span><i data-lucide="shapes"></i><strong id="footprintCount">12</strong><small>拼图点</small></span><span><i data-lucide="users"></i><strong id="buddyCount">4</strong><small>拼友记录</small></span></div>
+                <p class="passport-quote">下一幅图案，留给这个周末。</p>
                 <footer class="page-footer"><span>WEEKEND ESCAPE CLUB</span><b>02</b></footer>
               </article>
             </section>
 
             <section class="passport-view" id="passportViewStamps" data-view="stamps" role="tabpanel" aria-labelledby="passportTabStamps" hidden>
               <article class="book-page stamp-index-page">
-                <header class="page-heading"><span>CITY VISA</span><strong>城市印章目录</strong></header>
-                <p class="page-lead">每种城市体验只收藏一枚印章，重复出发会在同一枚上留下次数。</p>
+                <header class="page-heading"><span>CITY PATTERNS</span><strong>城市拼图目录</strong></header>
+                <p class="page-lead">每次完成活动，都会留下只属于这组人的几何组合。</p>
                 <div class="stamp-summary"><span><strong id="unlockedStampCount">0</strong>/8<small>已解锁</small></span><span><strong id="totalStampCount">0</strong><small>累计盖章</small></span></div>
                 <div class="recent-checkin" id="recentCheckin"><i data-lucide="map-pin"></i><div><small>最近到达</small><strong>等待第一次打卡</strong><span>上海 · SHA</span></div></div>
                 <footer class="page-footer"><span>VALID FOR CITY WEEKENDS</span><b>03</b></footer>
@@ -223,7 +268,7 @@
               <article class="book-page stamp-page">
                 <div class="stamp-tool" id="stampTool" aria-hidden="true"><i data-lucide="stamp"></i></div>
                 <div class="ink-bloom" id="inkBloom" aria-hidden="true"></div>
-                <header class="page-heading"><span>STAMP COLLECTION</span><strong>已获得的城市记忆</strong></header>
+                <header class="page-heading"><span>PUZZLE COLLECTION</span><strong>已拼出的城市记忆</strong></header>
                 <div class="stamp-grid" id="stampGrid"></div>
                 <div class="stamp-popover" id="stampPopover" role="dialog" aria-modal="false" aria-labelledby="stampDetailTitle" hidden><button id="stampDetailClose" type="button" aria-label="关闭印章详情"><i data-lucide="x"></i></button><small>CITY STAMP</small><h3 id="stampDetailTitle"></h3><dl><div><dt>首次解锁</dt><dd id="stampDetailDate"></dd></div><div><dt>完成次数</dt><dd id="stampDetailCount"></dd></div><div><dt>对应活动</dt><dd id="stampDetailActivity"></dd></div><div><dt>最近地点</dt><dd id="stampDetailPlace"></dd></div></dl></div>
                 <footer class="page-footer"><span>COLLECT MOMENTS, NOT PRESSURE</span><b>04</b></footer>
@@ -232,10 +277,10 @@
 
             <section class="passport-view" id="passportViewBuddies" data-view="buddies" role="tabpanel" aria-labelledby="passportTabBuddies" hidden>
               <article class="book-page buddy-intro-page">
-                <header class="page-heading"><span>TRAVEL COMPANIONS</span><strong>搭子入境记录</strong></header>
-                <p class="page-lead">同行不是任务，是刚刚好的陪伴。每一次同频相遇，都会成为护照里的一张签证。</p>
+                <header class="page-heading"><span>PUZZLE FRIENDS</span><strong>拼友同行记录</strong></header>
+                <p class="page-lead">同行不是任务，是刚刚好的陪伴。每一次同频相遇，都会留下一张拼搭记录。</p>
                 <div class="buddy-stat"><i data-lucide="tickets"></i><span><strong id="buddyVisaCount">4</strong>张同行签证</span></div>
-                <div class="locked-buddy"><span><i data-lucide="user-round"></i></span><p>下一次出逃，<br />也许会遇见新的同频伙伴。</p></div>
+                <div class="locked-buddy"><span><i data-lucide="shapes"></i></span><p>下一次出逃，<br />也许会遇见新的同频拼友。</p></div>
                 <footer class="page-footer"><span>COMPANIONS OF SHANGHAI</span><b>05</b></footer>
               </article>
               <article class="book-page buddy-visas-page">
@@ -251,11 +296,11 @@
       </div>
     </section>
 
-    <div class="animal-divider animal-divider-fox" data-animal-divider role="separator" aria-label="下一章节：翻翻攻略">
+    <div class="animal-divider shape-divider" data-animal-divider data-shapes="trapezoid,circle,rectangle" role="separator" aria-label="下一章节：翻翻攻略">
       <span class="animal-divider-line animal-divider-line-left" aria-hidden="true"></span>
       <span class="animal-divider-center">
         <span class="animal-divider-pop">
-          <span class="animal-divider-avatar"><img src="assets/animals/fox.png" alt="狐狸伙伴" width="72" height="72" /></span>
+          <span class="animal-divider-avatar" aria-hidden="true"></span>
           <small>翻翻攻略</small>
         </span>
       </span>
@@ -264,7 +309,7 @@
 
     <section class="story-section" id="stories">
       <div class="section-head story-heading">
-        <div><p class="section-label">ESCAPE FIELD NOTES</p><h2>把城市的新鲜一面，<br /><em>留给下一只小动物。</em></h2></div>
+        <div class="section-title-cluster"><span class="section-number">05</span><div><p class="section-label">ESCAPE FIELD NOTES</p><h2>把城市的新鲜一面，<br /><em>留给下一位拼友。</em></h2></div></div>
         <button class="primary-button" id="shareGuideButton" type="button"><i data-lucide="pen-line"></i> 分享攻略</button>
       </div>
       <div class="story-grid" id="storyGrid"></div>
@@ -311,15 +356,32 @@
     <div class="hot-backdrop" data-close-modal></div>
     <div class="hot-dialog" tabindex="-1">
       <button class="modal-close" type="button" aria-label="关闭热门活动" data-close-modal><i data-lucide="x"></i></button>
-      <div class="hot-poster"><img src="assets/activities/rooftop-concert.jpg" alt="上海城市天台晚霞中的现场音乐会" width="1400" height="933" /><span class="hot-rank">当前热门活动 <strong>NO.1</strong></span><div class="poster-crowd"><img data-avatar="alpaca" src="assets/animals/alpaca.png" alt="羊驼伙伴" /><img data-avatar="shiba" src="assets/animals/shiba.png" alt="柴犬伙伴" /><img data-avatar="penguin" src="assets/animals/penguin.png" alt="企鹅伙伴" /></div></div>
-      <div class="hot-content"><span class="hot-kicker">THIS WEEKEND · SHANGHAI</span><h2 id="hotTitle">城市天台<br />日落音乐会</h2><div class="hot-details"><span><i data-lucide="calendar-days"></i> 周六 18:00</span><span><i data-lucide="map-pin"></i> 静安大悦城</span><span><i data-lucide="wallet-cards"></i> 人均 ¥128</span></div><div class="going-count"><span class="mini-faces"><span data-avatar="cat"><img src="assets/animals/cat.png" alt="橘猫伙伴" /></span><span data-avatar="rabbit"><img src="assets/animals/rabbit.png" alt="白兔伙伴" /></span><span data-avatar="otter"><img src="assets/animals/otter.png" alt="海獭伙伴" /></span></span><strong>已有 36 只小动物准备出发</strong></div><p>不管是想认识新朋友，还是只想在人群里听歌发呆，都有适合你的区域。</p><div class="modal-actions"><button class="primary-button" id="modalDetailButton" type="button">查看活动详情</button><button class="ghost-button" id="modalCrewButton" type="button">看看谁想一起去</button><button class="ghost-button" id="modalBrowseButton" type="button">先逛逛其他活动</button></div></div>
+      <div class="hot-poster"><img src="assets/activities/rooftop-concert.jpg" alt="上海城市天台晚霞中的现场音乐会" width="1400" height="933" /><span class="hot-rank">当前热门活动 <strong>NO.1</strong></span><div class="poster-crowd" id="hotPuzzleCrowd" aria-label="正在拼成音符的几何拼友"></div></div>
+      <div class="hot-content"><span class="hot-kicker">THIS WEEKEND · SHANGHAI</span><h2 id="hotTitle">城市天台<br />日落音乐会</h2><div class="hot-details"><span><i data-lucide="calendar-days"></i> 周六 18:00</span><span><i data-lucide="map-pin"></i> 静安大悦城</span><span><i data-lucide="wallet-cards"></i> 人均 ¥128</span></div><div class="going-count"><span class="mini-faces" id="hotMiniFaces"></span><strong>已有 36 位城市拼友准备出发</strong></div><p>不管是想认识新朋友，还是只想在人群里听歌发呆，都有适合你的区域。</p><div class="modal-actions"><button class="primary-button" id="modalDetailButton" type="button">查看活动详情</button><button class="ghost-button" id="modalCrewButton" type="button">看看谁想一起去</button><button class="ghost-button" id="modalBrowseButton" type="button">先逛逛其他活动</button></div></div>
     </div>
   </div>
 
   <dialog id="createCrewDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">START A CREW</span><h2>发起一支出逃小队</h2><label>活动名称<input id="crewTitleInput" placeholder="例如：周六西岸慢慢看展" /></label><label>集合时间<input type="datetime-local" /></label><label>队伍氛围<select><option>可以安静同行</option><option>轻松聊天，不强行热场</option><option>热闹认识新朋友</option></select></label><button class="primary-button" id="publishCrewButton" value="default">发布组队</button></form></dialog>
   <dialog id="guideDialog"><form method="dialog" class="small-dialog"><button class="modal-close" value="cancel" aria-label="关闭"><i data-lucide="x"></i></button><span class="dialog-label">SHARE FIELD NOTES</span><h2>分享你的出逃攻略</h2><label>攻略标题<input id="guideTitleInput" placeholder="例如：一个人逛西岸的半日路线" /></label><label>地点<input id="guidePlaceInput" placeholder="上海 · 徐汇滨江" /></label><label>一句经验<textarea id="guideTipInput" rows="4" placeholder="把路线、时间和避坑经验写给下一位探索者"></textarea></label><button class="primary-button" id="publishGuideButton" value="default">发布攻略</button></form></dialog>
+  <dialog id="accountDemoDialog" aria-labelledby="accountDemoTitle"><form method="dialog" class="small-dialog account-demo"><button class="modal-close" value="cancel" aria-label="关闭账户演示弹窗"><i data-lucide="x"></i></button><span class="dialog-label">ACCOUNT PREVIEW</span><h2 id="accountDemoTitle">登录周末出逃</h2><p>登录后可跨设备保存城市拼图册、收藏清单和拼友记录。</p><label>手机号或邮箱<input type="text" placeholder="hello@example.com" autocomplete="username" /></label><label>密码<input type="password" placeholder="输入密码" autocomplete="current-password" /></label><button class="primary-button" id="accountDemoAction" type="button">继续</button><small class="account-demo-note" id="accountDemoNote">体验版本，账户功能暂未接入。</small></form></dialog>
+
+  <div class="onboarding-layer" id="onboardingLayer" role="dialog" aria-modal="true" aria-labelledby="onboardingTitle" aria-describedby="onboardingDescription" aria-hidden="true" hidden>
+    <div class="onboarding-spotlight" id="onboardingSpotlight" aria-hidden="true"></div>
+    <section class="onboarding-bubble" id="onboardingBubble" tabindex="-1">
+      <div class="onboarding-mascot shape-guide" id="onboardingMascot" data-motion="roll"><span id="onboardingAnimal" class="shape-avatar"></span></div>
+      <div class="onboarding-content">
+        <div class="onboarding-meta"><span id="onboardingProgressText">1 / 10</span><i><b id="onboardingProgressBar"></b></i></div>
+        <span class="onboarding-kicker" id="onboardingKicker">黄色引导拼块</span>
+        <h2 id="onboardingTitle" tabindex="-1">欢迎来到周末出逃俱乐部</h2>
+        <p id="onboardingDescription">无论你今天想一个人自在探索，还是想认识新搭子，都可以从这里找到合适的周末计划。</p>
+        <div class="onboarding-actions" id="onboardingActions"><button class="onboarding-skip" id="onboardingSkip" type="button">跳过引导</button><span></span><button class="onboarding-prev" id="onboardingPrev" type="button"><i data-lucide="arrow-left"></i> 上一步</button><button class="onboarding-next" id="onboardingNext" type="button">下一步 <i data-lucide="arrow-right"></i></button></div>
+        <div class="onboarding-complete-actions" id="onboardingCompleteActions" hidden><button id="onboardingReplay" type="button"><i data-lucide="rotate-ccw"></i> 再来一遍</button><button id="onboardingStart" type="button">开始探索 <i data-lucide="sparkles"></i></button></div>
+        <div class="onboarding-exit-confirm" id="onboardingExitConfirm" role="alertdialog" aria-label="是否跳过新手导航" hidden><strong>要先离开引导吗？</strong><p>可以继续看看，也可以跳过并从“使用指南”随时重播。</p><div><button id="onboardingContinue" type="button">继续引导</button><button id="onboardingConfirmSkip" type="button">跳过引导</button></div></div>
+      </div>
+    </section>
+  </div>
   <div class="toast" id="toast" role="status" aria-live="polite"><i data-lucide="check-circle-2"></i><span>操作成功</span></div>
   <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-  <script src="app.js?v=guide-crew-detail-1"></script>
+  <script src="app.js?v=shape-system-1"></script>
 </body>
 </html>
